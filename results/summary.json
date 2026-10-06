@@ -1,0 +1,1332 @@
+{
+  "Acrobot-v1/ars/longer": {
+    "seeds": 20,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 22.79256596500636,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 22.411935965006705,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 24.773960030986927,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 28.89257325901417,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 30.427468441979727,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 5,
+        "solved": true,
+        "seconds": 28.866417502984405,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 6,
+        "solved": true,
+        "seconds": 27.130697408982087,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 7,
+        "solved": true,
+        "seconds": 30.2672588309797,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 8,
+        "solved": true,
+        "seconds": 31.25638826499926,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 9,
+        "solved": true,
+        "seconds": 23.539247804001207,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 10,
+        "solved": true,
+        "seconds": 29.573945023992565,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 11,
+        "solved": true,
+        "seconds": 28.87804286199389,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 12,
+        "solved": true,
+        "seconds": 35.86955328899785,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 13,
+        "solved": true,
+        "seconds": 25.908852488995763,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 14,
+        "solved": true,
+        "seconds": 18.01585541901295,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 15,
+        "solved": true,
+        "seconds": 26.967831081012264,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 16,
+        "solved": true,
+        "seconds": 29.77513336701668,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 17,
+        "solved": true,
+        "seconds": 27.432498297013808,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 18,
+        "solved": true,
+        "seconds": 30.677355663006892,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 19,
+        "solved": true,
+        "seconds": 25.71565702400403,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 20,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 25.480232775749755,
+    "conditional_median_seconds": 28.149457899999106,
+    "conditional_q75_seconds": 29.898164733007434,
+    "km_median_seconds": 27.432498297013808,
+    "limit_seconds": [
+      300
+    ],
+    "stop_reasons": {
+      "solved": 20
+    },
+    "files": [
+      "results/final/Acrobot-v1__ars__longer__000.json",
+      "results/final/Acrobot-v1__ars__longer__001.json",
+      "results/final/Acrobot-v1__ars__longer__002.json",
+      "results/final/Acrobot-v1__ars__longer__003.json",
+      "results/final/Acrobot-v1__ars__longer__004.json",
+      "results/final/Acrobot-v1__ars__longer__005.json",
+      "results/final/Acrobot-v1__ars__longer__006.json",
+      "results/final/Acrobot-v1__ars__longer__007.json",
+      "results/final/Acrobot-v1__ars__longer__008.json",
+      "results/final/Acrobot-v1__ars__longer__009.json",
+      "results/final/Acrobot-v1__ars__longer__010.json",
+      "results/final/Acrobot-v1__ars__longer__011.json",
+      "results/final/Acrobot-v1__ars__longer__012.json",
+      "results/final/Acrobot-v1__ars__longer__013.json",
+      "results/final/Acrobot-v1__ars__longer__014.json",
+      "results/final/Acrobot-v1__ars__longer__015.json",
+      "results/final/Acrobot-v1__ars__longer__016.json",
+      "results/final/Acrobot-v1__ars__longer__017.json",
+      "results/final/Acrobot-v1__ars__longer__018.json",
+      "results/final/Acrobot-v1__ars__longer__019.json"
+    ]
+  },
+  "Acrobot-v1/cem/longer": {
+    "seeds": 20,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 17.162166729016462,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 13.366375287005212,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 17.956811067997478,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 16.172747211006936,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 18.2271363150212,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 5,
+        "solved": true,
+        "seconds": 17.090040805982426,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 6,
+        "solved": true,
+        "seconds": 12.422775522980373,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 7,
+        "solved": true,
+        "seconds": 11.891627745993901,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 8,
+        "solved": true,
+        "seconds": 12.416163208021317,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 9,
+        "solved": true,
+        "seconds": 15.303279448999092,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 10,
+        "solved": true,
+        "seconds": 15.38517452700762,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 11,
+        "solved": true,
+        "seconds": 15.469315299997106,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 12,
+        "solved": true,
+        "seconds": 15.618382867018227,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 13,
+        "solved": true,
+        "seconds": 27.27934615200502,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 14,
+        "solved": true,
+        "seconds": 10.27927808597451,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 15,
+        "solved": true,
+        "seconds": 13.243102408014238,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 16,
+        "solved": true,
+        "seconds": 14.766646949021379,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 17,
+        "solved": true,
+        "seconds": 21.863509454997256,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 18,
+        "solved": true,
+        "seconds": 14.652961262996541,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 19,
+        "solved": true,
+        "seconds": 12.990795128978789,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 20,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 13.180025588255376,
+    "conditional_median_seconds": 15.344226988003356,
+    "conditional_q75_seconds": 17.108072286740935,
+    "km_median_seconds": 15.303279448999092,
+    "limit_seconds": [
+      300
+    ],
+    "stop_reasons": {
+      "solved": 20
+    },
+    "files": [
+      "results/final/Acrobot-v1__cem__longer__000.json",
+      "results/final/Acrobot-v1__cem__longer__001.json",
+      "results/final/Acrobot-v1__cem__longer__002.json",
+      "results/final/Acrobot-v1__cem__longer__003.json",
+      "results/final/Acrobot-v1__cem__longer__004.json",
+      "results/final/Acrobot-v1__cem__longer__005.json",
+      "results/final/Acrobot-v1__cem__longer__006.json",
+      "results/final/Acrobot-v1__cem__longer__007.json",
+      "results/final/Acrobot-v1__cem__longer__008.json",
+      "results/final/Acrobot-v1__cem__longer__009.json",
+      "results/final/Acrobot-v1__cem__longer__010.json",
+      "results/final/Acrobot-v1__cem__longer__011.json",
+      "results/final/Acrobot-v1__cem__longer__012.json",
+      "results/final/Acrobot-v1__cem__longer__013.json",
+      "results/final/Acrobot-v1__cem__longer__014.json",
+      "results/final/Acrobot-v1__cem__longer__015.json",
+      "results/final/Acrobot-v1__cem__longer__016.json",
+      "results/final/Acrobot-v1__cem__longer__017.json",
+      "results/final/Acrobot-v1__cem__longer__018.json",
+      "results/final/Acrobot-v1__cem__longer__019.json"
+    ]
+  },
+  "Acrobot-v1/cleanrl/default": {
+    "seeds": 5,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 15.151000565005234,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 43.821363249997376,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 4.360868779971497,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 7.2831292590126395,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 28.48674879700411,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 5,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 7.2831292590126395,
+    "conditional_median_seconds": 15.151000565005234,
+    "conditional_q75_seconds": 28.48674879700411,
+    "km_median_seconds": 15.151000565005234,
+    "limit_seconds": [
+      300
+    ],
+    "stop_reasons": {
+      "solved": 5
+    },
+    "files": [
+      "results/final/Acrobot-v1__cleanrl__default__000.json",
+      "results/final/Acrobot-v1__cleanrl__default__001.json",
+      "results/final/Acrobot-v1__cleanrl__default__002.json",
+      "results/final/Acrobot-v1__cleanrl__default__003.json",
+      "results/final/Acrobot-v1__cleanrl__default__004.json"
+    ]
+  },
+  "Acrobot-v1/ppo-cpu/default": {
+    "seeds": 20,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 11.561916943028336,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 26.234213621006347,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 18.93333548901137,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 31.649880326993298,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 34.18941528501455,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 5,
+        "solved": true,
+        "seconds": 11.467139708984178,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 6,
+        "solved": true,
+        "seconds": 46.94983855000464,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 7,
+        "solved": true,
+        "seconds": 25.80501007300336,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 8,
+        "solved": true,
+        "seconds": 44.213503528997535,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 9,
+        "solved": true,
+        "seconds": 27.42986082698917,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 10,
+        "solved": true,
+        "seconds": 27.690137843979755,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 11,
+        "solved": true,
+        "seconds": 17.858511436003027,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 12,
+        "solved": true,
+        "seconds": 92.64316053898074,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 13,
+        "solved": true,
+        "seconds": 23.925339998997515,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 14,
+        "solved": true,
+        "seconds": 23.585197856999002,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 15,
+        "solved": true,
+        "seconds": 31.474565973010613,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 16,
+        "solved": true,
+        "seconds": 22.293315565999364,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 17,
+        "solved": true,
+        "seconds": 21.211506400984945,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 18,
+        "solved": true,
+        "seconds": 24.216023454006063,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 19,
+        "solved": true,
+        "seconds": 1.425699949002592,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 20,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 20.64196367299155,
+    "conditional_median_seconds": 25.01051676350471,
+    "conditional_q75_seconds": 31.518394561506284,
+    "km_median_seconds": 24.216023454006063,
+    "limit_seconds": [
+      300
+    ],
+    "stop_reasons": {
+      "solved": 20
+    },
+    "files": [
+      "results/final/Acrobot-v1__ppo-cpu__default__000.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__001.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__002.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__003.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__004.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__005.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__006.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__007.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__008.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__009.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__010.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__011.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__012.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__013.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__014.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__015.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__016.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__017.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__018.json",
+      "results/final/Acrobot-v1__ppo-cpu__default__019.json"
+    ]
+  },
+  "Acrobot-v1/sb3-zoo/default": {
+    "seeds": 5,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 9.936109767004382,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 10.046773911017226,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 14.591147522005485,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 5.0831272680079564,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 12.523079906008206,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 5,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 9.936109767004382,
+    "conditional_median_seconds": 10.046773911017226,
+    "conditional_q75_seconds": 12.523079906008206,
+    "km_median_seconds": 10.046773911017226,
+    "limit_seconds": [
+      300
+    ],
+    "stop_reasons": {
+      "solved": 5
+    },
+    "files": [
+      "results/final/Acrobot-v1__sb3-zoo__default__000.json",
+      "results/final/Acrobot-v1__sb3-zoo__default__001.json",
+      "results/final/Acrobot-v1__sb3-zoo__default__002.json",
+      "results/final/Acrobot-v1__sb3-zoo__default__003.json",
+      "results/final/Acrobot-v1__sb3-zoo__default__004.json"
+    ]
+  },
+  "CartPole-v1/ars/default": {
+    "seeds": 20,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 1.6902000090049114,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 1.2647044859768357,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 1.424166045995662,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 1.0566858900128864,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 1.2068614379968494,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 5,
+        "solved": true,
+        "seconds": 0.8799805860035121,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 6,
+        "solved": true,
+        "seconds": 0.9528339989774395,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 7,
+        "solved": true,
+        "seconds": 1.255507564987056,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 8,
+        "solved": true,
+        "seconds": 0.6357507659995463,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 9,
+        "solved": true,
+        "seconds": 0.8977989390259609,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 10,
+        "solved": true,
+        "seconds": 1.3373032759991474,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 11,
+        "solved": true,
+        "seconds": 0.7955721170001198,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 12,
+        "solved": true,
+        "seconds": 1.1072615110024344,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 13,
+        "solved": true,
+        "seconds": 0.4844212519819848,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 14,
+        "solved": true,
+        "seconds": 0.4672826169990003,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 15,
+        "solved": true,
+        "seconds": 0.7246298879908863,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 16,
+        "solved": true,
+        "seconds": 0.7021918440004811,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 17,
+        "solved": true,
+        "seconds": 1.706760203000158,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 18,
+        "solved": true,
+        "seconds": 1.2396368740010075,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 19,
+        "solved": true,
+        "seconds": 1.8312785860034637,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 20,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 0.7778365597478114,
+    "conditional_median_seconds": 1.0819737005076604,
+    "conditional_q75_seconds": 1.2828541834824136,
+    "km_median_seconds": 1.0566858900128864,
+    "limit_seconds": [
+      120
+    ],
+    "stop_reasons": {
+      "solved": 20
+    },
+    "files": [
+      "results/final/CartPole-v1__ars__default__000.json",
+      "results/final/CartPole-v1__ars__default__001.json",
+      "results/final/CartPole-v1__ars__default__002.json",
+      "results/final/CartPole-v1__ars__default__003.json",
+      "results/final/CartPole-v1__ars__default__004.json",
+      "results/final/CartPole-v1__ars__default__005.json",
+      "results/final/CartPole-v1__ars__default__006.json",
+      "results/final/CartPole-v1__ars__default__007.json",
+      "results/final/CartPole-v1__ars__default__008.json",
+      "results/final/CartPole-v1__ars__default__009.json",
+      "results/final/CartPole-v1__ars__default__010.json",
+      "results/final/CartPole-v1__ars__default__011.json",
+      "results/final/CartPole-v1__ars__default__012.json",
+      "results/final/CartPole-v1__ars__default__013.json",
+      "results/final/CartPole-v1__ars__default__014.json",
+      "results/final/CartPole-v1__ars__default__015.json",
+      "results/final/CartPole-v1__ars__default__016.json",
+      "results/final/CartPole-v1__ars__default__017.json",
+      "results/final/CartPole-v1__ars__default__018.json",
+      "results/final/CartPole-v1__ars__default__019.json"
+    ]
+  },
+  "CartPole-v1/cem/default": {
+    "seeds": 20,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 1.357883546006633,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 1.2316823749861214,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 1.3509374469867907,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 0.9373030099959578,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 1.4619912630005274,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 5,
+        "solved": true,
+        "seconds": 0.44782970199594274,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 6,
+        "solved": true,
+        "seconds": 0.9972402879793663,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 7,
+        "solved": true,
+        "seconds": 1.9999964339949656,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 8,
+        "solved": true,
+        "seconds": 1.473966567980824,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 9,
+        "solved": true,
+        "seconds": 1.6731198900088202,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 10,
+        "solved": true,
+        "seconds": 1.1488670209946577,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 11,
+        "solved": true,
+        "seconds": 0.8714501869981177,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 12,
+        "solved": true,
+        "seconds": 1.4066021219769027,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 13,
+        "solved": true,
+        "seconds": 1.1179816249932628,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 14,
+        "solved": true,
+        "seconds": 0.8501107229967602,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 15,
+        "solved": true,
+        "seconds": 0.8543839479971211,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 16,
+        "solved": true,
+        "seconds": 0.9400894389837049,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 17,
+        "solved": true,
+        "seconds": 1.8076548959943466,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 18,
+        "solved": true,
+        "seconds": 1.1561695339914877,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 19,
+        "solved": true,
+        "seconds": 0.9040001449757256,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 20,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 0.9289772937408998,
+    "conditional_median_seconds": 1.1525182774930727,
+    "conditional_q75_seconds": 1.4204494072328089,
+    "km_median_seconds": 1.1488670209946577,
+    "limit_seconds": [
+      120
+    ],
+    "stop_reasons": {
+      "solved": 20
+    },
+    "files": [
+      "results/final/CartPole-v1__cem__default__000.json",
+      "results/final/CartPole-v1__cem__default__001.json",
+      "results/final/CartPole-v1__cem__default__002.json",
+      "results/final/CartPole-v1__cem__default__003.json",
+      "results/final/CartPole-v1__cem__default__004.json",
+      "results/final/CartPole-v1__cem__default__005.json",
+      "results/final/CartPole-v1__cem__default__006.json",
+      "results/final/CartPole-v1__cem__default__007.json",
+      "results/final/CartPole-v1__cem__default__008.json",
+      "results/final/CartPole-v1__cem__default__009.json",
+      "results/final/CartPole-v1__cem__default__010.json",
+      "results/final/CartPole-v1__cem__default__011.json",
+      "results/final/CartPole-v1__cem__default__012.json",
+      "results/final/CartPole-v1__cem__default__013.json",
+      "results/final/CartPole-v1__cem__default__014.json",
+      "results/final/CartPole-v1__cem__default__015.json",
+      "results/final/CartPole-v1__cem__default__016.json",
+      "results/final/CartPole-v1__cem__default__017.json",
+      "results/final/CartPole-v1__cem__default__018.json",
+      "results/final/CartPole-v1__cem__default__019.json"
+    ]
+  },
+  "CartPole-v1/cleanrl/default": {
+    "seeds": 5,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 4.335501152003417,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 7.665591069991933,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 5.554476707999129,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 5.331614846014418,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 5.8091843239963055,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 5,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 5.331614846014418,
+    "conditional_median_seconds": 5.554476707999129,
+    "conditional_q75_seconds": 5.8091843239963055,
+    "km_median_seconds": 5.554476707999129,
+    "limit_seconds": [
+      120
+    ],
+    "stop_reasons": {
+      "solved": 5
+    },
+    "files": [
+      "results/final/CartPole-v1__cleanrl__default__000.json",
+      "results/final/CartPole-v1__cleanrl__default__001.json",
+      "results/final/CartPole-v1__cleanrl__default__002.json",
+      "results/final/CartPole-v1__cleanrl__default__003.json",
+      "results/final/CartPole-v1__cleanrl__default__004.json"
+    ]
+  },
+  "CartPole-v1/ppo-cpu/zoo-shape": {
+    "seeds": 20,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 5.712094852991868,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 4.11992334399838,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 4.041398507979466,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 5.471091143001104,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 1.3868061869870871,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 5,
+        "solved": true,
+        "seconds": 2.6488936569949146,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 6,
+        "solved": true,
+        "seconds": 2.710622455982957,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 7,
+        "solved": true,
+        "seconds": 4.079972185980296,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 8,
+        "solved": true,
+        "seconds": 5.5204372860025615,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 9,
+        "solved": true,
+        "seconds": 5.486629806982819,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 10,
+        "solved": true,
+        "seconds": 2.6973926560021937,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 11,
+        "solved": true,
+        "seconds": 5.40809400100261,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 12,
+        "solved": true,
+        "seconds": 2.600486320996424,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 13,
+        "solved": true,
+        "seconds": 5.345586506999098,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 14,
+        "solved": true,
+        "seconds": 2.623412749002455,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 15,
+        "solved": true,
+        "seconds": 3.9638593000127003,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 16,
+        "solved": true,
+        "seconds": 4.189642979996279,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 17,
+        "solved": true,
+        "seconds": 5.459737266006414,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 18,
+        "solved": true,
+        "seconds": 6.776098603993887,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 19,
+        "solved": true,
+        "seconds": 5.1073043729993515,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 20,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 2.707315005987766,
+    "conditional_median_seconds": 4.154783161997329,
+    "conditional_q75_seconds": 5.462575735255086,
+    "km_median_seconds": 4.11992334399838,
+    "limit_seconds": [
+      120
+    ],
+    "stop_reasons": {
+      "solved": 20
+    },
+    "files": [
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__000.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__001.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__002.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__003.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__004.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__005.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__006.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__007.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__008.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__009.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__010.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__011.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__012.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__013.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__014.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__015.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__016.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__017.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__018.json",
+      "results/final/CartPole-v1__ppo-cpu__zoo-shape__019.json"
+    ]
+  },
+  "CartPole-v1/sb3-zoo/default": {
+    "seeds": 5,
+    "seed_ids": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "records": [
+      {
+        "seed": 0,
+        "solved": true,
+        "seconds": 5.233858649007743,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 1,
+        "solved": true,
+        "seconds": 4.716643521009246,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 2,
+        "solved": true,
+        "seconds": 3.1603348450153135,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 3,
+        "solved": true,
+        "seconds": 8.006915373000083,
+        "stop_reason": "solved"
+      },
+      {
+        "seed": 4,
+        "solved": true,
+        "seconds": 4.636737908003852,
+        "stop_reason": "solved"
+      }
+    ],
+    "successes": 5,
+    "success_rate": 1.0,
+    "conditional_q25_seconds": 4.636737908003852,
+    "conditional_median_seconds": 4.716643521009246,
+    "conditional_q75_seconds": 5.233858649007743,
+    "km_median_seconds": 4.716643521009246,
+    "limit_seconds": [
+      120
+    ],
+    "stop_reasons": {
+      "solved": 5
+    },
+    "files": [
+      "results/final/CartPole-v1__sb3-zoo__default__000.json",
+      "results/final/CartPole-v1__sb3-zoo__default__001.json",
+      "results/final/CartPole-v1__sb3-zoo__default__002.json",
+      "results/final/CartPole-v1__sb3-zoo__default__003.json",
+      "results/final/CartPole-v1__sb3-zoo__default__004.json"
+    ]
+  }
+}

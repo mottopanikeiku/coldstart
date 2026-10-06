@@ -1,0 +1,112 @@
+{
+  "phase": "development",
+  "output": "results/development",
+  "chunks": [
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "CartPole-v1",
+        "method": "ars",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "CartPole-v1",
+        "method": "cem",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "CartPole-v1",
+        "method": "sb3-zoo",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "CartPole-v1",
+        "method": "cleanrl",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "ars",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "cem",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "sb3-zoo",
+        "seeds": "0:1",
+        "limit": 60
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "cleanrl",
+        "seeds": "0:1",
+        "limit": 60
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:2",
+        "limit": 60,
+        "variant": "gym-dynamics"
+      },
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:2",
+        "limit": 60,
+        "variant": "small-batch"
+      },
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:2",
+        "limit": 60,
+        "variant": "wide"
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:2",
+        "limit": 60,
+        "variant": "gym-dynamics"
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:2",
+        "limit": 60,
+        "variant": "small-batch"
+      },
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:2",
+        "limit": 60,
+        "variant": "wide"
+      }
+    ]
+  ]
+}

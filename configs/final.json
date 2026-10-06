@@ -1,0 +1,214 @@
+{
+  "phase": "final",
+  "output": "results/final",
+  "chunks": [
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "variant": "zoo-shape",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "variant": "zoo-shape",
+        "seeds": "5:10"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "variant": "zoo-shape",
+        "seeds": "10:15"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ppo-cpu",
+        "variant": "zoo-shape",
+        "seeds": "15:20"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ars",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ars",
+        "seeds": "5:10"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ars",
+        "seeds": "10:15"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "ars",
+        "seeds": "15:20"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "cem",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "cem",
+        "seeds": "5:10"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "cem",
+        "seeds": "10:15"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "cem",
+        "seeds": "15:20"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "sb3-zoo",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "CartPole-v1",
+        "method": "cleanrl",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "5:10"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "10:15"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ppo-cpu",
+        "seeds": "15:20"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ars",
+        "variant": "longer",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ars",
+        "variant": "longer",
+        "seeds": "5:10"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ars",
+        "variant": "longer",
+        "seeds": "10:15"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "ars",
+        "variant": "longer",
+        "seeds": "15:20"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "cem",
+        "variant": "longer",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "cem",
+        "variant": "longer",
+        "seeds": "5:10"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "cem",
+        "variant": "longer",
+        "seeds": "10:15"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "cem",
+        "variant": "longer",
+        "seeds": "15:20"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "sb3-zoo",
+        "seeds": "0:5"
+      }
+    ],
+    [
+      {
+        "task": "Acrobot-v1",
+        "method": "cleanrl",
+        "seeds": "0:5"
+      }
+    ]
+  ]
+}

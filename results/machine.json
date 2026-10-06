@@ -1,0 +1,17 @@
+{
+  "recorded": "2026-10-06",
+  "commands": ["nice -n 19 lscpu", "nice -n 19 gcc --version", "nice -n 19 uname -a"],
+  "cpu": "AMD Ryzen AI 5 PRO 340 w/ Radeon 840M",
+  "physical_cores": 6,
+  "logical_cpus": 12,
+  "os": "Fedora Linux 44",
+  "kernel": "7.2.5-200.fc44.x86_64",
+  "architecture": "x86_64",
+  "gcc": "16.2.1 20260819 (Red Hat 16.2.1-2)",
+  "threads": 1,
+  "accelerator": "none used",
+  "measurement_conditions": "Other CPU-heavy work excluded during each measurement batch",
+  "development_conditions": "Shared CPU with other development work",
+  "nice": 19,
+  "paid_compute_usd": 0
+}

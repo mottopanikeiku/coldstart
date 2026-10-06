@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-06",
+  "command_note": "Portable invocations omit host-specific orchestration prefixes; outcomes are unchanged.",
+  "checks": [
+    {
+      "command": "nice -n 19 uv run ruff check --fix .",
+      "result": "failed: two E501 line-length errors; subsequently formatted"
+    },
+    {
+      "command": "nice -n 19 uv run ruff format .",
+      "result": "11 files reformatted; 3 files unchanged"
+    },
+    {
+      "command": "nice -n 19 env OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 uv run pytest -q",
+      "result": "48 passed; three upstream SWIG deprecation warnings"
+    },
+    {
+      "command": "nice -n 19 env OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 uv run pytest -q tests/test_equivalence.py tests/test_results.py::test_final_plan_has_required_cohorts_and_bounded_windows",
+      "result": "35 passed; three upstream SWIG deprecation warnings; includes raw internal-state comparisons"
+    },
+    {
+      "command": "nice -n 19 uv run ruff check .",
+      "result": "All checks passed"
+    },
+    {
+      "command": "nice -n 19 uv run ruff format --check .",
+      "result": "17 files already formatted"
+    },
+    {
+      "command": "nice -n 19 env OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 uv run pytest -q tests/test_algorithms.py tests/test_baselines.py tests/test_protocol.py",
+      "result": "17 passed; includes scalar CEM update, real child startup and all-epoch SB3 checkpoint ordering"
+    },
+    {
+      "command": "nice -n 19 uv run pytest -q tests/test_drivers.py",
+      "result": "2 passed; replication output routing and original-result preservation"
+    },
+    {
+      "command": "nice -n 19 env OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 uv run pytest -q tests/test_drivers.py tests/test_protocol.py::test_actual_parent_child_clock_includes_python_startup",
+      "result": "3 passed after portable launcher cutover",
+      "publication_check": "Tracked-file search found no local home paths or host-specific launch prefixes"
+    },
+    {
+      "command": "nice -n 19 env OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 uv run pytest -q tests/test_protocol.py",
+      "result": "10 passed; per-seed summaries sorted and actual failure stop times retained"
+    },
+    {
+      "command": "nice -n 19 uv run ruff check .",
+      "result": "All checks passed after final evidence-consistency tests were added"
+    },
+    {
+      "command": "nice -n 19 uv run ruff format --check .",
+      "result": "18 files already formatted"
+    },
+    {
+      "command": "nice -n 19 env OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 uv run pytest -q",
+      "result": "57 passed, 3 upstream SWIG deprecation warnings, 3.39 seconds"
+    }
+  ]
+}

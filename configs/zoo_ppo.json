@@ -1,0 +1,101 @@
+{
+  "sources": {
+    "rl_baselines3_zoo": {
+      "commit": "eec15dc22e1ec7167064aae0c1218eefccaf0ff4",
+      "url": "https://github.com/DLR-RM/rl-baselines3-zoo/blob/eec15dc22e1ec7167064aae0c1218eefccaf0ff4/hyperparams/ppo.yml"
+    },
+    "stable_baselines3": {
+      "version": "2.7.0",
+      "commit": "bf51a6233a8f934a68430f8f78e44360410d23ca",
+      "url": "https://github.com/DLR-RM/stable-baselines3/tree/bf51a6233a8f934a68430f8f78e44360410d23ca"
+    }
+  },
+  "ppo_defaults": {
+    "learning_rate": 0.0003,
+    "n_steps": 2048,
+    "batch_size": 64,
+    "n_epochs": 10,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "clip_range_vf": null,
+    "normalize_advantage": true,
+    "ent_coef": 0.0,
+    "vf_coef": 0.5,
+    "max_grad_norm": 0.5,
+    "use_sde": false,
+    "sde_sample_freq": -1,
+    "rollout_buffer_kwargs": null,
+    "target_kl": null,
+    "stats_window_size": 100,
+    "tensorboard_log": null,
+    "policy_kwargs": null,
+    "verbose": 0,
+    "device": "cpu"
+  },
+  "policy_defaults": {
+    "net_arch": {"pi": [64, 64], "vf": [64, 64]},
+    "activation_fn": "torch.nn.Tanh",
+    "ortho_init": true,
+    "features_extractor_class": "FlattenExtractor",
+    "share_features_extractor": true,
+    "normalize_images": true,
+    "optimizer_class": "torch.optim.Adam",
+    "optimizer_kwargs": {"eps": 0.00001, "betas": [0.9, 0.999], "weight_decay": 0}
+  },
+  "vec_normalize_defaults": {
+    "training": true,
+    "norm_obs": true,
+    "norm_reward": true,
+    "clip_obs": 10.0,
+    "clip_reward": 10.0,
+    "gamma": 0.99,
+    "epsilon": 1e-8,
+    "norm_obs_keys": null
+  },
+  "tasks": {
+    "CartPole-v1": {
+      "n_envs": 8,
+      "n_timesteps": 100000,
+      "policy": "MlpPolicy",
+      "normalize": false,
+      "ppo": {
+        "n_steps": 32,
+        "batch_size": 256,
+        "gae_lambda": 0.8,
+        "gamma": 0.98,
+        "n_epochs": 20,
+        "ent_coef": 0.0,
+        "learning_rate": "lin_0.001",
+        "clip_range": "lin_0.2"
+      }
+    },
+    "Acrobot-v1": {
+      "n_envs": 16,
+      "n_timesteps": 1000000,
+      "policy": "MlpPolicy",
+      "normalize": true,
+      "ppo": {
+        "n_steps": 256,
+        "gae_lambda": 0.94,
+        "gamma": 0.99,
+        "n_epochs": 4,
+        "ent_coef": 0.0
+      }
+    },
+    "LunarLander-v3": {
+      "n_envs": 16,
+      "n_timesteps": 1000000,
+      "policy": "MlpPolicy",
+      "normalize": false,
+      "ppo": {
+        "n_steps": 1024,
+        "batch_size": 64,
+        "gae_lambda": 0.98,
+        "gamma": 0.999,
+        "n_epochs": 4,
+        "ent_coef": 0.01
+      }
+    }
+  }
+}

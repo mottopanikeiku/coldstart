@@ -9,3 +9,7 @@ Reviewed before implementation on 2026-10-06.
 - [Gymnasium classic-control](https://gymnasium.farama.org/environments/classic_control/) provides reference task dynamics and thresholds. [LunarLander](https://gymnasium.farama.org/environments/box2d/lunar_lander/) depends on Box2D and is a stretch measurement, not silently substituted for Acrobot.
 
 What this adds: a small laptop-only comparison with a clock that begins before Python imports, a common 100-episode deterministic evaluation against Gymnasium, raw per-seed trajectories, explicit unsuccessful seeds, and checked vectorized dynamics. It does not establish a general-purpose RL speed record; CartPole can be solved by very simple policy search, and shared evaluation seeds can be adapted to by repeated checkpoint selection.
+
+## Related execution work checked during integration
+
+[EnvPool](https://arxiv.org/abs/2206.10558), Weng et al. (2022), already demonstrates highly parallel environment execution and its integration with RL libraries, including laptop runs. Batching environments is not a novel idea here. This repository instead keeps a small inspectable NumPy implementation for two tasks and tests it against Gymnasium, then asks about startup-to-threshold time with a large evaluation set. EnvPool itself is not measured in this small comparison; no general speed claim against it is made.

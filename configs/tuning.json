@@ -1,0 +1,18 @@
+{
+  "phase": "development",
+  "output": "results/development",
+  "chunks": [
+    [
+      {"task": "CartPole-v1", "method": "ppo-cpu", "seeds": "0:3", "variant": "zoo-shape", "limit": 60},
+      {"task": "Acrobot-v1", "method": "ars", "seeds": "0:2", "variant": "longer", "limit": 120},
+      {"task": "Acrobot-v1", "method": "cem", "seeds": "0:2", "variant": "longer", "limit": 120}
+    ],
+    [
+      {"task": "LunarLander-v3", "method": "ppo-cpu", "seeds": "0:1", "limit": 120},
+      {"task": "LunarLander-v3", "method": "ars", "seeds": "0:1", "limit": 120},
+      {"task": "LunarLander-v3", "method": "cem", "seeds": "0:1", "limit": 120},
+      {"task": "LunarLander-v3", "method": "sb3-zoo", "seeds": "0:1", "limit": 120},
+      {"task": "LunarLander-v3", "method": "cleanrl", "seeds": "0:1", "limit": 120}
+    ]
+  ]
+}

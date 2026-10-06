@@ -1,0 +1,17 @@
+{
+  "command": [
+    "nice",
+    "-n",
+    "19",
+    ".venv/bin/python",
+    "sweep.py",
+    "--plan",
+    "configs/final.json",
+    "--chunk",
+    "1"
+  ],
+  "started_including_queue": "2026-10-06T05:04:07.872584-07:00",
+  "finished_including_queue": "2026-10-06T05:04:30.929845-07:00",
+  "returncode": 0,
+  "note": "Worker clocks start immediately before each child spawn."
+}

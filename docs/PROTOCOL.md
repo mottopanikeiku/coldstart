@@ -1,6 +1,6 @@
 # Process-start control benchmark
 
-Recorded before implementation and tuning: 2026-10-06 02:39 PDT.
+Recorded before implementation and tuning on 2026-10-06. The initial Git commit timestamps this document; no minute-level creation time was measured.
 
 ## Question and endpoints
 
@@ -33,7 +33,7 @@ Report success fraction and median plus 25th–75th percentile of solve times am
 
 ## Measurement and development
 
-All reported wall measurements run through `/home/alp/Projects/profile-program/bin/pp-run bench`, one seed or a batch under 30 minutes. Development trials run through `pp-run heavy` and are labeled development, never mixed with final measurements. One Torch thread; OMP, OpenBLAS and MKL thread counts are one. CPU only, no paid compute. Results include dependency versions, task configuration, host information, exact command, evaluation trajectory and the seed. Raw JSON is committed; a script generates the summary JSON and README table.
+Reported wall measurements use exclusive CPU windows, with no other CPU-heavy jobs, one seed or a batch under 30 minutes. Development trials share CPU resources and are labeled development, never mixed with final measurements. All processes run at nice 19. One Torch thread; OMP, OpenBLAS and MKL thread counts are one. CPU only, no paid compute. Results include dependency versions, task configuration, hardware information, repository-relative worker commands, evaluation trajectory and the seed. Host-specific orchestration prefixes are omitted from published commands; numerical observations are unchanged. Raw JSON is committed; a script generates the summary JSON and README table.
 
 ## Correctness
 
