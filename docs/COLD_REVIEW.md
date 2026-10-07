@@ -108,3 +108,19 @@ A repository content search found none of the prohibited home-path, private-laun
 The three previously identified coverage gaps now have concrete tests: scalar CEM elite/smoothing/floor behavior including stable ties, a real child-startup delay before worker imports, and an SB3 first update whose twenty Adam steps all precede the updated checkpoint. Main records Ruff success, 18 already-formatted files, and a full 57-pass suite with three upstream SWIG warnings in `results/checks.json`. I inspected that evidence and test source, not a new execution.
 
 The README carries the important remaining limits: reused evaluation seeds, one machine with warm OS caches and blocked method order, five-seed library cohorts, differing checkpoint grids/horizons/objectives, numerical rather than bitwise dynamics equivalence, and no final stretch cohort. Since all mandatory final seeds succeeded, informative early censoring does not affect this README table; the historical KM caveat still applies to development failures and later replications. No broad ranking, untouched-test generalization or physics-only speedup claim is warranted. No source repair or additional timing run is required by this final assessment.
+
+## GPU comparison review — 2026-10-07
+
+I asked a separate AI coding reviewer to inspect PR 2, the JAX implementation,
+Gymnax source, protocol, tests, README and all six final result records.
+It found no blocking defects or actionable findings. It checked that startup,
+JAX synchronization, initialization/update compilation, weight transfer and
+the complete greedy Gymnasium evaluations remain on the qualification clock,
+without advancing the training RNG during evaluation.
+
+The reviewer confirmed the 26.3770/97.4270-second medians, unchanged thresholds
+and budgets, retained failed Acrobot pilot, documented environment differences,
+and separate hardware/settings framing. It also checked that the $0.3745
+cost estimate and batch-level cloud overhead are not presented as per-policy
+latency or an isolated GPU speedup. This was read-only review, not an
+independent rerun of the experiments or tests.

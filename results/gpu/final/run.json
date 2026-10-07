@@ -1,0 +1,14 @@
+{
+  "phase": "final",
+  "hardware": "NVIDIA L4",
+  "cpu_cores": 2,
+  "host_memory_gib": 4,
+  "container_seconds": 499.923304573,
+  "container_cost_estimate_usd": 0.12852028313962685,
+  "hourly_rate_usd": 0.925488,
+  "cost_scope": "GPU, requested host CPU and RAM; excludes image build and client startup",
+  "checks": {
+    "command": "python -m pytest -q -s tests/test_jax.py",
+    "stdout": "CartPole-v1 float32: maximum observation absolute error 4.76837158e-07\n.Acrobot-v1 float32: maximum observation absolute error 6.96182251e-05\n.CartPole-v1 float64: maximum observation absolute error 2.00295788e-07\n.Acrobot-v1 float64: maximum observation absolute error 9.49168701e-07\n......\n9 passed in 81.83s (0:01:21)\n"
+  }
+}

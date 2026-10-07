@@ -1,0 +1,7 @@
+# CPU JAX wheels suffice for correctness tests; Modal adds the CUDA 12 extra.
+jax==0.6.2
+flax==0.10.6
+optax==0.2.5
+gymnax==0.0.9
+gymnasium==1.2.1
+numpy==2.2.6

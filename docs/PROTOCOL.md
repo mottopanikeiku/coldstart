@@ -42,3 +42,24 @@ Any reimplemented dynamics must be tested against Gymnasium, including reset, ev
 ## Changes
 
 The endpoints, seed split, clock and budget above are fixed. Implementation defects may be repaired and documented; hyperparameter exploration belongs in `docs/LOG.md`, with measured development effects including failures. Final methods and configurations are selected before their final cohort starts. No cherry-picking the best seed or removing failures.
+
+## Extra GPU cohort
+
+I keep the Modal L4 comparison separate from the original laptop cohort.
+It uses the same `RunContext`, thresholds, 100 Gymnasium evaluation episodes,
+greedy action rule and fixed per-task time budgets. Three new final seeds
+(0–2) per task use JAX-split training keys; these are not NumPy/Gymnasium
+reset seed integers, and do not reuse the fixed Gymnasium evaluation seeds.
+The initialization checkpoint and every complete PPO update are evaluated;
+128 environments × 128 steps rounds the checkpoint grid to 16,384 transitions.
+I synchronize GPU work before checking the clock. JIT compilation and
+host-side evaluation remain inside fresh-process time; cloud provisioning
+and image construction do not. A shorter pilot uses seed 100 and is kept
+apart from the final cohort. All planned seeds and failures are retained.
+
+The extra cohort changes hardware, training environment and PPO settings
+together. It cannot isolate a GPU speedup or replace the laptop ranking.
+[`BASELINES.md`](BASELINES.md#extra-gpu-comparison-jax-ppo) gives the settings;
+[`ENVIRONMENTS.md`](ENVIRONMENTS.md#gymnax-training-in-the-extra-gpu-comparison)
+states the checked dynamics and known differences. GPU timing results come
+only from Modal, not new local measurements.

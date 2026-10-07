@@ -18,3 +18,17 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest -q
+  jax:
+    runs-on: ubuntu-latest
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      JAX_PLATFORMS: cpu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.5"
+      - run: uv venv --python 3.12 .jax-venv
+      - run: uv pip install --python .jax-venv/bin/python -r gpu-requirements.txt pytest==8.4.2
+      - run: .jax-venv/bin/python -m pytest -q tests/test_jax.py

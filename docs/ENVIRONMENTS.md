@@ -85,6 +85,51 @@ implementation is checked against upstream rather than a duplicated local
 set of equations. Run the equivalence tests with:
 `uv run pytest tests/test_equivalence.py`.
 
+## Gymnax training in the extra GPU comparison
+
+The GPU PPO uses installed **Gymnax 0.0.9** for training only.
+[`test_jax.py`](../tests/test_jax.py) checks fixed internal states against
+Gymnasium 1.2.1: 100 states per task, every discrete action, exact rewards and
+done decisions away from time limits. I check the equations in float64 at
+`atol=2e-6, rtol=2e-7` and training-precision float32 at
+`atol=1e-4, rtol=1e-5`. A tighter float32 tolerance failed on CPU at
+near-limit Acrobot velocities (a 4.72e-5 velocity discrepancy); I therefore
+added the independent float64 check rather than calling the paths identical.
+The suite also checks reset ranges, the 500-step limit, CartPole's strict
+position threshold, terminal rewards and Acrobot's wrapping endpoint. These
+are local transition comparisons, not bitwise trajectory equivalence or a
+guarantee about arbitrarily close boundaries.
+
+The default physics match: CartPole's Euler update, masses, gravity, timestep,
+force, angle/position limits and one-point terminal reward; Acrobot's book
+equations, torque choices, one RK4 step at 0.2, velocity clipping,
+height threshold and zero reward on a successful terminal transition.
+The training maximum episode length remains 500 for both tasks. Every
+qualification evaluation still uses actual Gymnasium, so its threshold,
+episode semantics and reset distribution—not Gymnax's training return—decide
+whether a policy passes.
+
+There are real differences:
+
+- Gymnax computes internal dynamics in float32 here; Gymnasium mostly uses
+  float64 internally. Repeated trajectories can diverge.
+- Gymnax draws resets with JAX's PRNG, not NumPy's PCG64. Uniform ranges match,
+  but identical seed integers do not produce the same initial states.
+- Gymnax's `step` automatically resets completed slots on the same step and
+  returns one `done` flag for termination or time limit. The GPU GAE treats
+  both as terminal, with no timeout bootstrap.
+- Gymnax wraps Acrobot angles into `[-pi, pi)` while Gymnasium retains either
+  endpoint of `[-pi, pi]`. At exactly `+pi`, their internal angles differ
+  by a full rotation; their sine/cosine observations represent the same
+  physical position up to floating-point rounding.
+- Both libraries define useful rewards only through episode completion;
+  I do not compare stepping a previously completed state without resetting it.
+
+Sources: [Gymnax](https://github.com/RobertTLange/gymnax),
+[the pinned release](https://pypi.org/project/gymnax/0.0.9/), and the pinned
+Gymnasium sources below. The Modal run metadata records the installed versions
+and maximum errors printed by the checks.
+
 ## Sources and licenses
 
 Dynamics, integration order, reset behavior and episode semantics are adapted

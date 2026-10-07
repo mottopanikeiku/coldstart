@@ -1,0 +1,61 @@
+{
+  "hardware": "Modal L4; not the laptop table",
+  "protocol": "fresh Python process through first passing 100-episode Gymnasium evaluation",
+  "groups": [
+    {
+      "task": "CartPole-v1",
+      "runs": 1,
+      "solved": 1,
+      "median_seconds": 26.285925250000005,
+      "km_median_seconds": 26.285925250000005,
+      "quartiles_seconds": [
+        26.285925250000005,
+        26.285925250000005
+      ],
+      "records": [
+        {
+          "seed": 100,
+          "solved": true,
+          "solve_seconds": 26.285925250000005,
+          "parent_seconds": 27.163335821000004,
+          "stop_reason": "solved",
+          "last_mean_return": 500.0,
+          "file": "CartPole-v1__jax-ppo__100.json"
+        }
+      ]
+    },
+    {
+      "task": "Acrobot-v1",
+      "runs": 1,
+      "solved": 0,
+      "median_seconds": null,
+      "km_median_seconds": null,
+      "quartiles_seconds": null,
+      "records": [
+        {
+          "seed": 100,
+          "solved": false,
+          "solve_seconds": null,
+          "parent_seconds": 91.082323215,
+          "stop_reason": "time limit",
+          "last_mean_return": -109.91,
+          "file": "Acrobot-v1__jax-ppo__100.json"
+        }
+      ]
+    }
+  ],
+  "run": {
+    "phase": "pilot",
+    "hardware": "NVIDIA L4",
+    "cpu_cores": 2,
+    "host_memory_gib": 4,
+    "container_seconds": 172.933795299,
+    "container_cost_estimate_usd": 0.04445782009546692,
+    "hourly_rate_usd": 0.925488,
+    "cost_scope": "GPU, requested host CPU and RAM; excludes image build and client startup",
+    "checks": {
+      "command": "python -m pytest -q -s tests/test_jax.py",
+      "stdout": "CartPole-v1: maximum observation absolute error 4.76837158e-07\n.Acrobot-v1: maximum observation absolute error 6.96182251e-05\n......\n7 passed in 52.40s\n"
+    }
+  }
+}

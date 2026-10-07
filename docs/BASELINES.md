@@ -163,3 +163,44 @@ Not covered by dedicated tests:
 
 Training measurements use the shared process-start clock and evaluation protocol, not direct timing of a PPO update.
 
+## Extra GPU comparison: JAX PPO
+
+I added [`jax_ppo.py`](../control_clock/jax_ppo.py) in the style of
+[Chris Lu's PureJaxRL](https://github.com/luchris429/purejaxrl): `vmap` batches
+the environments and nested `lax.scan` loops collect rollouts, calculate GAE
+and update PPO minibatches. I changed the structure so the host can evaluate
+after each complete update. This is an adaptation of the design, not the
+unchanged upstream implementation or a claim to reproduce its published speed.
+The upstream Apache-2.0 license is in `third_party/PureJaxRL-LICENSE`.
+
+The actor and critic each have two 64-unit tanh layers with orthogonal
+initialization. I use 128 environments, 128 steps, four epochs and four
+minibatches, Adam at a constant 0.0003, gradient norm clipping at 0.5,
+gamma 0.99, GAE lambda 0.95, ratio/value clipping at 0.2, entropy coefficient
+0.01 and value coefficient 0.5. There is no reward or observation
+normalization and no learning-rate annealing. Gymnax merges time limits and
+termination into `done`; I mask both in GAE, as in PureJaxRL, rather than
+bootstrapping across timeouts. These settings differ from the CPU methods.
+
+Each seed gets a fresh Python subprocess on one Modal L4. A timestamp is
+recorded immediately before `Popen` and passed to the unchanged
+`RunContext`. Imports, CUDA initialization, both initialization and update JIT
+compilation, training and every evaluation count. I synchronize each JAX
+update before checking elapsed time. The installed-image build and Modal
+container provisioning are outside the process clock, as CPU installation is;
+they still contribute to the separately stated spend.
+
+I evaluate the initialized policy and then every 16,384 transitions (one full
+update), not during optimizer epochs. Each checkpoint copies actor weights to
+the host and uses the same greedy tanh network in NumPy inside the common
+Gymnasium evaluation. This avoids recompiling JAX inference for changing
+numbers of active episodes and counts the transfer and CPU evaluation time.
+The fixed 100 evaluation seeds, thresholds 475/-100 and 120/300-second limits
+are unchanged. A watchdog retains failures, rather than replacing them with
+successful seeds. GPU records and summaries are separate from the laptop data.
+
+Pinned dependencies are in `gpu-requirements.txt`; Modal adds CUDA 12 wheels
+for the same JAX version. `tests/test_jax.py` checks scalar GAE, a real optimizer
+update, matching host/JAX greedy actions and installed Gymnax dynamics against
+Gymnasium. CI runs those checks on CPU, and the Modal job runs them on L4
+before launching the timed seed processes.

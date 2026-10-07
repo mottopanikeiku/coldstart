@@ -54,3 +54,31 @@ uv run python summarize.py --input results/final --output results/summary.json
 The script prints Markdown and saves machine-readable statistics including the files that contributed to every row. Its median and interquartile range are conditional on success. The Kaplan–Meier output uses actual stop times, including training-step horizon stops, as censoring; this is descriptive because early horizon exhaustion need not be independent of eventual solve time. A method that never passes has no median solve time, not a zero or its timeout value.
 
 Each cohort also contains a seed-sorted `records` list with `seed`, `solved`, `seconds` and `stop_reason`. `seconds` is time to first pass for a success and actual stop time for a failure (parent-observed elapsed time for a watchdog kill). It is never a fabricated solve time. The existing KM calculation caps censoring at the protocol wall limit; the per-seed plotting records retain actual stop times, including small deadline overshoots.
+
+## Extra comparison on a Modal L4
+
+This comparison does not need a local GPU or the JAX/CUDA dependencies on
+the client. I use Modal client 1.5.3, an account already authenticated with
+`modal setup`, and the pinned image in `modal_app.py`. The final invocation
+runs three fresh processes per task on one L4, requesting two host CPU cores
+and 4 GiB RAM. It keeps the 120/300-second per-seed limits and writes a different
+directory from the laptop measurements:
+
+```sh
+uvx --from modal==1.5.3 modal run modal_app.py --phase final --output results/gpu-replication
+uv run python gpu_summary.py --input results/gpu-replication --output results/gpu-replication-summary.json
+```
+
+Use `--phase pilot` for the separate seed-100 development check with a
+90-second limit. Select a new output directory each time; published records
+are not overwritten. `gpu_run.py` can also run a single final-budget seed
+from an environment with CUDA JAX and the pinned GPU dependencies installed.
+It refuses to report a CPU run as a GPU comparison.
+
+The clock begins at Python subprocess launch on the cloud host. JIT
+compilation, device initialization and every full Gymnasium evaluation are
+inside that clock. Image construction, Modal client preparation and container
+provisioning are not; I state those separately from qualification times.
+Driver and OS caches are not cleared, and correctness checks run on the GPU
+before the seed processes. This is a fresh-process comparison, not a
+power-cycled GPU or an estimate of an already compiled training service.

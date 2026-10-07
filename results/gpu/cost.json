@@ -1,0 +1,41 @@
+{
+  "hardware": "Modal NVIDIA L4",
+  "requested_cpu_cores": 2,
+  "requested_host_memory_gib": 4,
+  "hourly_requested_resource_rate_usd": 0.925488,
+  "allocation_usd": 0.65,
+  "total_all_in_cost_estimate_usd": 0.3745,
+  "method": "Requested GPU/CPU/RAM rate over entire Modal client wall time, plus 10% margin; rounded estimates, not an invoice. Client wall minutes are rounded to 0.01 minute. Overhead is the client wall time minus measured container execution and includes image/client preparation, provisioning and shutdown; those components are not separately instrumented.",
+  "runs": [
+    {
+      "phase": "dependency_and_fixture_setup",
+      "exit_code": 1,
+      "modal_client_wall_minutes": 2.64,
+      "all_in_cost_estimate_usd": 0.0448
+    },
+    {
+      "phase": "remote_import_setup",
+      "exit_code": 1,
+      "modal_client_wall_minutes": 4.29,
+      "all_in_cost_estimate_usd": 0.0728
+    },
+    {
+      "phase": "pilot",
+      "exit_code": 0,
+      "modal_client_wall_minutes": 6.51,
+      "all_in_cost_estimate_usd": 0.1105,
+      "container_seconds": 172.933795299,
+      "client_image_and_provisioning_overhead_seconds": 217.66620470099997,
+      "container_cost_estimate_usd": 0.04445782009546692
+    },
+    {
+      "phase": "final",
+      "exit_code": 0,
+      "modal_client_wall_minutes": 8.63,
+      "all_in_cost_estimate_usd": 0.1464,
+      "container_seconds": 499.923304573,
+      "client_image_and_provisioning_overhead_seconds": 17.876695427000072,
+      "container_cost_estimate_usd": 0.12852028313962685
+    }
+  ]
+}
