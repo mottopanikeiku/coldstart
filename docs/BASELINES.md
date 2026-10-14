@@ -163,7 +163,7 @@ Not covered by dedicated tests:
 
 Training measurements use the shared process-start clock and evaluation protocol, not direct timing of a PPO update.
 
-## Extra GPU comparison: JAX PPO
+## Separate L4 comparison: JAX PPO
 
 I added [`jax_ppo.py`](../control_clock/jax_ppo.py) in the style of
 [Chris Lu's PureJaxRL](https://github.com/luchris429/purejaxrl): `vmap` batches

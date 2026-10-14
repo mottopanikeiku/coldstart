@@ -83,9 +83,9 @@ Command: `nice -n 19 .venv/bin/python sweep.py --plan configs/tuning.json --chun
 
 Sources: `results/development/LunarLander-v3__*__default__000.json`. The pinned Zoo configuration reached the threshold in this pilot; neither the CPU-oriented candidate nor affine searches did. The best intermediate ARS mean was close but below 200 and is not counted as a success. No isolated final LunarLander cohort was run; it is not included in the main timing table. The final comparison remains CartPole and Acrobot, while installation, dynamics-fallback tests and the unsuccessful stretch attempts are retained.
 
-## Cold review before measurement
+## Checks before measurement
 
-The independent reviewer found no correctness blocker but identified interpretation limits and three useful test gaps; the historical assessment is in [COLD_REVIEW.md](COLD_REVIEW.md). I added raw internal-state comparisons to the dynamics tests, a scalar reference for the existing CEM update, a real parent/child startup-delay check, and an SB3 test that executes every optimizer epoch of the first rollout before allowing its checkpoint. The CEM equations were extracted without changing their elite selection, smoothing or standard-deviation floor.
+I added raw internal-state comparisons to the dynamics tests, a scalar reference for the existing CEM update, a real parent/child startup-delay check, and an SB3 test that executes every optimizer epoch of the first rollout before allowing its checkpoint. The CEM equations were extracted without changing their elite selection, smoothing or standard-deviation floor.
 
 The strengthened environment/plan selection passed 35 tests, and the targeted algorithm/baseline/clock selection passed 17 tests. [results/checks.json](../results/checks.json) records the exact commands and earlier failures. These are correctness checks, not timing comparisons; the complete data-dependent suite is run after the final cohort and summary exist.
 
