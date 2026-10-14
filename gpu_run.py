@@ -17,7 +17,7 @@ def worker(args):
     import jax
 
     from control_clock.jax_ppo import train
-    from control_clock.protocol import Finished, RunContext
+    from control_clock.protocol import EVAL_SEEDS, Finished, RunContext
 
     if jax.default_backend() != "gpu":
         raise RuntimeError("This comparison requires a GPU; refusing a CPU timing")
@@ -37,8 +37,8 @@ def worker(args):
                 "solve_seconds": context.solve_seconds,
                 "stop_seconds": stopped - args.started,
                 "evaluation_policy": "deterministic argmax, lowest-index ties",
-                "evaluation_seeds": [1_000_000, 1_000_099],
-                "evaluation_episodes": 100,
+                "evaluation_seeds": [EVAL_SEEDS[0], EVAL_SEEDS[-1]],
+                "evaluation_episodes": len(EVAL_SEEDS),
                 "evaluations": context.evaluations,
                 "steps": context.steps,
                 "configuration": context.configuration,
