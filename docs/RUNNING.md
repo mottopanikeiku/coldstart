@@ -9,7 +9,13 @@ uv sync --frozen --python 3.12
 uv run ruff check . && uv run ruff format --check . && uv run pytest -q
 ```
 
-The lockfile installs CPU Torch; no GPU is used. Box2D's isolated build gets SWIG from its pinned PyPI wheel through uv's extra build dependency. A C++ compiler is still required. The measured machine and compiler are in [results/machine.json](../results/machine.json). The pytest suite includes a small Box2D comparison and one SB3 rollout/update for checkpoint ordering; it does not run benchmark cohorts. CI runs the same three check commands separately.
+The lockfile installs CPU Torch; no GPU is used. Box2D's isolated build gets SWIG from its pinned PyPI wheel through uv's extra build dependency. A C++ compiler is still required. The measured machine and compiler are in [results/machine.json](../results/machine.json). The pytest suite includes a small Box2D comparison and one update or generation of every CPU method to check that evaluation follows a complete update; it does not run benchmark cohorts. CI runs the same three check commands separately. The JAX checks are skipped in this environment; CI runs them in a second job with CPU JAX:
+
+```sh
+uv venv --python 3.12 .jax-venv
+uv pip install --python .jax-venv/bin/python -r gpu-requirements.txt pytest==8.4.2
+JAX_PLATFORMS=cpu .jax-venv/bin/python -m pytest -q tests/test_jax.py
+```
 
 ## Development
 

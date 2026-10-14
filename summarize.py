@@ -99,15 +99,11 @@ def main():
         km = statistics["km_median_seconds"]
         km_text = "not reached" if km is None else f"{km:.2f}"
         print(
-            f"| {task} | {method} ({variant}) | {len(solved_times(records))}/{len(records)} | "
-            f"{timing} | {km_text} |"
+            f"| {task} | {method} ({variant}) | "
+            f"{statistics['successes']}/{statistics['seeds']} | {timing} | {km_text} |"
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n")
-
-
-def solved_times(records):
-    return [record["solve_seconds"] for record in records if record["solved"]]
 
 
 if __name__ == "__main__":

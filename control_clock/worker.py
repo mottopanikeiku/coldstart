@@ -7,7 +7,7 @@ import json
 import time
 import traceback
 
-from control_clock.protocol import Finished, RunContext
+from control_clock.protocol import EVAL_SEEDS, Finished, RunContext
 
 MODULES = {
     "ppo-cpu": "control_clock.ppo",
@@ -63,8 +63,8 @@ def main():
                 "versions": versions,
                 "error": error,
                 "evaluation_policy": "deterministic argmax, lowest-index ties",
-                "evaluation_seeds": [1_000_000, 1_000_099],
-                "evaluation_episodes": 100,
+                "evaluation_seeds": [EVAL_SEEDS[0], EVAL_SEEDS[-1]],
+                "evaluation_episodes": len(EVAL_SEEDS),
             }
         )
     )

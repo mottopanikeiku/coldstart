@@ -48,10 +48,10 @@ class ActorCritic(nn.Module):
         outputs = []
         for name, size, scale in (("actor", self.actions, 0.01), ("critic", 1, 1.0)):
             x = observations
-            for index in range(2):
+            for index, width in enumerate(CONFIG["hidden_sizes"]):
                 x = nn.tanh(
                     nn.Dense(
-                        64,
+                        width,
                         kernel_init=nn.initializers.orthogonal(np.sqrt(2)),
                         name=f"{name}_{index}",
                     )(x)
@@ -76,11 +76,13 @@ def log_probability(logits, action):
 
 
 def advantages(trajectory, last_value):
+    gamma, lam = CONFIG["gamma"], CONFIG["gae_lambda"]
+
     def step(carry, transition):
         previous, next_value = carry
         mask = 1 - transition.done
-        delta = transition.reward + 0.99 * next_value * mask - transition.value
-        advantage = delta + 0.99 * 0.95 * mask * previous
+        delta = transition.reward + gamma * next_value * mask - transition.value
+        advantage = delta + gamma * lam * mask * previous
         return (advantage, transition.value), advantage
 
     _, result = jax.lax.scan(
@@ -95,7 +97,7 @@ def numpy_policy(parameters):
 
     def policy(observations):
         x = np.asarray(observations, dtype=np.float32)
-        for index in range(2):
+        for index in range(len(CONFIG["hidden_sizes"])):
             layer = parameters[f"actor_{index}"]
             x = np.tanh(x @ layer["kernel"] + layer["bias"])
         layer = parameters["actor_out"]
@@ -112,7 +114,10 @@ def make_update(network, env, env_params):
     def initialize(key):
         key, model_key, env_key = jax.random.split(key, 3)
         parameters = network.init(model_key, jnp.zeros((1, env.obs_shape[0])))
-        optimizer = optax.chain(optax.clip_by_global_norm(0.5), optax.adam(0.0003, eps=1e-5))
+        optimizer = optax.chain(
+            optax.clip_by_global_norm(CONFIG["max_gradient_norm"]),
+            optax.adam(CONFIG["learning_rate"], eps=1e-5),
+        )
         train = TrainState.create(apply_fn=network.apply, params=parameters, tx=optimizer)
         observations, states = reset(jax.random.split(env_key, NUM_ENVS), env_params)
         return train, states, observations, key
@@ -158,16 +163,21 @@ def make_update(network, env, env_params):
                         log_probability(logits, transitions.action) - transitions.log_probability
                     )
                     normalized = (advantage - advantage.mean()) / (advantage.std() + 1e-8)
+                    clip = CONFIG["clip_epsilon"]
                     actor = -jnp.minimum(
-                        ratio * normalized, jnp.clip(ratio, 0.8, 1.2) * normalized
+                        ratio * normalized, jnp.clip(ratio, 1 - clip, 1 + clip) * normalized
                     ).mean()
-                    clipped = transitions.value + jnp.clip(value - transitions.value, -0.2, 0.2)
+                    clipped = transitions.value + jnp.clip(value - transitions.value, -clip, clip)
                     critic = (
                         0.5 * jnp.maximum((value - target) ** 2, (clipped - target) ** 2).mean()
                     )
                     log_probs = jax.nn.log_softmax(logits)
                     entropy = -(jnp.exp(log_probs) * log_probs).sum(-1).mean()
-                    return actor + 0.5 * critic - 0.01 * entropy
+                    return (
+                        actor
+                        + CONFIG["value_coefficient"] * critic
+                        - CONFIG["entropy_coefficient"] * entropy
+                    )
 
                 gradients = jax.grad(loss)(train.params)
                 return train.apply_gradients(grads=gradients), None

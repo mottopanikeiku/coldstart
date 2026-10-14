@@ -1,7 +1,11 @@
+import time
+
 import numpy as np
+import pytest
 import torch
 
 from control_clock.ppo import advantages_reference
+from control_clock.protocol import Finished, RunContext
 from control_clock.search import ars_update, cem_update, greedy_actions
 
 
@@ -83,3 +87,79 @@ def test_cem_update_matches_scalar_reference_and_stable_ties():
     np.testing.assert_allclose(actual_std, expected_std, atol=1e-14)
     _, collapsed_std = cem_update(mean, np.zeros_like(std), np.ones_like(candidates), scores, 4)
     np.testing.assert_array_equal(collapsed_std, np.full_like(std, 0.05))
+
+
+@pytest.mark.parametrize("variant", ["default", "zoo-shape"])
+def test_cpu_ppo_checkpoint_follows_all_optimizer_epochs(monkeypatch, variant):
+    from control_clock import ppo
+
+    optimizer_steps = [0]
+    checkpoints = []
+    environments = []
+    original_step = torch.optim.Adam.step
+    original_make_vector = ppo.make_vector
+
+    def recorded_step(optimizer, *args, **kwargs):
+        optimizer_steps[0] += 1
+        return original_step(optimizer, *args, **kwargs)
+
+    def recorded_make_vector(task, num_envs):
+        environments.append(original_make_vector(task, num_envs))
+        return environments[-1]
+
+    class WiringContext(RunContext):
+        def checkpoint(self, policy, steps, *, force=False):
+            assert policy(np.zeros((100, 4), dtype=np.float32)).shape == (100,)
+            checkpoints.append((steps, optimizer_steps[0]))
+            if steps:
+                raise Finished("wiring test complete")
+
+    monkeypatch.setattr(torch.optim.Adam, "step", recorded_step)
+    monkeypatch.setattr(ppo, "make_vector", recorded_make_vector)
+    ctx = WiringContext("CartPole-v1", 0, time.perf_counter(), 120)
+    ctx.configuration.update(method="ppo-cpu", variant=variant)
+    with pytest.raises(Finished, match="wiring test complete"):
+        ppo.train(ctx)
+    config = ctx.configuration
+    batch = config["envs"] * config["steps"]
+    updates_per_epoch = -(-batch // config["minibatch"])
+    assert checkpoints == [(0, 0), (batch, config["epochs"] * updates_per_epoch)]
+    assert environments[0]._closed
+
+
+@pytest.mark.parametrize("method", ["ars", "cem"])
+def test_search_checkpoint_follows_complete_generation(monkeypatch, method):
+    from control_clock import search
+
+    generations = []
+    checkpoints = []
+    environments = []
+    original_returns = search.candidate_returns
+    original_make_vector = search.make_vector
+
+    def recorded_returns(ctx, weights, *args):
+        scores, steps = original_returns(ctx, weights, *args)
+        generations.append(steps)
+        return scores, steps
+
+    def recorded_make_vector(task, num_envs):
+        environments.append(original_make_vector(task, num_envs))
+        return environments[-1]
+
+    class WiringContext(RunContext):
+        def checkpoint(self, policy, steps, *, force=False):
+            assert policy(np.zeros((100, 4))).shape == (100,)
+            checkpoints.append((steps, list(generations)))
+            if steps:
+                raise Finished("wiring test complete")
+
+    monkeypatch.setattr(search, "candidate_returns", recorded_returns)
+    monkeypatch.setattr(search, "make_vector", recorded_make_vector)
+    ctx = WiringContext("CartPole-v1", 0, time.perf_counter(), 120)
+    ctx.configuration.update(method=method, variant="default")
+    with pytest.raises(Finished, match="wiring test complete"):
+        search.train(ctx)
+    assert len(generations) == 1
+    assert checkpoints == [(0, []), (generations[0], generations)]
+    assert generations[0] >= ctx.configuration["population"] * 4
+    assert environments[0]._closed

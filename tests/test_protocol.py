@@ -152,3 +152,5 @@ def test_actual_parent_child_clock_includes_python_startup(tmp_path):
     assert record["evaluations"] == []
     assert record["stop_seconds"] >= 0.08
     assert record["parent_seconds"] >= record["stop_seconds"]
+    assert record["evaluation_seeds"] == [1_000_000, 1_000_099]
+    assert record["evaluation_episodes"] == 100

@@ -107,3 +107,40 @@ def test_sb3_checkpoint_follows_all_optimizer_epochs(monkeypatch):
     with pytest.raises(Finished, match="wiring test complete"):
         train(ctx)
     assert events == ["initial checkpoint", "train begin", "train end", "updated checkpoint"]
+
+
+def test_cleanrl_checkpoint_follows_all_optimizer_epochs(monkeypatch):
+    import time
+
+    from control_clock.cleanrl_baseline import train
+
+    args = Args()
+    optimizer_steps = [0]
+    closed = [0]
+    checkpoints = []
+    original_step = torch.optim.Adam.step
+    original_close = gym.vector.SyncVectorEnv.close
+
+    def recorded_step(optimizer, *step_args, **kwargs):
+        optimizer_steps[0] += 1
+        return original_step(optimizer, *step_args, **kwargs)
+
+    def recorded_close(envs, *close_args, **kwargs):
+        closed[0] += 1
+        return original_close(envs, *close_args, **kwargs)
+
+    class WiringContext(RunContext):
+        def checkpoint(self, policy, steps, *, force=False):
+            assert policy(np.zeros((100, 4), dtype=np.float32)).shape == (100,)
+            checkpoints.append((steps, optimizer_steps[0]))
+            if steps:
+                raise Finished("wiring test complete")
+
+    monkeypatch.setattr(torch.optim.Adam, "step", recorded_step)
+    monkeypatch.setattr(gym.vector.SyncVectorEnv, "close", recorded_close)
+    ctx = WiringContext("CartPole-v1", 0, time.perf_counter(), 120)
+    with pytest.raises(Finished, match="wiring test complete"):
+        train(ctx)
+    batch = args.num_envs * args.num_steps
+    assert checkpoints == [(0, 0), (batch, args.update_epochs * args.num_minibatches)]
+    assert closed[0] == 1

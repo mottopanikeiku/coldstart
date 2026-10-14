@@ -4,8 +4,17 @@ from types import SimpleNamespace
 
 import pytest
 
+import gpu_run
 import measure
+import run
 import sweep
+from control_clock.protocol import BUDGETS
+
+
+def test_launcher_limits_match_protocol_budgets():
+    # The launchers keep their own table so the parent never imports Gymnasium.
+    assert run.LIMITS == BUDGETS
+    assert gpu_run.LIMITS == {task: BUDGETS[task] for task in gpu_run.LIMITS}
 
 
 def plan_file(tmp_path):

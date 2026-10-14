@@ -152,14 +152,14 @@ The current baseline tests cover the following properties:
 | Frozen SB3 evaluation normalization | [`test_baselines.py::test_sb3_evaluation_normalization_is_frozen`](../tests/test_baselines.py#L28) checks that `normalize_obs` preserves the observation-statistics count, mean and variance. |
 | SAME_STEP truncation reset | [`test_baselines.py::test_cleanrl_defaults_and_same_step_reset`](../tests/test_baselines.py#L45) checks final-observation delivery and that the next action is executed rather than skipped after a truncation. |
 | SB3 checkpoint-after-update ordering | [`test_baselines.py::test_sb3_checkpoint_follows_all_optimizer_epochs`](../tests/test_baselines.py#L70) checks that the first updated checkpoint follows every optimizer epoch, with the initialization checkpoint preceding training. |
+| CleanRL checkpoint-after-update ordering | [`test_baselines.py::test_cleanrl_checkpoint_follows_all_optimizer_epochs`](../tests/test_baselines.py#L112) checks that the first updated checkpoint follows all 16 optimizer steps of the first iteration and that the vector environment closes when `Finished` is raised there. |
 
 Not covered by dedicated tests:
 
 - Every individual pinned configuration field beyond the selected assertions above.
 - Exact-tie action choices in SB3 and CleanRL policies.
 - Termination-triggered SAME_STEP reset, rather than truncation-triggered reset.
-- CleanRL checkpoint-after-update ordering.
-- Environment cleanup when `Finished` interrupts initialization, rollout or optimization. The SB3 ordering test interrupts at a completed-update checkpoint but does not assert environment closure.
+- Environment cleanup when `Finished` interrupts initialization, rollout or optimization. The CleanRL ordering test asserts closure only at a completed-update checkpoint; the SB3 ordering test does not assert closure.
 
 Training measurements use the shared process-start clock and evaluation protocol, not direct timing of a PPO update.
 
