@@ -1,6 +1,6 @@
 # Running the comparison
 
-Design and evidence: [protocol](PROTOCOL.md), [baseline settings](BASELINES.md), [dynamics checks](ENVIRONMENTS.md), [experiment log](LOG.md), [independent review](COLD_REVIEW.md), and [one proposed next comparison](NEXT.md).
+Design and evidence: [protocol](PROTOCOL.md), [baseline settings](BASELINES.md), [dynamics checks](ENVIRONMENTS.md), and [experiment log](LOG.md).
 
 ## Installation and checks
 
@@ -61,7 +61,7 @@ The script prints Markdown and saves machine-readable statistics including the f
 
 Each cohort also contains a seed-sorted `records` list with `seed`, `solved`, `seconds` and `stop_reason`. `seconds` is time to first pass for a success and actual stop time for a failure (parent-observed elapsed time for a watchdog kill). It is never a fabricated solve time. The existing KM calculation caps censoring at the protocol wall limit; the per-seed plotting records retain actual stop times, including small deadline overshoots.
 
-## Extra comparison on a Modal L4
+## Separate implementation and hardware comparison on a Modal L4
 
 This comparison does not need a local GPU or the JAX/CUDA dependencies on
 the client. I use Modal client 1.5.3, an account already authenticated with
@@ -88,3 +88,10 @@ provisioning are not; I state those separately from qualification times.
 Driver and OS caches are not cleared, and correctness checks run on the GPU
 before the seed processes. This is a fresh-process comparison, not a
 power-cycled GPU or an estimate of an already compiled training service.
+
+Cloud client preparation, image work, provisioning and shutdown are outside
+each policy's process clock. Their combined overhead was about 18 seconds
+for the final batch and 218 seconds for the pilot, not an extra charge added
+to every seed. My total conservative cloud-cost estimate is $0.3745,
+including two failed setup attempts; it is not an invoice
+([cost and overhead](../results/gpu/cost.json)).

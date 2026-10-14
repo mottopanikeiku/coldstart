@@ -85,7 +85,7 @@ implementation is checked against upstream rather than a duplicated local
 set of equations. Run the equivalence tests with:
 `uv run pytest tests/test_equivalence.py`.
 
-## Gymnax training in the extra GPU comparison
+## Gymnax training in the separate L4 comparison
 
 The GPU PPO uses installed **Gymnax 0.0.9** for training only.
 [`test_jax.py`](../tests/test_jax.py) checks fixed internal states against

@@ -2,11 +2,23 @@
 
 I measure fresh-process time to qualify policies on two small Gymnasium control tasks.
 
-**Question:** does PPO—or a GPU—beat simple policy search once startup and evaluation count?
+**Question:** does PPO beat simple policy search once startup and evaluation count?
 
-I built CPU PPO with checked NumPy dynamics, affine-policy ARS/CEM in [`search.py`](control_clock/search.py), and a shared [clock and evaluator](control_clock/protocol.py). The comparators include attributed CleanRL code and Stable-Baselines3 with RL Zoo settings. My extra [JAX PPO comparison](control_clock/jax_ppo.py) follows [Chris Lu's PureJaxRL](https://github.com/luchris429/purejaxrl); its Apache-2.0 license is retained.
+I built CPU PPO with checked NumPy dynamics, affine-policy ARS/CEM in [`search.py`](control_clock/search.py), and a shared [clock and evaluator](control_clock/protocol.py). The comparators include attributed CleanRL code and Stable-Baselines3 with RL Zoo settings. My separate [JAX PPO comparison](control_clock/jax_ppo.py) follows [Chris Lu's PureJaxRL](https://github.com/luchris429/purejaxrl); its Apache-2.0 license is retained.
 
-**Result:** simple policy search wins CartPole on the laptop; Zoo PPO wins Acrobot. All **140/140 laptop runs** passed. The separate L4 comparison passed **6/6**, but did not improve fresh-process latency with these settings.
+**Result:** simple policy search wins CartPole on the laptop; Zoo PPO wins Acrobot. All **140/140 laptop runs** passed. My separate JAX PPO run on an L4 passed **6/6**, but did not improve fresh-process latency with these settings.
+
+## Reproduce
+
+The original CPU measurements used an AMD Ryzen AI 5 PRO 340, Fedora Linux 44, and one Torch/BLAS thread ([machine](results/machine.json)). CPU installation needs a C++ compiler for Box2D. The GPU command needs a Modal account already authenticated with `modal setup`, but no local GPU. Choose fresh output directories; use an otherwise idle CPU for laptop measurements.
+
+```sh
+uv sync --frozen --python 3.12
+nice -n 19 .venv/bin/python measure.py --plan configs/final.json --output results/replication
+uvx --from modal==1.5.3 modal run modal_app.py --phase final --output results/gpu-replication
+```
+
+[Run notes](docs/RUNNING.md) cover summaries, settings, attribution, failed development trials and correctness checks. No new laptop timings were used for the GPU comparison.
 
 ## Original laptop results
 
@@ -27,7 +39,7 @@ Seconds from Python process launch through the first passing evaluation, includi
 
 Passing means raw mean return **475 or higher on CartPole, -100 or higher on Acrobot**, over **100 complete greedy Gymnasium episodes**. Evaluation seeds are disjoint from training. Limits are 120/300 seconds. Initial random policies count too, so this is qualification time, not necessarily time spent learning ([protocol](docs/PROTOCOL.md)).
 
-## Extra comparison: different hardware, not a laptop-table entry
+## Separate implementation and hardware comparison: JAX PPO on an L4
 
 I ran JAX-vectorized PPO with Gymnax training on a **Modal NVIDIA L4**, requesting two host CPU cores and 4 GiB RAM. The evaluator, thresholds and time limits are unchanged. **Python imports, CUDA initialization, JIT compilation and all evaluations stay on the process clock.** At checkpoints I copy weights to the host and evaluate the greedy policy in actual Gymnasium.
 
@@ -36,21 +48,9 @@ I ran JAX-vectorized PPO with Gymnax training on a **Modal NVIDIA L4**, requesti
 | CartPole-v1 | 26.38 [25.99, 33.77] | 3/3 |
 | Acrobot-v1 | 97.43 [80.20, 126.36] | 3/3 |
 
-Source: [`results/gpu/summary.json`](results/gpu/summary.json), [six raw runs](results/gpu/final). This changes hardware, training backend and PPO settings together: it does **not** isolate a GPU speedup or measure already-compiled throughput. Small tasks do not automatically benefit from buying a GPU when startup and evaluation count.
+Source: [`results/gpu/summary.json`](results/gpu/summary.json), [six raw runs](results/gpu/final). I changed hardware, training backend and PPO settings together: this does **not** isolate a GPU speedup or measure already-compiled throughput.
 
-Cloud client preparation, image work, provisioning and shutdown are **outside** each policy's process clock. Their combined overhead was about **18 seconds for the final batch** and **218 seconds for the pilot**, not an extra charge added to every seed. My total conservative cloud-cost estimate is **$0.3745**, including two failed setup attempts; it is not an invoice ([cost and overhead](results/gpu/cost.json)). Gymnax's default dynamics match within stated tolerances, with real precision, PRNG, timeout and wrapping differences documented in [environment notes](docs/ENVIRONMENTS.md#gymnax-training-in-the-extra-gpu-comparison).
-
-## Reproduce
-
-The original CPU measurements used an AMD Ryzen AI 5 PRO 340, Fedora Linux 44, and one Torch/BLAS thread ([machine](results/machine.json)). CPU installation needs a C++ compiler for Box2D. The GPU command needs a Modal account already authenticated with `modal setup`, but no local GPU. Choose fresh output directories; use an otherwise idle CPU for laptop measurements.
-
-```sh
-uv sync --frozen --python 3.12
-nice -n 19 .venv/bin/python measure.py --plan configs/final.json --output results/replication
-uvx --from modal==1.5.3 modal run modal_app.py --phase final --output results/gpu-replication
-```
-
-[Run notes](docs/RUNNING.md) cover summaries, settings, attribution, failed development trials and correctness checks. No new laptop timings were used for the GPU comparison.
+Gymnax's default dynamics match within stated tolerances, with precision, PRNG, timeout and wrapping differences documented in [environment notes](docs/ENVIRONMENTS.md#gymnax-training-in-the-separate-l4-comparison).
 
 ## Limits
 
