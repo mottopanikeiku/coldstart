@@ -62,12 +62,12 @@ Passing means raw mean return **475 or higher on CartPole, -100 or higher on Acr
 
 ## Where the seconds go: systems benchmark
 
-I split the clock for my three methods and measured six environment backends on their own, in an exclusive window on one pinned Zen 5 core ([details](docs/SYSTEMS.md), [raw data](results/bench)). Every backend first passed an equivalence gate against Gymnasium. All 30 pinned reruns reproduced their published evaluations exactly, and the measured phases account for all but 0.04% of each run.
+I split the clock for my three methods and measured six environment backends on their own, in an exclusive window on one pinned Zen 5 core ([details](docs/SYSTEMS.md), [raw data](results/bench)). Every backend first passed an equivalence gate against Gymnasium. In this run, the fused Gymnax rows shared the unfused Gymnax gate; I added and ran a fused-path check afterwards. All 30 pinned reruns reproduced their published evaluations exactly, and the measured phases account for each run to within 0.05%.
 
 - **Evaluation is the largest cost.** It took 64–81% of the solve clock for ARS and CEM on both tasks and for PPO on Acrobot. The environment step took 2–26%. For PPO on CartPole, optimizer epochs took 47% and Torch import plus setup took 26%.
 - **My NumPy Acrobot batch is fast at large batches.** At 4,096 environments it ran 3.84 M transitions/s, against 0.028 M/s for Gymnasium and 1.53 M/s for one-thread EnvPool. Gymnax was faster, at 6.06 M/s, after a 0.4–0.8 s compile.
 - **My NumPy CartPole batch is reset-bound.** Gymnasium's own vectorized CartPole ran 28.2 M/s at 4,096; mine ran 3.07 M/s. Seeding each reset exactly like Gymnasium took 90% of my batch's time at that size.
-- **Qualified policies are near the bar.** Replayed in a new process, all 30 saved policies matched their recorded actions. On 1,000 fresh episodes never used for selection, 26 of 30 still passed. Only 62–74% of fresh 100-episode Acrobot evaluations passed.
+- **Qualified policies are near the bar.** Replayed in a new process, all 30 saved policies matched their recorded actions. On 1,000 fresh episodes never used for selection, 26 of 30 still passed. On Acrobot, only 31–37 of each method's 50 fresh 100-episode blocks passed, pooled over five policies.
 
 ## Separate implementation and hardware comparison: JAX PPO on an L4
 
