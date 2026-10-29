@@ -47,6 +47,7 @@ def environments(directory: Path) -> dict:
             steps = np.concatenate([row["step_ns"] for row in measured]) / 1e3
             resets = sum(sum(row["reset_done_ns"]) for row in measured)
             restarted = sum(sum(row["done_counts"]) for row in measured)
+            timed = sum(sum(row["step_ns"]) for row in measured) + resets
             rows[str(size)] = {
                 "transitions_per_second": quartiles(throughput),
                 "call_microseconds_p50": float(np.percentile(steps, 50)),
@@ -55,6 +56,8 @@ def environments(directory: Path) -> dict:
                 "explicit_reset_microseconds_per_slot": resets / restarted / 1e3
                 if resets
                 else None,
+                # Share of all timed backend calls, pooled over processes, spent in reset_done.
+                "explicit_reset_share": resets / timed if resets else None,
                 "construct_milliseconds": quartiles([r["construct_ns"] / 1e6 for r in measured]),
                 "full_reset_milliseconds": quartiles([r["full_reset_ns"] / 1e6 for r in measured]),
                 "first_step_milliseconds": quartiles([r["first_step_ns"] / 1e6 for r in measured]),
@@ -142,6 +145,11 @@ def decomposition(directory: Path, published: Path) -> dict:
             unattributed.append(decomposition["unattributed_seconds"] / total)
             parent_gaps.append(plain["context"]["parent_seconds"] - plain["stop_seconds"])
         names = sorted({name for phases in seconds for name in phases})
+        # Per run, every environment step and reset: the most a free environment could save.
+        environment = [
+            sum(share for name, share in phases.items() if name.endswith(("env_step", "env_reset")))
+            for phases in shares
+        ]
         summary[f"{task}/{method}/{variant}"] = {
             "seeds": len(seeds),
             "reproduced_published_evaluations": reproduced,
@@ -157,6 +165,8 @@ def decomposition(directory: Path, published: Path) -> dict:
                 name: float(np.median([phases.get(name, 0.0) for phases in shares]))
                 for name in names
             },
+            "environment_share": quartiles(environment),
+            "environment_share_max": float(np.max(environment)),
         }
     return summary
 
@@ -167,21 +177,29 @@ def summarize(directory: Path, published: Path = ROOT / "results/final") -> dict
         "imports": imports(directory / "imports.json"),
         "evaluation": evaluation(directory / "evaluation.json"),
         "decomposition": decomposition(directory / "decompose", published),
+        # The NumPy batch and the fused C batch, re-timed together in a second window.
+        "native_window": environments(directory / "native-window" / "env"),
     }
 
 
-def tables(summary: dict) -> str:
-    lines = ["| Task | Backend | " + " | ".join(f"B={s}" for s in ("1", "8", "64", "512", "4096"))]
+def environment_table(environments: dict) -> list[str]:
+    sizes = ("1", "8", "64", "512", "4096")
+    lines = ["| Task | Backend | " + " | ".join(f"B={s}" for s in sizes) + " |"]
     lines.append("|---|---|" + "---:|" * 5)
-    for key, row in summary["environments"].items():
+    for key, row in environments.items():
         task, backend = key.split("/")
         cells = [
             f"{row['sizes'][size]['transitions_per_second']['median'] / 1e6:.3g}"
             if size in row["sizes"]
             else ""
-            for size in ("1", "8", "64", "512", "4096")
+            for size in sizes
         ]
         lines.append(f"| {task} | {backend} | " + " | ".join(cells) + " |")
+    return lines
+
+
+def tables(summary: dict) -> str:
+    lines = environment_table(summary["environments"])
     lines += ["", "| Module | Import seconds, median [Q1, Q3] |", "|---|---:|"]
     for module, row in summary["imports"].items():
         q = row["import_seconds"]
@@ -192,6 +210,7 @@ def tables(summary: dict) -> str:
             f"{name} {share:.0%}" for name, share in row["phase_share"].items() if "/" not in name
         )
         lines.append(f"| {key} | {row['plain_solve_seconds']['median']:.2f} | {shares} |")
+    lines += ["", "Native window", *environment_table(summary["native_window"])]
     return "\n".join(lines)
 
 

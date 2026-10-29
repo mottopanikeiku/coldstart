@@ -1,6 +1,6 @@
 # Systems benchmark
 
-The main table answers "which complete configuration qualifies first". This page splits that clock into parts and measures the environments on their own. Every number below comes from [`results/bench/summary.json`](../results/bench/summary.json), which [`bench_summary.py`](../bench_summary.py) derives from the raw files beside it. A test recomputes it.
+The main table answers "which complete configuration qualifies first". This page splits that clock into parts and measures the environments on their own. Every number below comes from [`results/bench/summary.json`](../results/bench/summary.json), which [`bench_summary.py`](../bench_summary.py) derives from the raw files beside it, or, for the 1M-seed reset gate, from [`results/bench/native-reset-gate.json`](../results/bench/native-reset-gate.json). A test recomputes the summary and checks both.
 
 ## How I measured
 
@@ -36,9 +36,51 @@ Gymnasium has no vectorized Acrobot. The fused Gymnax rows never return observat
 What I take from this:
 
 - **My Acrobot batch is fast at large batches.** At B=4096 it runs 3.84 M/s: 140× Gymnasium's loop and 2.5× single-thread EnvPool. Only Gymnax beats it, at 6.06 M/s.
-- **My CartPole batch is mostly spent resetting.** Gymnasium's own NumPy CartPole runs 28.2 M/s at B=4096; mine runs 3.07 M/s. A median step call at that size takes 137 µs in both. The difference is `reset_done`. To match Gymnasium's `reset(seed=s)` exactly, I build one NumPy generator per restarted slot, which costs 6.6–10 µs per slot. That is 46% of my batch's time at B=64, 79% at B=512 and 90% at B=4096. Gymnasium's vector env draws all resets from one generator, so it gives up per-seed equivalence. Batching the seeded resets is the clear target for a faster backend.
+- **My CartPole batch is mostly spent resetting.** Gymnasium's own NumPy CartPole runs 28.2 M/s at B=4096; mine runs 3.07 M/s. A median step call at that size takes 137 µs in both. The difference is `reset_done`. To match Gymnasium's `reset(seed=s)` exactly, I build one NumPy generator per restarted slot, which costs 6.6–10 µs per slot. That is 46% of my batch's time at B=64, 79% at B=512 and 90% at B=4096. Gymnasium's vector env draws all resets from one generator, so it gives up per-seed equivalence. Batching the seeded resets is the clear target for a faster backend; the [C batch below](#a-fused-c-batch) does that.
 - **Small batches are dominated by per-call overhead.** At B=1 the median call takes 25 µs on my CartPole batch and 87 µs on my Acrobot batch, against 10/39 µs for Gymnasium and 17/18 µs for EnvPool. My methods train at B=8 to B=64.
 - **JAX pays its compile up front.** The first Gymnax call at each new batch size took 233–515 ms on CartPole and 374–821 ms on Acrobot, in line with fresh-process JIT cost. At 20 M/s, Gymnax would need millions of CartPole transitions to repay one compile against my batch. A whole ARS CartPole qualification uses about 0.14 M.
+
+## A fused C batch
+
+I wrote the two classic batches again in plain C, in [`classic.c`](../control_clock/classic.c), and load them through ctypes ([`native.py`](../control_clock/native.py)). One call checks the actions and steps the whole batch. Another call resets any set of slots from their seeds, so a reset no longer builds a NumPy generator per slot. The C batch is optional: `python -m control_clock.native build` compiles it with the system C compiler, and nothing new is installed. Without it, `make_vector(..., native=True)` returns the NumPy batch. The benchmark's `native` backend never falls back, so it cannot time the NumPy batch by mistake. The [environment notes](ENVIRONMENTS.md#fused-c-batch) describe how it reproduces NumPy's seeding.
+
+### Gates
+
+I checked it in this order before timing it.
+
+1. **Resets, bit for bit, on 1M seeds.** One batched reset must equal `gymnasium.make(task).reset(seed=s)` for every seed. The float32 observation and the internal state are compared as raw bits. On both tasks, all 1,010,006 seeds matched: every seed from 0 to 999,999, six boundary seeds from 2³²−1 to 2⁶⁴−1, and 10,000 random seeds above 2³² ([output](../results/bench/native-reset-gate.json)). On this laptop NumPy ran its float32 sine and cosine on its AVX512_SKX path. CI runs the same command on its own CPU.
+2. **The equivalence suite.** `tests/test_equivalence.py` runs every test on both batches, against Gymnasium, with the same tolerances.
+3. **The benchmark gate.** In all ten timed processes, the `native` backend passed the same Gymnasium gate as the other backends, with a largest observation difference of 0. For this backend the gate also runs `native_trace`: 64 steps of 64 slots, with some slots inactive, must match the NumPy batch bit for bit, including the float64 states. On CartPole 145 episodes ended and restarted inside that trace; on Acrobot none did, so restarts there are covered by the longer trace in the tests (1,500 steps).
+4. **A mutation test.** [`tests/test_native.py`](../tests/test_native.py) builds six copies of `classic.c` with one expression changed, and one unchanged copy. Three change the reset: a seed-hash constant, 52-bit instead of 53-bit doubles, and libm's `cosf` in Acrobot's reset observation. All three fail the reset gate. Three change the dynamics: gravity 9.81 instead of 9.8, one RK4 weight scaled by 1.0000001, and a different summation order in the RK4 update. All three fail the benchmark gate and pass the reset gate. The unchanged copy passes both. The two gates catch different things. libm's `cosf` changes the observations of only a few seeds, so a short trace can miss it. The last two dynamics mutants stay far inside the Gymnasium tolerance of 1e-4, and only the bitwise comparison with the NumPy batch catches them.
+
+### Throughput, re-timed in a second window
+
+The lead granted a second exclusive window for this. I re-timed my NumPy batch and the C batch with five fresh processes each per task, with the same workloads, pinning to CPU 4 and thread settings as above; the governor was again `performance`. One lock was held throughout. The run started at 06:25:50 on 2026-10-29, when the 1-minute load average was 1.40, and ended at 06:26:03 at 1.39 ([window](../results/bench/native-window/window.json), [machine](../results/bench/native-window/machine.json), [raw files](../results/bench/native-window/env)).
+
+Million simulated transitions per second, median of five processes. In every cell the interquartile range was within 4% of the median.
+
+| CartPole-v1 | B=1 | B=8 | B=64 | B=512 | B=4096 |
+|---|---:|---:|---:|---:|---:|
+| my NumPy batch | 0.040 | 0.310 | 1.42 | 2.75 | 3.16 |
+| my C batch | 0.430 | 2.54 | 10.9 | 30.5 | **41.3** |
+
+| Acrobot-v1 | B=1 | B=8 | B=64 | B=512 | B=4096 |
+|---|---:|---:|---:|---:|---:|
+| my NumPy batch | 0.012 | 0.092 | 0.650 | 2.46 | 4.09 |
+| my C batch | 0.420 | 2.23 | 4.97 | 5.95 | **6.10** |
+
+What I take from this:
+
+- **CartPole runs 7.7–13× faster, and resets stop dominating.** At B=4096 a reset costs 0.12 µs per slot instead of 6.35 µs. Resets are 22% of the C batch's time there, against 90% for the NumPy batch. A median step call alone takes 76 µs instead of 130 µs.
+- **Acrobot gains most at small batches.** The C batch is 35× faster at B=1, 7.6× at B=64 and 1.5× at B=4096. Each transition needs 21 libm sine and cosine calls in C and 22 in the NumPy batch, whose float64 loops also call libm one element at a time. I expect those calls to bound both at large batches, but I did not profile it.
+- **Per-call overhead is now about 2 µs.** At B=1 the median step call takes 2.2 µs on CartPole and 2.4 µs on Acrobot, against 23.9 µs and 82.9 µs for the NumPy batch.
+- **Comparisons with the first window are rougher.** The NumPy batch ran 3–10% faster in this window than in the first, at every size. Within each table above the two rows share a window. Against the first window's rows, the C batch's 41.3 M/s on CartPole is above the 28.2 M/s of Gymnasium's vector CartPole, while keeping per-seed resets, and its 6.10 M/s on Acrobot is level with Gymnax's 6.06 M/s.
+
+### What it could change end to end
+
+The protocol and every published number still use the NumPy batch, so I did not time the C batch inside a qualification run. The decomposition bounds what it could do. In my ARS and CEM runs, environment steps and resets took 22–27% of the solve clock (the median run of each configuration; at most 29% in any of the 20 runs). By Amdahl's law, even an environment that took no time would cut those runs by at most that much: about a fifth to a quarter. For PPO the environment is 2–3% of the clock.
+
+ARS and CEM step 64 environments at a time. At B=64 the median step call went from 24.4 to 3.3 µs on CartPole and from 98.0 to 12.8 µs on Acrobot, about 7.5× faster. If rollouts sped up by that factor, a run would lose 0.87 of its environment share, or 19–23% of its clock. That is a prediction, not a measurement: rollouts also step with active masks, which the benchmark does not time. So this is a systems result about the environment, not a faster qualification.
 
 ## Imports
 
@@ -112,12 +154,15 @@ The protocol stops at the first evaluation that passes, so it picks policies nea
 
 ```sh
 uv sync --frozen --python 3.12 --extra jax --extra bench
+.venv/bin/python -m control_clock.native build
+.venv/bin/python -m control_clock.native verify --seeds 1000000 --output results/bench-replication/native-reset-gate.json
 .venv/bin/python bench.py all --output results/bench-replication --cpu 4 --reps 5
+.venv/bin/python bench.py env --backends numpy,native --output results/bench-replication/native-window --cpu 4 --reps 5
 .venv/bin/python bench_summary.py --input results/bench-replication --output results/bench-replication/summary.json
 .venv/bin/python replay.py --input results/bench-replication/decompose --output results/bench-replication/replay.json
 ```
 
-Pick a CPU that is a full-speed core on your machine and keep the machine otherwise idle. EnvPool 1.2.7 loads `libEGL.so.1`, `libOpenGL.so.0` and `libGLdispatch.so.0` on import; on Ubuntu, they come from `libegl1`, `libopengl0` and `libglvnd0`. `bench.py` passes `--jax-platform` through to JAX, so the Gymnax rows can run on a GPU later without code changes. The other backends are CPU-only.
+Pick a CPU that is a full-speed core on your machine and keep the machine otherwise idle. `bench.py all` now includes the `native` backend, so it needs the build step; the separate `env` command repeats the second window. EnvPool 1.2.7 loads `libEGL.so.1`, `libOpenGL.so.0` and `libGLdispatch.so.0` on import; on Ubuntu, they come from `libegl1`, `libopengl0` and `libglvnd0`. `bench.py` passes `--jax-platform` through to JAX, so the Gymnax rows can run on a GPU later without code changes. The other backends are CPU-only.
 
 ## Limits
 
@@ -127,3 +172,7 @@ Pick a CPU that is a full-speed core on your machine and keep the machine otherw
 - The decomposition and fresh cohort use 5 of the 20 published seeds per configuration, and only my three methods. Stable-Baselines3 and CleanRL are not decomposed, and their cohorts are still 5 seeds.
 - The NumPy evaluator is a measured counterfactual. The protocol and every published number still use Gymnasium's evaluator.
 - The published timings are unchanged. The solve times in this benchmark come from pinned reruns and are not merged into the main table.
+- The C batch was timed in a second, short window. Comparing it with the other backends crosses windows, and the NumPy batch ran 3–10% faster in the second one.
+- The C loops are scalar and single-threaded, built with `-O2` for baseline x86-64. I did not try SIMD, threads or `-march=native`.
+- I ran the C batch's bitwise checks only on x86-64 Linux with glibc, on this laptop and the CI runners. Its float32 trigonometry copies NumPy's AVX2/FMA3 path, including a fused multiply-add that GCC introduced in the wheel.
+- The C batch's effect on qualification time is an Amdahl prediction, not a measurement.

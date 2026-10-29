@@ -1,0 +1,66 @@
+{
+ "command": [
+  "python",
+  "-m",
+  "control_clock.native",
+  "verify",
+  "--seeds",
+  "1000000",
+  "--output",
+  "results/bench/native-reset-gate.json"
+ ],
+ "contiguous_seeds": [
+  0,
+  1000000
+ ],
+ "boundary_seeds": [
+  4294967295,
+  4294967296,
+  4294967297,
+  9223372036854775807,
+  9223372036854775808,
+  18446744073709551615
+ ],
+ "random_wide_seeds": 10000,
+ "numpy": "2.2.6",
+ "gymnasium": "1.2.1",
+ "numpy_float32_trig_target": {
+  "cos": "AVX512_SKX",
+  "sin": "AVX512_SKX"
+ },
+ "native": {
+  "library": "libclassic.so",
+  "library_sha256": "79d1ca55b7f8a49d8c0902acf5da61a542a021de9b4ca64a6f1f22e7c8b0c4d2",
+  "source_sha256": "8d646f8137f987e9055a0dfd347df88cfda444733c00223fa9e28df14c991a50",
+  "compiler": "cc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)",
+  "flags": [
+   "-O2",
+   "-std=c11",
+   "-shared",
+   "-fPIC",
+   "-ffp-contract=off",
+   "-fno-builtin-sin",
+   "-fno-builtin-cos",
+   "-fno-builtin-sinf",
+   "-fno-builtin-cosf"
+  ]
+ },
+ "tasks": [
+  {
+   "task": "CartPole-v1",
+   "seeds": 1010006,
+   "observation_mismatches": 0,
+   "state_mismatches": 0,
+   "first_mismatching_seeds": [],
+   "passed": true
+  },
+  {
+   "task": "Acrobot-v1",
+   "seeds": 1010006,
+   "observation_mismatches": 0,
+   "state_mismatches": 0,
+   "first_mismatching_seeds": [],
+   "passed": true
+  }
+ ]
+}

@@ -5,10 +5,12 @@ CartPole-v1 and Acrobot-v1 environments from Gymnasium **1.2.1**. LunarLander-v3
 uses a simple loop over independent `gymnasium.make` environments; Box2D physics
 is not reimplemented. `GymnasiumBatch` also supplies the slow classic-control
 reference in tests. Evaluation always uses Gymnasium, not the NumPy dynamics.
+An optional C version of the two classic batches is described
+[below](#fused-c-batch); only the systems benchmark uses it.
 
 ## Interface and episode handling
 
-`make_vector(task, num_envs)` exposes `num_envs`, `observation_size`, and
+`make_vector(task, num_envs, native=False)` exposes `num_envs`, `observation_size`, and
 `action_size`, plus:
 
 - `reset(seeds)` takes a list containing one nonnegative Python integer per slot.
@@ -85,6 +87,60 @@ implementation is checked against upstream rather than a duplicated local
 set of equations. Run the equivalence tests with:
 `uv run pytest tests/test_equivalence.py`.
 
+## Fused C batch
+
+[`control_clock/classic.c`](../control_clock/classic.c) implements the same CartPole and
+Acrobot batches in plain C, and [`control_clock/native.py`](../control_clock/native.py)
+loads it through ctypes. It keeps the interface above, and the arrays stay NumPy arrays that
+the C functions read and write in place. One C call checks the actions and steps the whole
+batch. Another resets any set of slots from their seeds and clears their counters.
+
+It is optional and is not a package extra. `python -m control_clock.native build` compiles
+it with the system C compiler (`cc`, or `$CC`) and libm, and nothing else. The library
+stores the SHA-256 of the source it was built from, and `native.py` refuses a library built
+from a different `classic.c`. `make_vector(task, num_envs, native=True)` returns the C batch
+when it is built and the NumPy batch otherwise. Training, evaluation and every published
+run still use the NumPy batch or Gymnasium.
+
+**Resets.** I repeated NumPy 2.2.6's seeding step by step from its source, so that one call
+reproduces `gymnasium.make(task).reset(seed=s)` for every slot. `SeedSequence` hashes the
+seed into a pool of four 32-bit words; `generate_state` draws four 64-bit words from it;
+PCG64 takes its 128-bit state and stream from those; each double is `(u64 >> 11) * 2**-53`;
+and `uniform` returns `low + (high - low) * d`. Acrobot then rounds the four values to
+float32 and takes their cosine and sine in float32, as Gymnasium does. NumPy computes
+float32 sine and cosine itself, not through libm: on x86-64 CPUs with AVX2 and FMA3 it uses a
+Cody-Waite reduction and two short polynomials. `classic.c` copies that path. One detail is
+not in NumPy's source. In the manylinux x86-64 wheel, GCC fused the multiply by 2/pi and the
+add that follows it into one FMA. I found this because the form written in the source
+disagreed with the installed wheel on some inputs of large magnitude. `classic.c` uses the
+fused form, and the two forms agree for Acrobot's reset inputs, which lie in [-0.1, 0.1].
+Seeds must be below 2**64.
+
+**Steps.** The C code repeats the NumPy batch's float64 expressions in the same order, with
+Gymnasium's constants. The build turns off multiply-add contraction. It also keeps sine and
+cosine as separate libm calls, because GCC would otherwise merge a sine and a cosine of the
+same angle into one `sincos` call, and NumPy's float64 loops call libm's `sin` and `cos`.
+
+**Checks.** [`tests/test_native.py`](../tests/test_native.py) requires:
+
+- one batched reset to equal Gymnasium's per-seed resets bit for bit, observations and
+  internal states, on 3,306 seeds per task. The same check on 1,010,006 seeds is
+  `python -m control_clock.native verify`, which CI runs, with its committed output in
+  [`results/bench/native-reset-gate.json`](../results/bench/native-reset-gate.json);
+- the float32 cosine and sine to equal `np.cos` and `np.sin` bit for bit on 1.4 million
+  inputs, including NaN, infinities and the large inputs where NumPy falls back to libm;
+- 1,500 steps of 32 slots, with inactive slots and restarts, to equal the NumPy batch bit
+  for bit: observations, rewards, flags, counters and float64 states;
+- the benchmark gate and the reset gate to reject mutated copies of `classic.c`.
+
+`tests/test_equivalence.py` runs every test twice when the library is built, once on each
+batch. Against Gymnasium the C dynamics are therefore tolerance-checked like the NumPy
+batch's, and against the NumPy batch they matched bit for bit on every tested trace.
+
+Its float32 trigonometry is NumPy's AVX2/FMA3 path. On a CPU where NumPy falls back to libm
+`sinf` and `cosf`, Acrobot's reset observations could differ in the last bit, and the tests
+would fail. I ran it only on x86-64 Linux with glibc: this laptop and the CI runners.
+
 ## Gymnax training in the separate L4 comparison
 
 The GPU PPO uses installed **Gymnax 0.0.9** for training only.
@@ -148,7 +204,16 @@ Gymnasium is MIT-licensed. Its Acrobot source additionally credits the RLPy
 implementation under BSD-3-Clause: Alborz Geramifard, Robert H. Klein,
 Christoph Dann, William Dabney and Jonathan P. How; author Christoph Dann.
 Both notices are retained below. The NumPy batch layout, explicit-reset API,
-active masks and equivalence tests are additions in this repository.
+active masks, equivalence tests and the C batch are additions in this repository.
+
+The C batch's seeding follows
+[NumPy 2.2.6's random sources](https://github.com/numpy/numpy/tree/v2.2.6/numpy/random):
+`bit_generator.pyx` (SeedSequence), `src/pcg64/` (PCG64), `_common.pxd`, `_generator.pyx`
+and `src/distributions/distributions.c` (uniform). Its float32 sine and cosine follow
+[`loops_trigonometric.dispatch.cpp`](https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/src/umath/loops_trigonometric.dispatch.cpp).
+NumPy is BSD-3-Clause ([`third_party/NumPy-LICENSE`](../third_party/NumPy-LICENSE)). Its
+PCG64 comes from Melissa O'Neill's PCG library under the MIT license
+([`third_party/PCG64-LICENSE`](../third_party/PCG64-LICENSE)).
 
 ### Gymnasium MIT notice
 

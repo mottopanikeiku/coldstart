@@ -12,7 +12,7 @@ import numpy as np
 import pytest
 
 from bench_summary import summarize
-from control_clock import backends, systems
+from control_clock import backends, native, systems
 from control_clock.phases import Recorder
 from control_clock.policies import build, replay
 from control_clock.protocol import EVAL_SEEDS
@@ -24,15 +24,23 @@ OPTIONAL = {"envpool": "envpool", "gymnax": "gymnax", "gymnax-scan": "gymnax"}
 
 
 def available(backend):
+    if backend == "native":
+        return native.available()
     module = OPTIONAL.get(backend)
     return module is None or importlib.util.find_spec(module) is not None
+
+
+def missing(backend):
+    if backend == "native":
+        return "needs python -m control_clock.native build"
+    return "needs the jax or bench extra"
 
 
 CASES = [
     pytest.param(
         backend,
         task,
-        marks=pytest.mark.skipif(not available(backend), reason="needs the jax or bench extra"),
+        marks=pytest.mark.skipif(not available(backend), reason=missing(backend)),
     )
     for task in ("CartPole-v1", "Acrobot-v1")
     for backend in backends.BACKENDS
@@ -184,6 +192,16 @@ def test_benchmark_summary_recomputes_from_raw_files():
         assert cohort["reproduced_published_evaluations"] == cohort["seeds"] == 5
         assert cohort["unattributed_share_max_abs"] < 0.001
     assert all(row["returns_identical"] for row in saved["evaluation"].values())
+    window = saved["native_window"]
+    tasks = ("CartPole-v1", "Acrobot-v1")
+    assert set(window) == {f"{task}/{backend}" for task in tasks for backend in ("numpy", "native")}
+    assert all(row["gate_passed"] for row in window.values())
+    reset_gate = json.loads((ROOT / "results/bench/native-reset-gate.json").read_text())
+    counts = [
+        (t["seeds"], t["observation_mismatches"], t["state_mismatches"])
+        for t in reset_gate["tasks"]
+    ]
+    assert counts == [(1_010_006, 0, 0)] * 2
 
 
 def test_replay_summary_recomputes_and_every_replay_matched():
