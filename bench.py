@@ -174,6 +174,8 @@ def env(args) -> None:
 
 def imports(args) -> None:
     destination = args.output / "imports.json"
+    if destination.exists():
+        return
     order = random.Random(args.seed)
     rows = []
     for rep in range(args.import_reps):
@@ -191,7 +193,7 @@ def imports(args) -> None:
 def cohorts() -> list[tuple[str, str, str]]:
     plan = json.loads(Path("configs/final.json").read_text())
     entries = {
-        (entry["task"], entry["method"], entry["variant"])
+        (entry["task"], entry["method"], entry.get("variant", "default"))
         for chunk in plan["chunks"]
         for entry in chunk
         if entry["method"] in REPO_METHODS
@@ -241,13 +243,19 @@ def evaluation(args) -> None:
 
 
 def run_all(args) -> None:
+    """Resumable: finished files are kept, and machine.json keeps its earlier snapshots."""
     args.output.mkdir(parents=True, exist_ok=True)
-    record = {"machine": machine(args.cpu), "snapshots": {"before": snapshot(args.cpu)}}
+    path = args.output / "machine.json"
+    if path.exists():
+        record = json.loads(path.read_text())
+        record["snapshots"]["resumed"] = snapshot(args.cpu)
+    else:
+        record = {"machine": machine(args.cpu), "snapshots": {"before": snapshot(args.cpu)}}
     steps = (("env", env), ("imports", imports), ("decompose", decompose))
     for name, step in (*steps, ("evaluation", evaluation)):
         step(args)
         record["snapshots"][f"after {name}"] = snapshot(args.cpu)
-        (args.output / "machine.json").write_text(json.dumps(record, indent=2) + "\n")
+        path.write_text(json.dumps(record, indent=2) + "\n")
 
 
 def main():
