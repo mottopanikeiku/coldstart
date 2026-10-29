@@ -11,11 +11,13 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from bench_summary import summarize
 from control_clock import backends, systems
 from control_clock.phases import Recorder
 from control_clock.policies import build, replay
 from control_clock.protocol import EVAL_SEEDS
 from replay import FRESH_SEEDS
+from replay import summarize as summarize_replay
 
 ROOT = Path(__file__).resolve().parents[1]
 OPTIONAL = {"envpool": "envpool", "gymnax": "gymnax", "gymnax-scan": "gymnax"}
@@ -140,3 +142,22 @@ def test_numpy_evaluator_matches_the_protocol_on_a_saved_policy(plain):
     policy = build(plain["policy"]["parameters"])
     counterfactual = systems.numpy_evaluate("CartPole-v1", policy, EVAL_SEEDS)
     assert np.array_equal(counterfactual, record["evaluations"][-1]["returns"])
+
+
+def test_benchmark_summary_recomputes_from_raw_files():
+    saved = json.loads((ROOT / "results/bench/summary.json").read_text())
+    assert summarize(ROOT / "results/bench") == saved
+    assert all(row["gate_passed"] for row in saved["environments"].values())
+    for cohort in saved["decomposition"].values():
+        assert cohort["reproduced_published_evaluations"] == cohort["seeds"] == 5
+        assert cohort["unattributed_share_max_abs"] < 0.001
+    assert all(row["returns_identical"] for row in saved["evaluation"].values())
+
+
+def test_replay_summary_recomputes_and_every_replay_matched():
+    saved = json.loads((ROOT / "results/bench/replay.json").read_text())
+    assert summarize_replay(saved["policies"]) == saved["summary"]
+    assert len(saved["policies"]) == 30 and all(p["replay_matches"] for p in saved["policies"])
+    for row in saved["policies"]:
+        blocks = np.asarray(row["fresh_returns"]).reshape(10, 100).mean(axis=1)
+        assert np.allclose(blocks, row["fresh_block_means"])

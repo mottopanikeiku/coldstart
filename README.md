@@ -60,6 +60,15 @@ Seconds from Python process launch through the first passing evaluation, includi
 
 Passing means raw mean return **475 or higher on CartPole, -100 or higher on Acrobot**, over **100 complete greedy Gymnasium episodes**. Evaluation seeds are disjoint from training. Limits are 120/300 seconds. Initial random policies count too, so this is qualification time, not necessarily time spent learning ([protocol](docs/PROTOCOL.md)).
 
+## Where the seconds go: systems benchmark
+
+I split the clock for my three methods and measured six environment backends on their own, in an exclusive window on one pinned Zen 5 core ([details](docs/SYSTEMS.md), [raw data](results/bench)). Every backend first passed an equivalence gate against Gymnasium. All 30 pinned reruns reproduced their published evaluations exactly, and the measured phases account for all but 0.04% of each run.
+
+- **Evaluation is the largest cost.** It took 64–81% of the solve clock for ARS and CEM on both tasks and for PPO on Acrobot. The environment step took 2–26%. For PPO on CartPole, optimizer epochs took 47% and Torch import plus setup took 26%.
+- **My NumPy Acrobot batch is fast at large batches.** At 4,096 environments it ran 3.84 M transitions/s, against 0.028 M/s for Gymnasium and 1.53 M/s for one-thread EnvPool. Gymnax was faster, at 6.06 M/s, after a 0.4–0.8 s compile.
+- **My NumPy CartPole batch is reset-bound.** Gymnasium's own vectorized CartPole ran 28.2 M/s at 4,096; mine ran 3.07 M/s. Seeding each reset exactly like Gymnasium took 90% of my batch's time at that size.
+- **Qualified policies are near the bar.** Replayed in a new process, all 30 saved policies matched their recorded actions. On 1,000 fresh episodes never used for selection, 26 of 30 still passed. Only 62–74% of fresh 100-episode Acrobot evaluations passed.
+
 ## Separate implementation and hardware comparison: JAX PPO on an L4
 
 I ran JAX-vectorized PPO with Gymnax training on a **Modal NVIDIA L4**, requesting two host CPU cores and 4 GiB RAM. The evaluator, thresholds and time limits are unchanged. **Python imports, CUDA initialization, JIT compilation and all evaluations stay on the process clock.** At checkpoints I copy weights to the host and evaluate the greedy policy in actual Gymnasium.
@@ -82,7 +91,7 @@ uv sync --frozen --python 3.12 --extra modal
 
 ## Limits
 
-- The fixed evaluation set is reused for stopping and development selection, not held out.
+- The fixed evaluation set is reused for stopping and development selection, not held out. The pinned reruns of seeds 0–4 reproduced their published evaluations exactly, so their saved policies are those runs' winners. On fresh episodes, some fall below the bar ([systems benchmark](docs/SYSTEMS.md#saved-policies-and-a-fresh-evaluation-cohort)). Seeds 5–19 and the library runs have no saved policy yet.
 - Two small tasks, one laptop and three GPU seeds per task do not establish a general ranking.
 - Objectives, normalization, checkpoint grids and training horizons differ between methods.
 - Dynamics are tolerance-checked, not bitwise identical; OS/driver caches and cloud CPU placement are not controlled.
