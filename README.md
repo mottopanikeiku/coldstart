@@ -1,4 +1,4 @@
-# Control Clock
+# coldstart
 
 I measure fresh-process time to qualify policies on two small Gymnasium control tasks.
 
