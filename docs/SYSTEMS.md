@@ -115,7 +115,7 @@ uv sync --frozen --python 3.12 --extra jax --extra bench
 .venv/bin/python replay.py --input results/bench-replication/decompose --output results/bench-replication/replay.json
 ```
 
-Pick a CPU that is a full-speed core on your machine and keep the machine otherwise idle. `bench.py` passes `--jax-platform` through to JAX, so the Gymnax rows can run on a GPU later without code changes. The other backends are CPU-only.
+Pick a CPU that is a full-speed core on your machine and keep the machine otherwise idle. EnvPool 1.2.7 loads `libEGL.so.1` on import; on Ubuntu, that comes from the `libegl1` package. `bench.py` passes `--jax-platform` through to JAX, so the Gymnax rows can run on a GPU later without code changes. The other backends are CPU-only.
 
 ## Limits
 
