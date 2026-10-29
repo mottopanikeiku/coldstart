@@ -20,7 +20,7 @@ uv sync --frozen --python 3.12
 .venv/bin/python run.py --phase final --task CartPole-v1 --method ars --seeds 0:1 --output results/first-run
 ```
 
-It prints one line: the record path, `"solved"`, the seconds from process launch to the first passing evaluation, and the stop reason. The record keeps all 100 returns of every evaluation, package versions and the worker command. My published run of this seed passed at 1.69 seconds ([record](results/final/CartPole-v1__ars__default__000.json)); yours depends on your CPU and its load.
+It prints one line: the record path, `"solved"`, the seconds from process launch to the first passing evaluation, and the stop reason. The record keeps all 100 returns of every evaluation, package versions and the worker command. My published run of this seed passed at 1.69 seconds ([record](results/final/CartPole-v1__ars__default__000.json)); yours depends on your CPU and its load. The policy itself should not: seeds fix training and evaluation, and evaluations happen at fixed step counts. A fresh clone on my laptop and the CI runner both reproduced all 800 returns of that record's eight evaluations.
 
 ## Reproduce
 
