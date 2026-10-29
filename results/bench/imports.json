@@ -1,0 +1,2702 @@
+[
+ {
+  "module": "pass",
+  "startup_seconds": 0.011215677997824969,
+  "import_seconds": 4.809990059584379e-07,
+  "modules_loaded": 88,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:00-07:00",
+   "load_average": [
+    2.46533203125,
+    2.41796875,
+    2.59521484375
+   ],
+   "pinned_cpu_mhz": 625.0,
+   "memory_available_mib": 8860,
+   "parent_seconds": 0.02492066099875956,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19804.929393512"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.01089992900233483,
+  "import_seconds": 1.23447742999997,
+  "modules_loaded": 1670,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:00-07:00",
+   "load_average": [
+    2.46533203125,
+    2.41796875,
+    2.59521484375
+   ],
+   "pinned_cpu_mhz": 4468.759,
+   "memory_available_mib": 8860,
+   "parent_seconds": 1.8115457830026571,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19804.954589856"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.011648417999822414,
+  "import_seconds": 0.06477695799912908,
+  "modules_loaded": 352,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:02-07:00",
+   "load_average": [
+    2.46533203125,
+    2.41796875,
+    2.59521484375
+   ],
+   "pinned_cpu_mhz": 4575.411,
+   "memory_available_mib": 8751,
+   "parent_seconds": 0.11506956499943044,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19806.766401583"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.01062688199817785,
+  "import_seconds": 0.03296276699984446,
+  "modules_loaded": 199,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:02-07:00",
+   "load_average": [
+    2.46533203125,
+    2.41796875,
+    2.59521484375
+   ],
+   "pinned_cpu_mhz": 4558.431,
+   "memory_available_mib": 8774,
+   "parent_seconds": 0.0652942870001425,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19806.881733816"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.010606945001200074,
+  "import_seconds": 1.1861864139973477,
+  "modules_loaded": 2026,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:02-07:00",
+   "load_average": [
+    2.46533203125,
+    2.41796875,
+    2.59521484375
+   ],
+   "pinned_cpu_mhz": 4502.583,
+   "memory_available_mib": 8774,
+   "parent_seconds": 1.6907974910027406,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19806.947302823"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.011244633002206683,
+  "import_seconds": 0.6660849419968145,
+  "modules_loaded": 1055,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:04-07:00",
+   "load_average": [
+    2.46533203125,
+    2.41796875,
+    2.59521484375
+   ],
+   "pinned_cpu_mhz": 4470.489,
+   "memory_available_mib": 8742,
+   "parent_seconds": 0.982158121001703,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19808.638380154"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.010320712000975618,
+  "import_seconds": 0.2215295089990832,
+  "modules_loaded": 706,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:05-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4379.064,
+   "memory_available_mib": 8879,
+   "parent_seconds": 0.3346652799991716,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19809.620806814"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.009955010002158815,
+  "import_seconds": 0.5920462190006219,
+  "modules_loaded": 1061,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:05-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4743.361,
+   "memory_available_mib": 8881,
+   "parent_seconds": 0.8677518629992846,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19809.955723009"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.009935603000485571,
+  "import_seconds": 0.6205230570012645,
+  "modules_loaded": 1057,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:06-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4562.039,
+   "memory_available_mib": 8786,
+   "parent_seconds": 0.9905564809996577,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19810.823736207"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.009406118999322644,
+  "import_seconds": 0.026885053001024062,
+  "modules_loaded": 197,
+  "rep": 0,
+  "context": {
+   "time": "2026-10-29T04:40:07-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4682.98,
+   "memory_available_mib": 8664,
+   "parent_seconds": 0.05290939399856143,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19811.814545327"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.009839000002102694,
+  "import_seconds": 0.05460564899840392,
+  "modules_loaded": 352,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:07-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4624.427,
+   "memory_available_mib": 8664,
+   "parent_seconds": 0.09394636800061562,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19811.86770213"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.010037605999968946,
+  "import_seconds": 1.1056178799990448,
+  "modules_loaded": 2026,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:07-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4395.765,
+   "memory_available_mib": 8640,
+   "parent_seconds": 1.492884912997397,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19811.961907649"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.010514870002225507,
+  "import_seconds": 0.026884050999797182,
+  "modules_loaded": 197,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:09-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4422.474,
+   "memory_available_mib": 8280,
+   "parent_seconds": 0.05699997400006396,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19813.45506076"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.012184283001261065,
+  "import_seconds": 0.6636789750009484,
+  "modules_loaded": 1057,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:09-07:00",
+   "load_average": [
+    2.427734375,
+    2.41064453125,
+    2.591796875
+   ],
+   "pinned_cpu_mhz": 4477.633,
+   "memory_available_mib": 8272,
+   "parent_seconds": 0.9702828240006056,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19813.512332328"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.010105132998432964,
+  "import_seconds": 0.9889624910028942,
+  "modules_loaded": 1670,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:10-07:00",
+   "load_average": [
+    2.39306640625,
+    2.40380859375,
+    2.58837890625
+   ],
+   "pinned_cpu_mhz": 4311.091,
+   "memory_available_mib": 8227,
+   "parent_seconds": 1.4834193399983633,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19814.482870256"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.010415742999612121,
+  "import_seconds": 0.6389477419979812,
+  "modules_loaded": 1055,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:11-07:00",
+   "load_average": [
+    2.39306640625,
+    2.40380859375,
+    2.58837890625
+   ],
+   "pinned_cpu_mhz": 4315.529,
+   "memory_available_mib": 8149,
+   "parent_seconds": 0.9715017830021679,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19815.966547374"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.01023923799948534,
+  "import_seconds": 5.010006134398282e-07,
+  "modules_loaded": 88,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:12-07:00",
+   "load_average": [
+    2.39306640625,
+    2.40380859375,
+    2.58837890625
+   ],
+   "pinned_cpu_mhz": 4303.043,
+   "memory_available_mib": 8163,
+   "parent_seconds": 0.022692761001962936,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19816.938311093"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.0101321750007628,
+  "import_seconds": 0.029551955001807073,
+  "modules_loaded": 199,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:12-07:00",
+   "load_average": [
+    2.39306640625,
+    2.40380859375,
+    2.58837890625
+   ],
+   "pinned_cpu_mhz": 4246.077,
+   "memory_available_mib": 8163,
+   "parent_seconds": 0.059534064999752445,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19816.961238989"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.010203108999121469,
+  "import_seconds": 0.23611997999978485,
+  "modules_loaded": 706,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:13-07:00",
+   "load_average": [
+    2.39306640625,
+    2.40380859375,
+    2.58837890625
+   ],
+   "pinned_cpu_mhz": 4228.481,
+   "memory_available_mib": 8163,
+   "parent_seconds": 0.36059814899999765,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19817.021064196"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.010670454998034984,
+  "import_seconds": 0.6082203199985088,
+  "modules_loaded": 1061,
+  "rep": 1,
+  "context": {
+   "time": "2026-10-29T04:40:13-07:00",
+   "load_average": [
+    2.39306640625,
+    2.40380859375,
+    2.58837890625
+   ],
+   "pinned_cpu_mhz": 4377.772,
+   "memory_available_mib": 8159,
+   "parent_seconds": 0.9365038709984219,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19817.381920173"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.010975703000440262,
+  "import_seconds": 1.1533680510001432,
+  "modules_loaded": 2026,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:14-07:00",
+   "load_average": [
+    2.39306640625,
+    2.40380859375,
+    2.58837890625
+   ],
+   "pinned_cpu_mhz": 4429.28,
+   "memory_available_mib": 8185,
+   "parent_seconds": 1.578319164000277,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19818.318721688"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.010226063001027796,
+  "import_seconds": 0.9849061159984558,
+  "modules_loaded": 1670,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:15-07:00",
+   "load_average": [
+    2.361328125,
+    2.39697265625,
+    2.5849609375
+   ],
+   "pinned_cpu_mhz": 4389.731,
+   "memory_available_mib": 8199,
+   "parent_seconds": 1.555958343000384,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19819.897299472"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.011400097999285208,
+  "import_seconds": 0.6935985060008534,
+  "modules_loaded": 1055,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:17-07:00",
+   "load_average": [
+    2.361328125,
+    2.39697265625,
+    2.5849609375
+   ],
+   "pinned_cpu_mhz": 4545.144,
+   "memory_available_mib": 8280,
+   "parent_seconds": 1.089995385002112,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19821.453533367"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.011189036998985102,
+  "import_seconds": 0.03238426099778735,
+  "modules_loaded": 199,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:18-07:00",
+   "load_average": [
+    2.361328125,
+    2.39697265625,
+    2.5849609375
+   ],
+   "pinned_cpu_mhz": 4476.541,
+   "memory_available_mib": 8311,
+   "parent_seconds": 0.06365414999891073,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19822.543856673"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.010968739999952959,
+  "import_seconds": 0.030188631997589255,
+  "modules_loaded": 197,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:18-07:00",
+   "load_average": [
+    2.361328125,
+    2.39697265625,
+    2.5849609375
+   ],
+   "pinned_cpu_mhz": 4385.536,
+   "memory_available_mib": 8311,
+   "parent_seconds": 0.06311456799812731,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19822.607781686"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.00963786899956176,
+  "import_seconds": 0.06410747900008573,
+  "modules_loaded": 352,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:18-07:00",
+   "load_average": [
+    2.361328125,
+    2.39697265625,
+    2.5849609375
+   ],
+   "pinned_cpu_mhz": 4496.037,
+   "memory_available_mib": 8311,
+   "parent_seconds": 0.1080183570011286,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19822.671155105"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.009442608999961521,
+  "import_seconds": 0.6817100640000717,
+  "modules_loaded": 1057,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:18-07:00",
+   "load_average": [
+    2.361328125,
+    2.39697265625,
+    2.5849609375
+   ],
+   "pinned_cpu_mhz": 4542.986,
+   "memory_available_mib": 8310,
+   "parent_seconds": 1.0690500939999765,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19822.779427573"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.011333111000567442,
+  "import_seconds": 0.6318951309986005,
+  "modules_loaded": 1061,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:19-07:00",
+   "load_average": [
+    2.361328125,
+    2.39697265625,
+    2.5849609375
+   ],
+   "pinned_cpu_mhz": 4489.871,
+   "memory_available_mib": 8333,
+   "parent_seconds": 1.00024025699895,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19823.848739152"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.011564738997549284,
+  "import_seconds": 4.4099942897446454e-07,
+  "modules_loaded": 88,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:20-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4598.22,
+   "memory_available_mib": 8360,
+   "parent_seconds": 0.025318205000075977,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19824.849272504"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.01028341100027319,
+  "import_seconds": 0.2449087499990128,
+  "modules_loaded": 706,
+  "rep": 2,
+  "context": {
+   "time": "2026-10-29T04:40:20-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4430.867,
+   "memory_available_mib": 8365,
+   "parent_seconds": 0.40792319499814766,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19824.874901177"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.009939059000316774,
+  "import_seconds": 0.6796443790008198,
+  "modules_loaded": 1055,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:21-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4609.148,
+   "memory_available_mib": 8364,
+   "parent_seconds": 1.0671615259998362,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19825.283088863"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.013015747997997096,
+  "import_seconds": 0.031048410000948934,
+  "modules_loaded": 199,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:22-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4547.965,
+   "memory_available_mib": 8350,
+   "parent_seconds": 0.06654451600115863,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19826.350513768"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.010040581997600384,
+  "import_seconds": 0.24565295000138576,
+  "modules_loaded": 706,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:22-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4487.695,
+   "memory_available_mib": 8349,
+   "parent_seconds": 0.39624304699827917,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19826.41742049"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.01063820399940596,
+  "import_seconds": 1.1832134319993202,
+  "modules_loaded": 2026,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:22-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4636.18,
+   "memory_available_mib": 8379,
+   "parent_seconds": 1.690637166997476,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19826.813941584"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.011446946002251934,
+  "import_seconds": 5.509973561856896e-07,
+  "modules_loaded": 88,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:24-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4631.473,
+   "memory_available_mib": 8342,
+   "parent_seconds": 0.025239525002689334,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19828.50485794"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.011781578999944031,
+  "import_seconds": 0.06380206100220676,
+  "modules_loaded": 352,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:24-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4451.309,
+   "memory_available_mib": 8347,
+   "parent_seconds": 0.10874897000030614,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19828.530339524"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.009904663998895558,
+  "import_seconds": 0.641981428998406,
+  "modules_loaded": 1061,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:24-07:00",
+   "load_average": [
+    2.33203125,
+    2.39013671875,
+    2.58154296875
+   ],
+   "pinned_cpu_mhz": 4586.007,
+   "memory_available_mib": 8346,
+   "parent_seconds": 1.019422517001658,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19828.639336875"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.01181518300290918,
+  "import_seconds": 0.03238838800098165,
+  "modules_loaded": 197,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:25-07:00",
+   "load_average": [
+    2.30517578125,
+    2.38330078125,
+    2.578125
+   ],
+   "pinned_cpu_mhz": 4688.748,
+   "memory_available_mib": 8373,
+   "parent_seconds": 0.06786008800190757,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19829.659036256"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.010144198000489268,
+  "import_seconds": 1.0568363659986062,
+  "modules_loaded": 1670,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:25-07:00",
+   "load_average": [
+    2.30517578125,
+    2.38330078125,
+    2.578125
+   ],
+   "pinned_cpu_mhz": 4450.898,
+   "memory_available_mib": 8372,
+   "parent_seconds": 1.631106157998147,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19829.72717383"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.010160017001908273,
+  "import_seconds": 0.6809523880001507,
+  "modules_loaded": 1057,
+  "rep": 3,
+  "context": {
+   "time": "2026-10-29T04:40:27-07:00",
+   "load_average": [
+    2.30517578125,
+    2.38330078125,
+    2.578125
+   ],
+   "pinned_cpu_mhz": 4502.489,
+   "memory_available_mib": 8384,
+   "parent_seconds": 1.0671657340026286,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19831.358556081"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.0099468340013118,
+  "import_seconds": 0.24250791200029198,
+  "modules_loaded": 706,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:28-07:00",
+   "load_average": [
+    2.30517578125,
+    2.38330078125,
+    2.578125
+   ],
+   "pinned_cpu_mhz": 4458.676,
+   "memory_available_mib": 8377,
+   "parent_seconds": 0.40058059399962076,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19832.426006184"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.009487854997132672,
+  "import_seconds": 0.030580994000047212,
+  "modules_loaded": 199,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:28-07:00",
+   "load_average": [
+    2.30517578125,
+    2.38330078125,
+    2.578125
+   ],
+   "pinned_cpu_mhz": 4604.644,
+   "memory_available_mib": 8390,
+   "parent_seconds": 0.061040438999043545,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19832.826854415"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.010313278002286097,
+  "import_seconds": 0.030437191999226343,
+  "modules_loaded": 197,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:28-07:00",
+   "load_average": [
+    2.30517578125,
+    2.38330078125,
+    2.578125
+   ],
+   "pinned_cpu_mhz": 4409.802,
+   "memory_available_mib": 8390,
+   "parent_seconds": 0.06071834899921669,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19832.888166669"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.010619929002132267,
+  "import_seconds": 1.1581825520006532,
+  "modules_loaded": 2026,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:28-07:00",
+   "load_average": [
+    2.30517578125,
+    2.38330078125,
+    2.578125
+   ],
+   "pinned_cpu_mhz": 4429.013,
+   "memory_available_mib": 8389,
+   "parent_seconds": 1.6643084990028,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19832.94916102"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.011537787999259308,
+  "import_seconds": 0.6394152169996232,
+  "modules_loaded": 1061,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:30-07:00",
+   "load_average": [
+    2.2802734375,
+    2.37646484375,
+    2.57470703125
+   ],
+   "pinned_cpu_mhz": 4633.929,
+   "memory_available_mib": 8361,
+   "parent_seconds": 0.9989259469984972,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19834.613729581"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.011929469997994602,
+  "import_seconds": 0.6866338120016735,
+  "modules_loaded": 1057,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:31-07:00",
+   "load_average": [
+    2.2802734375,
+    2.37646484375,
+    2.57470703125
+   ],
+   "pinned_cpu_mhz": 4577.941,
+   "memory_available_mib": 8383,
+   "parent_seconds": 1.0766468360016006,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19835.612914178"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.010608348002278944,
+  "import_seconds": 1.0624735950004833,
+  "modules_loaded": 1670,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:32-07:00",
+   "load_average": [
+    2.2802734375,
+    2.37646484375,
+    2.57470703125
+   ],
+   "pinned_cpu_mhz": 4485.453,
+   "memory_available_mib": 8383,
+   "parent_seconds": 1.6409905340005935,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19836.689818852"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.011438880002970109,
+  "import_seconds": 3.5999983083456755e-07,
+  "modules_loaded": 88,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:34-07:00",
+   "load_average": [
+    2.2802734375,
+    2.37646484375,
+    2.57470703125
+   ],
+   "pinned_cpu_mhz": 4543.09,
+   "memory_available_mib": 8368,
+   "parent_seconds": 0.02412053500302136,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19838.331070701"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.010926249000476673,
+  "import_seconds": 0.6845221000003221,
+  "modules_loaded": 1055,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:34-07:00",
+   "load_average": [
+    2.2802734375,
+    2.37646484375,
+    2.57470703125
+   ],
+   "pinned_cpu_mhz": 4465.217,
+   "memory_available_mib": 8373,
+   "parent_seconds": 1.0768857580005715,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19838.355461338"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.010910388999036513,
+  "import_seconds": 0.06225429900223389,
+  "modules_loaded": 352,
+  "rep": 4,
+  "context": {
+   "time": "2026-10-29T04:40:35-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4534.589,
+   "memory_available_mib": 8374,
+   "parent_seconds": 0.10684362100073486,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19839.432640813"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.01065446500069811,
+  "import_seconds": 0.6842004509999242,
+  "modules_loaded": 1057,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:35-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4493.462,
+   "memory_available_mib": 8374,
+   "parent_seconds": 1.0885110620001797,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19839.539779723"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.010537603000557283,
+  "import_seconds": 0.06204664499819046,
+  "modules_loaded": 352,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:36-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4516.649,
+   "memory_available_mib": 8373,
+   "parent_seconds": 0.1051395020003838,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19840.628555277"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.010710801001550863,
+  "import_seconds": 0.6509474249978666,
+  "modules_loaded": 1061,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:36-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4493.149,
+   "memory_available_mib": 8373,
+   "parent_seconds": 1.0230513810020057,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19840.733977375"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.01042257500012056,
+  "import_seconds": 0.6986551750014769,
+  "modules_loaded": 1055,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:37-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4618.61,
+   "memory_available_mib": 8405,
+   "parent_seconds": 1.0942343550013902,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19841.757299118"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.009768606996658491,
+  "import_seconds": 0.031402131000504596,
+  "modules_loaded": 199,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:38-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4562.708,
+   "memory_available_mib": 8378,
+   "parent_seconds": 0.061688055997365154,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19842.851803885"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.010118490001332248,
+  "import_seconds": 3.1099989428184927e-07,
+  "modules_loaded": 88,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:38-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4455.568,
+   "memory_available_mib": 8386,
+   "parent_seconds": 0.023514478001743555,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19842.913754568"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.009897902000375325,
+  "import_seconds": 1.18339203999858,
+  "modules_loaded": 2026,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:38-07:00",
+   "load_average": [
+    2.2578125,
+    2.3701171875,
+    2.5712890625
+   ],
+   "pinned_cpu_mhz": 4450.011,
+   "memory_available_mib": 8386,
+   "parent_seconds": 1.7042612879995431,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19842.937536552"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.01117706500008353,
+  "import_seconds": 0.24608970699773636,
+  "modules_loaded": 706,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:40-07:00",
+   "load_average": [
+    2.3173828125,
+    2.380859375,
+    2.57373046875
+   ],
+   "pinned_cpu_mhz": 4583.792,
+   "memory_available_mib": 8360,
+   "parent_seconds": 0.4072621220002475,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19844.642118457"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.009595938998245401,
+  "import_seconds": 1.0703025170005276,
+  "modules_loaded": 1670,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:41-07:00",
+   "load_average": [
+    2.3173828125,
+    2.380859375,
+    2.57373046875
+   ],
+   "pinned_cpu_mhz": 4601.839,
+   "memory_available_mib": 8383,
+   "parent_seconds": 1.6692576940004074,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19845.049645772"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.010165939002035884,
+  "import_seconds": 0.030034109000553144,
+  "modules_loaded": 197,
+  "rep": 5,
+  "context": {
+   "time": "2026-10-29T04:40:42-07:00",
+   "load_average": [
+    2.3173828125,
+    2.380859375,
+    2.57373046875
+   ],
+   "pinned_cpu_mhz": 4513.424,
+   "memory_available_mib": 8375,
+   "parent_seconds": 0.061048483999911696,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19846.719183086"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.010150980000616983,
+  "import_seconds": 0.6381441189987527,
+  "modules_loaded": 1061,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:42-07:00",
+   "load_average": [
+    2.3173828125,
+    2.380859375,
+    2.57373046875
+   ],
+   "pinned_cpu_mhz": 4475.747,
+   "memory_available_mib": 8375,
+   "parent_seconds": 1.0075871349981753,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19846.780518043"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.011120297000161372,
+  "import_seconds": 0.031276913003239315,
+  "modules_loaded": 199,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:43-07:00",
+   "load_average": [
+    2.3173828125,
+    2.380859375,
+    2.57373046875
+   ],
+   "pinned_cpu_mhz": 4531.824,
+   "memory_available_mib": 8403,
+   "parent_seconds": 0.06567226400147774,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19847.788373075"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.010222355998848798,
+  "import_seconds": 0.06358597099824692,
+  "modules_loaded": 352,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:43-07:00",
+   "load_average": [
+    2.3173828125,
+    2.380859375,
+    2.57373046875
+   ],
+   "pinned_cpu_mhz": 4477.363,
+   "memory_available_mib": 8403,
+   "parent_seconds": 0.11060790299961809,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19847.854330719"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.010648202998709166,
+  "import_seconds": 1.1774273310002172,
+  "modules_loaded": 2026,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:43-07:00",
+   "load_average": [
+    2.3173828125,
+    2.380859375,
+    2.57373046875
+   ],
+   "pinned_cpu_mhz": 4497.774,
+   "memory_available_mib": 8403,
+   "parent_seconds": 1.677931666999939,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19847.96520712"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.01117044199781958,
+  "import_seconds": 0.6831766819996119,
+  "modules_loaded": 1057,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:45-07:00",
+   "load_average": [
+    2.3720703125,
+    2.3916015625,
+    2.576171875
+   ],
+   "pinned_cpu_mhz": 4543.164,
+   "memory_available_mib": 8374,
+   "parent_seconds": 1.0740487029979704,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19849.64340399"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.011473164999188157,
+  "import_seconds": 0.030631910998636158,
+  "modules_loaded": 197,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:46-07:00",
+   "load_average": [
+    2.3720703125,
+    2.3916015625,
+    2.576171875
+   ],
+   "pinned_cpu_mhz": 4506.025,
+   "memory_available_mib": 8400,
+   "parent_seconds": 0.06565614300052403,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19850.717726853"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.009783834997506347,
+  "import_seconds": 0.6856958139978815,
+  "modules_loaded": 1055,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:46-07:00",
+   "load_average": [
+    2.3720703125,
+    2.3916015625,
+    2.576171875
+   ],
+   "pinned_cpu_mhz": 4499.621,
+   "memory_available_mib": 8415,
+   "parent_seconds": 1.077671446997556,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19850.783642858"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.010599068998999428,
+  "import_seconds": 8.009992598090321e-07,
+  "modules_loaded": 88,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:47-07:00",
+   "load_average": [
+    2.3720703125,
+    2.3916015625,
+    2.576171875
+   ],
+   "pinned_cpu_mhz": 4521.777,
+   "memory_available_mib": 8391,
+   "parent_seconds": 0.024663262996909907,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19851.861586431"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.010185014998569386,
+  "import_seconds": 0.2507697039982304,
+  "modules_loaded": 706,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:47-07:00",
+   "load_average": [
+    2.3720703125,
+    2.3916015625,
+    2.576171875
+   ],
+   "pinned_cpu_mhz": 4495.213,
+   "memory_available_mib": 8397,
+   "parent_seconds": 0.4047894979994453,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19851.886538241"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.011058108997531235,
+  "import_seconds": 1.0621152760031691,
+  "modules_loaded": 1670,
+  "rep": 6,
+  "context": {
+   "time": "2026-10-29T04:40:48-07:00",
+   "load_average": [
+    2.3720703125,
+    2.3916015625,
+    2.576171875
+   ],
+   "pinned_cpu_mhz": 4609.594,
+   "memory_available_mib": 8397,
+   "parent_seconds": 1.6454817809972155,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19852.291593573"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.010078594001242891,
+  "import_seconds": 0.684771633001219,
+  "modules_loaded": 1057,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:49-07:00",
+   "load_average": [
+    2.3720703125,
+    2.3916015625,
+    2.576171875
+   ],
+   "pinned_cpu_mhz": 4528.245,
+   "memory_available_mib": 8402,
+   "parent_seconds": 1.0948997560008138,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19853.937364652"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.01118599199980963,
+  "import_seconds": 0.6819393480000144,
+  "modules_loaded": 1055,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:51-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4485.637,
+   "memory_available_mib": 8402,
+   "parent_seconds": 1.0761873860028572,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19855.032531904"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.009972241998184472,
+  "import_seconds": 0.06222127599903615,
+  "modules_loaded": 352,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:52-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4461.922,
+   "memory_available_mib": 8401,
+   "parent_seconds": 0.10764715299956151,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19856.108990213"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.01107763600157341,
+  "import_seconds": 5.209985829424113e-07,
+  "modules_loaded": 88,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:52-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4524.777,
+   "memory_available_mib": 8401,
+   "parent_seconds": 0.023912050000944873,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19856.216901006"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.010146562999580055,
+  "import_seconds": 1.183556611998938,
+  "modules_loaded": 2026,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:52-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4428.753,
+   "memory_available_mib": 8401,
+   "parent_seconds": 1.703183886998886,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19856.241074882"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.011608060998696601,
+  "import_seconds": 0.03486228499969002,
+  "modules_loaded": 199,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:53-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4568.24,
+   "memory_available_mib": 8398,
+   "parent_seconds": 0.06899976699787658,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19857.94452321"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.012068624000676209,
+  "import_seconds": 0.03140767100194353,
+  "modules_loaded": 197,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:54-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4410.402,
+   "memory_available_mib": 8396,
+   "parent_seconds": 0.0647086879980634,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19858.013803759"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.010958800998196239,
+  "import_seconds": 0.24930942699938896,
+  "modules_loaded": 706,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:54-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4445.21,
+   "memory_available_mib": 8395,
+   "parent_seconds": 0.4053209749981761,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19858.078770877"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.010937650997220771,
+  "import_seconds": 1.0626181490006275,
+  "modules_loaded": 1670,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:54-07:00",
+   "load_average": [
+    2.341796875,
+    2.384765625,
+    2.57275390625
+   ],
+   "pinned_cpu_mhz": 4620.109,
+   "memory_available_mib": 8393,
+   "parent_seconds": 1.6389893829982611,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19858.484350932"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.010939012998278486,
+  "import_seconds": 0.6355680790002225,
+  "modules_loaded": 1061,
+  "rep": 7,
+  "context": {
+   "time": "2026-10-29T04:40:56-07:00",
+   "load_average": [
+    2.474609375,
+    2.41162109375,
+    2.58056640625
+   ],
+   "pinned_cpu_mhz": 4500.946,
+   "memory_available_mib": 8397,
+   "parent_seconds": 0.9950161799970374,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19860.123623431"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.011393634998967173,
+  "import_seconds": 5.109977792017162e-07,
+  "modules_loaded": 88,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:40:57-07:00",
+   "load_average": [
+    2.474609375,
+    2.41162109375,
+    2.58056640625
+   ],
+   "pinned_cpu_mhz": 4629.096,
+   "memory_available_mib": 8408,
+   "parent_seconds": 0.02407065099760075,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19861.118938036"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.011499554999318207,
+  "import_seconds": 1.0634300669989898,
+  "modules_loaded": 1670,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:40:57-07:00",
+   "load_average": [
+    2.474609375,
+    2.41162109375,
+    2.58056640625
+   ],
+   "pinned_cpu_mhz": 4547.315,
+   "memory_available_mib": 8408,
+   "parent_seconds": 1.642808878001233,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19861.143267778"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.009803712000575615,
+  "import_seconds": 0.030836076999548823,
+  "modules_loaded": 197,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:40:58-07:00",
+   "load_average": [
+    2.474609375,
+    2.41162109375,
+    2.58056640625
+   ],
+   "pinned_cpu_mhz": 4549.897,
+   "memory_available_mib": 8379,
+   "parent_seconds": 0.06185047300095903,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19862.786336168"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.010822822998306947,
+  "import_seconds": 0.6782425650017103,
+  "modules_loaded": 1057,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:40:58-07:00",
+   "load_average": [
+    2.474609375,
+    2.41162109375,
+    2.58056640625
+   ],
+   "pinned_cpu_mhz": 4450.015,
+   "memory_available_mib": 8394,
+   "parent_seconds": 1.0693004979984835,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19862.848463766"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.010825558998476481,
+  "import_seconds": 0.06279578399698948,
+  "modules_loaded": 352,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:40:59-07:00",
+   "load_average": [
+    2.474609375,
+    2.41162109375,
+    2.58056640625
+   ],
+   "pinned_cpu_mhz": 4541.868,
+   "memory_available_mib": 8399,
+   "parent_seconds": 0.1115723689981678,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19863.918037963"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.011545814002602128,
+  "import_seconds": 0.031426326000655536,
+  "modules_loaded": 199,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:41:00-07:00",
+   "load_average": [
+    2.474609375,
+    2.41162109375,
+    2.58056640625
+   ],
+   "pinned_cpu_mhz": 4448.65,
+   "memory_available_mib": 8398,
+   "parent_seconds": 0.06465407500218134,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19864.029877969"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.010529877999942983,
+  "import_seconds": 0.6419482460005383,
+  "modules_loaded": 1061,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:41:00-07:00",
+   "load_average": [
+    2.51708984375,
+    2.421875,
+    2.5830078125
+   ],
+   "pinned_cpu_mhz": 4438.071,
+   "memory_available_mib": 8397,
+   "parent_seconds": 1.0072237870008394,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19864.094805963"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.010726790998887736,
+  "import_seconds": 0.6813360350024595,
+  "modules_loaded": 1055,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:41:01-07:00",
+   "load_average": [
+    2.51708984375,
+    2.421875,
+    2.5830078125
+   ],
+   "pinned_cpu_mhz": 4578.76,
+   "memory_available_mib": 8418,
+   "parent_seconds": 1.0735591060001752,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19865.102314139"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.011571232000278542,
+  "import_seconds": 1.2288140810014738,
+  "modules_loaded": 2026,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:41:02-07:00",
+   "load_average": [
+    2.51708984375,
+    2.421875,
+    2.5830078125
+   ],
+   "pinned_cpu_mhz": 4495.425,
+   "memory_available_mib": 8394,
+   "parent_seconds": 1.736053095999523,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19866.176152313"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.010911290999501944,
+  "import_seconds": 0.25095449299988104,
+  "modules_loaded": 706,
+  "rep": 8,
+  "context": {
+   "time": "2026-10-29T04:41:03-07:00",
+   "load_average": [
+    2.51708984375,
+    2.421875,
+    2.5830078125
+   ],
+   "pinned_cpu_mhz": 4551.084,
+   "memory_available_mib": 8395,
+   "parent_seconds": 0.4176837560007698,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19867.91246991"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.ppo",
+  "startup_seconds": 0.01074368300032802,
+  "import_seconds": 0.6842634910026391,
+  "modules_loaded": 1057,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:04-07:00",
+   "load_average": [
+    2.51708984375,
+    2.421875,
+    2.5830078125
+   ],
+   "pinned_cpu_mhz": 4608.186,
+   "memory_available_mib": 8391,
+   "parent_seconds": 1.0794076960009988,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.ppo",
+    "--started",
+    "19868.330428136"
+   ]
+  }
+ },
+ {
+  "module": "jax",
+  "startup_seconds": 0.010200754997640615,
+  "import_seconds": 0.24442790000102832,
+  "modules_loaded": 706,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:05-07:00",
+   "load_average": [
+    2.55615234375,
+    2.431640625,
+    2.58544921875
+   ],
+   "pinned_cpu_mhz": 4455.55,
+   "memory_available_mib": 8374,
+   "parent_seconds": 0.40098999999827356,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "jax",
+    "--started",
+    "19869.41010914"
+   ]
+  }
+ },
+ {
+  "module": "gymnasium",
+  "startup_seconds": 0.00989143900005729,
+  "import_seconds": 0.06498061300226254,
+  "modules_loaded": 352,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:05-07:00",
+   "load_average": [
+    2.55615234375,
+    2.431640625,
+    2.58544921875
+   ],
+   "pinned_cpu_mhz": 4679.521,
+   "memory_available_mib": 8387,
+   "parent_seconds": 0.1097322540008463,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnasium",
+    "--started",
+    "19869.811358952"
+   ]
+  }
+ },
+ {
+  "module": "envpool",
+  "startup_seconds": 0.009835011998802656,
+  "import_seconds": 0.6348732029982784,
+  "modules_loaded": 1061,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:05-07:00",
+   "load_average": [
+    2.55615234375,
+    2.431640625,
+    2.58544921875
+   ],
+   "pinned_cpu_mhz": 4517.841,
+   "memory_available_mib": 8385,
+   "parent_seconds": 0.9946409489966754,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "envpool",
+    "--started",
+    "19869.921371126"
+   ]
+  }
+ },
+ {
+  "module": "numpy",
+  "startup_seconds": 0.011393463999411324,
+  "import_seconds": 0.03187411399994744,
+  "modules_loaded": 197,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:06-07:00",
+   "load_average": [
+    2.55615234375,
+    2.431640625,
+    2.58544921875
+   ],
+   "pinned_cpu_mhz": 4562.416,
+   "memory_available_mib": 8400,
+   "parent_seconds": 0.06580001499969512,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "numpy",
+    "--started",
+    "19870.916277628"
+   ]
+  }
+ },
+ {
+  "module": "stable_baselines3",
+  "startup_seconds": 0.010051421999378363,
+  "import_seconds": 1.063599257999158,
+  "modules_loaded": 1670,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:07-07:00",
+   "load_average": [
+    2.55615234375,
+    2.431640625,
+    2.58544921875
+   ],
+   "pinned_cpu_mhz": 4485.661,
+   "memory_available_mib": 8408,
+   "parent_seconds": 1.630752326997026,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "stable_baselines3",
+    "--started",
+    "19870.982345421"
+   ]
+  }
+ },
+ {
+  "module": "pass",
+  "startup_seconds": 0.011497722000058275,
+  "import_seconds": 2.500019036233425e-07,
+  "modules_loaded": 88,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:08-07:00",
+   "load_average": [
+    2.55615234375,
+    2.431640625,
+    2.58544921875
+   ],
+   "pinned_cpu_mhz": 4507.226,
+   "memory_available_mib": 8364,
+   "parent_seconds": 0.02424384900223231,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "pass",
+    "--started",
+    "19872.613374282"
+   ]
+  }
+ },
+ {
+  "module": "gymnax",
+  "startup_seconds": 0.011021428999811178,
+  "import_seconds": 1.183415405001142,
+  "modules_loaded": 2026,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:08-07:00",
+   "load_average": [
+    2.55615234375,
+    2.431640625,
+    2.58544921875
+   ],
+   "pinned_cpu_mhz": 4485.845,
+   "memory_available_mib": 8369,
+   "parent_seconds": 1.6930725909987814,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "gymnax",
+    "--started",
+    "19872.637890417"
+   ]
+  }
+ },
+ {
+  "module": "torch",
+  "startup_seconds": 0.011252096999669448,
+  "import_seconds": 0.6845928849979828,
+  "modules_loaded": 1055,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:10-07:00",
+   "load_average": [
+    2.591796875,
+    2.44140625,
+    2.587890625
+   ],
+   "pinned_cpu_mhz": 4576.152,
+   "memory_available_mib": 8368,
+   "parent_seconds": 1.0779321910013095,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "torch",
+    "--started",
+    "19874.331238329"
+   ]
+  }
+ },
+ {
+  "module": "control_clock.search",
+  "startup_seconds": 0.010509820000152104,
+  "import_seconds": 0.030267299996921793,
+  "modules_loaded": 199,
+  "rep": 9,
+  "context": {
+   "time": "2026-10-29T04:41:11-07:00",
+   "load_average": [
+    2.591796875,
+    2.44140625,
+    2.587890625
+   ],
+   "pinned_cpu_mhz": 4487.376,
+   "memory_available_mib": 8359,
+   "parent_seconds": 0.06407135000335984,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "import",
+    "--module",
+    "control_clock.search",
+    "--started",
+    "19875.409427327"
+   ]
+  }
+ }
+]
