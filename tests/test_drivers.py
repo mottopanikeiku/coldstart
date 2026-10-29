@@ -2,12 +2,14 @@ import json
 import sys
 from types import SimpleNamespace
 
+import numpy as np
 import pytest
 
 import gpu_run
 import measure
 import run
 import sweep
+from control_clock import worker
 from control_clock.protocol import BUDGETS
 
 
@@ -15,6 +17,25 @@ def test_launcher_limits_match_protocol_budgets():
     # The launchers keep their own table so the parent never imports Gymnasium.
     assert run.LIMITS == BUDGETS
     assert gpu_run.LIMITS == {task: BUDGETS[task] for task in gpu_run.LIMITS}
+
+
+def test_lunar_lander_without_box2d_stops_before_any_worker(monkeypatch, tmp_path, capsys):
+    output = tmp_path / "lunar"
+    argv = ["run.py", "--phase", "final", "--task", "LunarLander-v3", "--method", "ars"]
+    monkeypatch.setattr(sys, "argv", [*argv, "--output", str(output)])
+    find_spec = run.importlib.util.find_spec
+    monkeypatch.setattr(
+        run.importlib.util, "find_spec", lambda name: None if name == "Box2D" else find_spec(name)
+    )
+    with pytest.raises(SystemExit):
+        run.main()
+    assert "uv sync --frozen --extra box2d" in capsys.readouterr().err
+    assert not output.exists()
+
+
+def test_worker_records_absent_optional_packages_as_null():
+    assert worker.installed_version("numpy") == np.__version__
+    assert worker.installed_version("not-an-installed-distribution") is None
 
 
 def plan_file(tmp_path):

@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 
 from control_clock.protocol import BUDGETS, THRESHOLDS
+from figure import THEMES, draw
 from summarize import summarize
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -72,3 +73,11 @@ def test_summary_numbers_recompute_from_raw_records():
         records = [json.loads((ROOT / name).read_text()) for name in group["files"]]
         recomputed = summarize(records)
         assert {key: value for key, value in group.items() if key != "files"} == recomputed
+
+
+def test_readme_figure_redraws_from_summary():
+    saved = json.loads((ROOT / "results/summary.json").read_text())
+    for name, theme in THEMES.items():
+        assert (ROOT / f"docs/figure-{name}.svg").read_text() == draw(saved, theme)
+    medians = [f"{group['conditional_median_seconds']:.2f} s" for group in saved.values()]
+    assert all(median in draw(saved, THEMES["light"]) for median in medians)

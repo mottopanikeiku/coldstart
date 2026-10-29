@@ -1,4 +1,5 @@
-# CPU JAX wheels suffice for correctness tests; Modal adds the CUDA 12 extra.
+# Modal's L4 image installs these pins, then the CUDA 12 extra. They equal pyproject.toml's
+# jax extra plus the shared NumPy and Gymnasium pins; tests/test_gpu_results.py checks that.
 jax==0.6.2
 flax==0.10.6
 optax==0.2.5

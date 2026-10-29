@@ -1,5 +1,7 @@
 """The slow oracle is pinned Gymnasium, not a second copy of the equations."""
 
+import importlib.util
+
 import gymnasium as gym
 import numpy as np
 import pytest
@@ -11,7 +13,13 @@ from control_clock.vector_env import GymnasiumBatch, _wrap_angles, make_vector
 OBS_ATOL = 2e-6
 OBS_RTOL = 2e-7
 CLASSIC_TASKS = ["CartPole-v1", "Acrobot-v1"]
-ALL_TASKS = [*CLASSIC_TASKS, "LunarLander-v3"]
+LUNAR_LANDER = pytest.param(
+    "LunarLander-v3",
+    marks=pytest.mark.skipif(
+        importlib.util.find_spec("Box2D") is None, reason="needs the box2d extra"
+    ),
+)
+ALL_TASKS = [*CLASSIC_TASKS, LUNAR_LANDER]
 
 
 def assert_observations(actual, expected):

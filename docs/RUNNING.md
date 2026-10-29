@@ -5,17 +5,18 @@ Design and evidence: [protocol](PROTOCOL.md), [baseline settings](BASELINES.md),
 ## Installation and checks
 
 ```sh
-uv sync --frozen --python 3.12
+uv sync --frozen --python 3.12 --extra box2d
 uv run ruff check . && uv run ruff format --check . && uv run pytest -q
 ```
 
-The lockfile installs CPU Torch; no GPU is used. Box2D's isolated build gets SWIG from its pinned PyPI wheel through uv's extra build dependency. A C++ compiler is still required. The measured machine and compiler are in [results/machine.json](../results/machine.json). The pytest suite includes a small Box2D comparison and one update or generation of every CPU method to check that evaluation follows a complete update; it does not run benchmark cohorts. CI runs the same three check commands separately. The JAX checks are skipped in this environment; CI runs them in a second job with CPU JAX:
+The lockfile installs CPU Torch; no GPU is used. The base install is wheels only. The `box2d` extra adds Box2D for LunarLander and the Box2D equivalence tests; its isolated build gets SWIG from its pinned PyPI wheel through uv's extra build dependency, and still needs a C++ compiler. Without that extra, the Box2D tests are skipped and `run.py` refuses LunarLander before starting a worker. The measured machine and compiler are in [results/machine.json](../results/machine.json). The pytest suite includes a small Box2D comparison and one update or generation of every CPU method to check that evaluation follows a complete update; it does not run benchmark cohorts. CI runs the same three check commands with the `box2d` extra. A second CI job installs without it and with `--no-build`, so nothing is compiled, runs the suite, and replays the README's first run, failing unless seed 0 passes. The JAX checks are skipped unless the `jax` extra is installed; a third CI job runs them with CPU JAX:
 
 ```sh
-uv venv --python 3.12 .jax-venv
-uv pip install --python .jax-venv/bin/python -r gpu-requirements.txt pytest==8.4.2
-JAX_PLATFORMS=cpu .jax-venv/bin/python -m pytest -q tests/test_jax.py
+uv sync --frozen --python 3.12 --extra jax
+JAX_PLATFORMS=cpu uv run pytest -q tests/test_jax.py
 ```
+
+The `jax` extra holds the pins in `gpu-requirements.txt`, which the Modal image installs before adding CUDA 12 wheels; `tests/test_gpu_results.py` keeps the two lists equal. The lock fixes transitive versions for the CPU checks only; the Modal image resolves its own when it is built.
 
 ## Development
 
@@ -63,7 +64,7 @@ Each cohort also contains a seed-sorted `records` list with `seed`, `solved`, `s
 
 ## Separate implementation and hardware comparison on a Modal L4
 
-This comparison does not need a local GPU or the JAX/CUDA dependencies on
+This comparison is paid. It does not need a local GPU or the JAX/CUDA dependencies on
 the client. I use Modal client 1.5.3, an account already authenticated with
 `modal setup`, and the pinned image in `modal_app.py`. The final invocation
 runs three fresh processes per task on one L4, requesting two host CPU cores
@@ -71,9 +72,15 @@ and 4 GiB RAM. It keeps the 120/300-second per-seed limits and writes a differen
 directory from the laptop measurements:
 
 ```sh
-uvx --from modal==1.5.3 modal run modal_app.py --phase final --output results/gpu-replication
+uv sync --frozen --python 3.12 --extra modal
+.venv/bin/modal run modal_app.py --phase final --output results/gpu-replication
 uv run python gpu_summary.py --input results/gpu-replication --output results/gpu-replication-summary.json
 ```
+
+The published runs launched the same client version through `uvx --from modal==1.5.3`
+under the app name `control-clock-gpu`; the `modal` extra also locks the client's
+dependencies, and the app is now named `coldstart-gpu`. Neither change alters the packages
+the image installs or what the clock measures.
 
 Use `--phase pilot` for the separate seed-100 development check with a
 90-second limit. Select a new output directory each time; published records
