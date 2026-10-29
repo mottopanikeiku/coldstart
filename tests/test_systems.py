@@ -58,6 +58,38 @@ def test_gate_rejects_changed_dynamics(monkeypatch):
     assert not backends.gate("numpy", "CartPole-v1", slots=8, steps=8)["passed"]
 
 
+@pytest.mark.skipif(not available("gymnax"), reason="needs the jax extra")
+def test_scan_gate_runs_the_fused_path_and_rejects_a_corrupted_scan(monkeypatch):
+    gate = backends.gate("gymnax-scan", "CartPole-v1", slots=16, steps=16)
+    assert gate["passed"] and gate["scan_passed"], gate
+    fused, unfused = gate["scan_episode_ends"]
+    assert fused == unfused > 0
+    states = backends.GymnaxBackend.states
+    monkeypatch.setattr(backends.GymnaxScanBackend, "states", lambda self: states(self) + 1e-3)
+    assert not backends.gate("gymnax-scan", "CartPole-v1", slots=16, steps=16)["passed"]
+
+    def broken(*args):
+        raise RuntimeError("no fused backend")
+
+    monkeypatch.setitem(backends.CLASSES, "gymnax-scan", broken)
+    with pytest.raises(RuntimeError, match="no fused backend"):
+        backends.gate("gymnax-scan", "CartPole-v1", slots=16, steps=16)
+
+
+def test_decompose_records_source_revision_with_every_run(monkeypatch, tmp_path):
+    from types import SimpleNamespace
+
+    import bench
+
+    source = {"commit": "abc123", "dirty": False}
+    monkeypatch.setattr(bench, "cohorts", lambda: [("CartPole-v1", "cem", "default")])
+    monkeypatch.setattr(bench, "source_revision", lambda: source)
+    monkeypatch.setattr(bench, "launch", lambda *args, **kwargs: ({"solve_seconds": 1.0}, {}))
+    bench.decompose(SimpleNamespace(output=tmp_path, seeds="0:1"))
+    records = [json.loads(path.read_text()) for path in (tmp_path / "decompose").glob("*.json")]
+    assert len(records) == 2 and all(record["source"] == source for record in records)
+
+
 @pytest.mark.parametrize("backend", ["numpy", "gymnasium-vector"])
 def test_transitions_exclude_next_step_reset_slots(monkeypatch, backend):
     monkeypatch.setattr(systems, "calls_for", lambda backend, size: 200)

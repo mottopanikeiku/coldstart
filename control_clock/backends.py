@@ -254,6 +254,8 @@ def gate(name, task, *, slots=64, steps=64, seed=7, atol=1e-4):
     Same-step backends replace a terminal observation with the reset observation, so on
     that step only reward and termination are compared.
     Returns the largest observation difference and the number of compared transitions.
+    The fused scan returns no observations, so for gymnax-scan the unfused Gymnax step is
+    compared with Gymnasium and the fused path must then reproduce it (scan_trace).
     """
     import gymnasium as gym
 
@@ -291,10 +293,36 @@ def gate(name, task, *, slots=64, steps=64, seed=7, atol=1e-4):
         backend.close()
         for reference in references:
             reference.close()
-    return {
+    result = {
         "passed": mismatches == 0 and worst <= atol,
         "max_observation_difference": worst,
         "atol": atol,
         "compared_transitions": compared,
         "reward_or_done_mismatches": mismatches,
+    }
+    if name == "gymnax-scan":
+        result.update(scan_trace(task, slots=slots, seed=seed))
+        result["passed"] = result["passed"] and result["scan_passed"]
+    return result
+
+
+def scan_trace(task, *, slots=64, seed=7, atol=1e-5):
+    """The fused scan must reach the states that SCAN_LENGTH gated, unfused calls reach.
+
+    Both start from the same PRNG key, so resets and auto-resets match; the episode
+    completions counted inside the scan must equal those the unfused calls report.
+    """
+    fused = make("gymnax-scan", task, slots, seed)
+    unfused = make("gymnax", task, slots, seed)
+    count = {"CartPole-v1": 2, "Acrobot-v1": 3}[task]
+    actions = np.random.default_rng(seed).integers(0, count, size=(SCAN_LENGTH, slots))
+    fused.reset()
+    unfused.reset()
+    fused_done = fused.step(actions)[3]
+    unfused_done = sum(int(unfused.step(row)[3].sum()) for row in actions)
+    difference = float(np.max(np.abs(fused.states() - unfused.states())))
+    return {
+        "scan_passed": fused_done == unfused_done and difference <= atol,
+        "scan_max_state_difference": difference,
+        "scan_episode_ends": [fused_done, unfused_done],
     }
