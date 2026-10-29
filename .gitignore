@@ -3,3 +3,5 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 *.pyc
+control_clock/libclassic.so
+control_clock/libclassic.dylib

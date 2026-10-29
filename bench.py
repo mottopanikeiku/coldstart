@@ -1,12 +1,15 @@
 """Systems benchmark: environment speed, imports, evaluation and a phase decomposition.
 
     uv sync --frozen --python 3.12 --extra jax --extra bench
+    .venv/bin/python -m control_clock.native build
     .venv/bin/python bench.py all --output results/bench --cpu 4 --reps 5
     .venv/bin/python bench_summary.py --input results/bench --output results/bench/summary.json
 
 Every measurement runs in a fresh process pinned to one CPU with one numeric thread. Each
 step writes raw per-call or per-run values; ``summarize`` derives every table from them.
 JAX runs on the CPU here; ``--jax-platform`` passes another platform through unchanged.
+``--backends`` limits the environment step to some backends. Every command records the
+machine and load snapshots in machine.json.
 """
 
 from __future__ import annotations
@@ -25,6 +28,7 @@ from pathlib import Path
 
 import numpy as np
 
+from control_clock import native
 from control_clock.backends import BACKENDS, supports
 from run import source_revision
 
@@ -113,6 +117,7 @@ def machine(cpu: int) -> dict:
         "packages": {name: installed(name) for name in PACKAGES},
         "numpy_simd": np.show_config(mode="dicts")["SIMD Extensions"],
         "threads": "OMP/MKL/OPENBLAS/NUMEXPR = 1; XLA single-threaded Eigen, 1 intra-op thread",
+        "native": native.describe(),
         "source_commit": commit.stdout.strip() or None,
     }
 
@@ -157,7 +162,7 @@ def env(args) -> None:
     output.mkdir(parents=True, exist_ok=True)
     order = random.Random(args.seed)
     for rep in range(args.reps):
-        pairs = [(b, t) for t in TASKS for b in BACKENDS if supports(b, t)]
+        pairs = [(b, t) for t in TASKS for b in args.backends if supports(b, t)]
         order.shuffle(pairs)
         for backend, task in pairs:
             destination = output / f"{backend}__{task}__{rep}.json.gz"
@@ -245,7 +250,7 @@ def evaluation(args) -> None:
     print(destination)
 
 
-def run_all(args) -> None:
+def run(args, steps) -> None:
     """Resumable: finished files are kept, and machine.json keeps its earlier snapshots."""
     args.output.mkdir(parents=True, exist_ok=True)
     path = args.output / "machine.json"
@@ -254,19 +259,22 @@ def run_all(args) -> None:
         record["snapshots"]["resumed"] = snapshot(args.cpu)
     else:
         record = {"machine": machine(args.cpu), "snapshots": {"before": snapshot(args.cpu)}}
-    steps = (("env", env), ("imports", imports), ("decompose", decompose))
-    for name, step in (*steps, ("evaluation", evaluation)):
-        step(args)
+    for name in steps:
+        STEPS[name](args)
         record["snapshots"][f"after {name}"] = snapshot(args.cpu)
         path.write_text(json.dumps(record, indent=2) + "\n")
 
 
+STEPS = {"env": env, "imports": imports, "decompose": decompose, "evaluation": evaluation}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("all", "env", "imports", "evaluation", "decompose"))
+    parser.add_argument("command", choices=("all", *STEPS))
     parser.add_argument("--output", type=Path, default=Path("results/bench"))
     parser.add_argument("--cpu", type=int, default=4, help="CPU to pin every child process to")
     parser.add_argument("--reps", type=int, default=5, help="Fresh processes per backend")
+    parser.add_argument("--backends", type=lambda s: tuple(s.split(",")), default=BACKENDS)
     parser.add_argument("--import-reps", type=int, default=10)
     parser.add_argument("--sizes", type=lambda s: tuple(map(int, s.split(","))), default=SIZES)
     parser.add_argument("--seeds", default="0:5", help="Decomposition seeds, half-open")
@@ -274,13 +282,10 @@ def main():
     parser.add_argument("--seed", type=int, default=2026, help="Seeds the run order")
     parser.add_argument("--jax-platform", default="cpu")
     args = parser.parse_args()
-    if args.command == "all":
-        run_all(args)
-    else:
-        args.output.mkdir(parents=True, exist_ok=True)
-        {"env": env, "imports": imports, "evaluation": evaluation, "decompose": decompose}[
-            args.command
-        ](args)
+    unknown = set(args.backends) - set(BACKENDS)
+    if unknown:
+        parser.error(f"unknown backends: {sorted(unknown)}")
+    run(args, list(STEPS) if args.command == "all" else [args.command])
 
 
 if __name__ == "__main__":
