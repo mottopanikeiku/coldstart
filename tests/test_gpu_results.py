@@ -1,6 +1,7 @@
 """The GPU evidence stays distinct from the original laptop cohort."""
 
 import json
+import tomllib
 from pathlib import Path
 
 import numpy as np
@@ -8,6 +9,15 @@ import numpy as np
 from gpu_summary import summarize
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_modal_image_installs_the_jax_extra_pins():
+    # CI tests the locked jax extra on CPU; the L4 image installs gpu-requirements.txt.
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
+    shared = [pin for pin in project["dependencies"] if pin.startswith(("numpy==", "gymnasium=="))]
+    lines = (ROOT / "gpu-requirements.txt").read_text().splitlines()
+    pins = [line for line in lines if line and not line.startswith("#")]
+    assert sorted(pins) == sorted([*project["optional-dependencies"]["jax"], *shared])
 
 
 def test_gpu_summary_and_complete_cohort():

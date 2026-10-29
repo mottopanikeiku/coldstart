@@ -13,10 +13,10 @@ image = (
     .add_local_dir(
         ROOT,
         remote_path="/repo",
-        ignore=[".git", ".venv", ".jax-venv", "__pycache__", ".pytest_cache", ".ruff_cache"],
+        ignore=[".git", ".venv", "__pycache__", ".pytest_cache", ".ruff_cache"],
     )
 )
-app = modal.App("control-clock-gpu")
+app = modal.App("coldstart-gpu")
 
 
 def run_comparison(phase):

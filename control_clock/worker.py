@@ -18,6 +18,14 @@ MODULES = {
 }
 
 
+def installed_version(name):
+    """Box2D and SWIG are optional extras; record null when they are absent."""
+    try:
+        return importlib.metadata.version(name)
+    except importlib.metadata.PackageNotFoundError:
+        return None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--task", required=True)
@@ -47,7 +55,7 @@ def main():
     stopped = time.perf_counter()
     ctx.close()
     versions = {
-        name: importlib.metadata.version(name)
+        name: installed_version(name)
         for name in ("numpy", "gymnasium", "torch", "stable-baselines3", "box2d-py", "swig")
     }
     print(

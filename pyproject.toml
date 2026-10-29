@@ -5,11 +5,18 @@ description = "Wall-clock time to a passing control policy on CPU, including sta
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "numpy==2.2.6",
-  "gymnasium[box2d]==1.2.1",
-  "swig==4.3.1",
+  "gymnasium==1.2.1",
   "torch==2.8.0+cpu",
   "stable-baselines3==2.7.0",
 ]
+
+[project.optional-dependencies]
+# LunarLander only; box2d-py builds from source and needs a C++ compiler.
+box2d = ["gymnasium[box2d]==1.2.1", "swig==4.3.1"]
+# CPU JAX runs tests/test_jax.py; modal_app.py installs these pins with CUDA on the L4.
+jax = ["jax==0.6.2", "flax==0.10.6", "optax==0.2.5", "gymnax==0.0.9"]
+# Client for the paid GPU comparison only.
+modal = ["modal==1.5.3"]
 
 [dependency-groups]
 dev = ["pytest==8.4.2", "ruff==0.13.2"]
