@@ -15,6 +15,10 @@ jobs:
         with:
           version: "0.12.5"
       - run: uv sync --frozen --python 3.12 --extra box2d
+      # The optional fused C batch, built with the runner's compiler; its one-call reset must
+      # match Gymnasium's per-seed resets bit for bit on 1M seeds before the tests run.
+      - run: uv run python -m control_clock.native build
+      - run: uv run python -m control_clock.native verify --seeds 1000000
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest -q
@@ -45,6 +49,12 @@ jobs:
           assert record["versions"]["box2d-py"] is None, record["versions"]
           for module in ("Box2D", "modal", "jax", "pygame", "swig", "envpool"):
               assert importlib.util.find_spec(module) is None, f"{module} is installed"
+          from control_clock import native
+          from control_clock.vector_env import CartPoleBatch, make_vector
+
+          # Without the built C library, asking for it gives the NumPy batch.
+          assert not native.available(), "the native library was built"
+          assert type(make_vector("CartPole-v1", 2, native=True)) is CartPoleBatch
           print(record["solve_seconds"], record["evaluations"][-1]["mean_return"])
           # Informational: another CPU may round NumPy's trigonometry differently.
           published = json.loads(Path("results/final/CartPole-v1__ars__default__000.json").read_text())
@@ -66,5 +76,6 @@ jobs:
       # EnvPool 1.2.7 loads libEGL, libOpenGL and libGLdispatch on import; the runner lacks them.
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libopengl0 libglvnd0
       - run: uv sync --frozen --python 3.12 --extra jax --extra bench
-      # The benchmark's Gymnax and EnvPool backends must pass the same gate as the others.
+      - run: uv run --no-sync python -m control_clock.native build
+      # The benchmark's native, Gymnax and EnvPool backends must pass the same gate as the others.
       - run: uv run --no-sync pytest -q tests/test_jax.py tests/test_systems.py

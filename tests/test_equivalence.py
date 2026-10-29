@@ -1,12 +1,17 @@
-"""The slow oracle is pinned Gymnasium, not a second copy of the equations."""
+"""The slow oracle is pinned Gymnasium, not a second copy of the equations.
+
+Every test runs on the NumPy batch and again, when it is built, on the fused C batch.
+"""
 
 import importlib.util
+import sys
 
 import gymnasium as gym
 import numpy as np
 import pytest
 from gymnasium.envs.classic_control.acrobot import wrap
 
+from control_clock import native
 from control_clock.vector_env import GymnasiumBatch, _wrap_angles, make_vector
 
 # Float32 observations permit approximately one ULP; rewards/flags remain exact.
@@ -20,6 +25,32 @@ LUNAR_LANDER = pytest.param(
     ),
 )
 ALL_TASKS = [*CLASSIC_TASKS, LUNAR_LANDER]
+NUMPY_MAKE_VECTOR = make_vector
+
+
+def native_make_vector(task, num_envs):
+    """The fused C batch for classic control; other tasks keep the Gymnasium batch."""
+    if task in native.TASKS:
+        return native.make(task, num_envs)
+    return NUMPY_MAKE_VECTOR(task, num_envs)
+
+
+@pytest.fixture(
+    autouse=True,
+    params=[
+        "numpy",
+        pytest.param(
+            "native",
+            marks=pytest.mark.skipif(
+                not native.available(), reason="needs python -m control_clock.native build"
+            ),
+        ),
+    ],
+)
+def implementation(request, monkeypatch):
+    if request.param == "native":
+        monkeypatch.setattr(sys.modules[__name__], "make_vector", native_make_vector)
+    return request.param
 
 
 def assert_observations(actual, expected):
@@ -300,9 +331,10 @@ def test_inclusive_wrap_matches_gymnasium():
     assert angles[1] == -np.pi and angles[4] == np.pi
 
 
-@pytest.mark.parametrize("factory", [make_vector, GymnasiumBatch])
+@pytest.mark.parametrize("reference", [False, True])
 @pytest.mark.parametrize("task", ALL_TASKS)
-def test_runtime_input_validation(factory, task):
+def test_runtime_input_validation(reference, task):
+    factory = GymnasiumBatch if reference else make_vector
     batch = factory(task, 2)
     try:
         with pytest.raises(RuntimeError, match="reset"):

@@ -16,6 +16,7 @@
           "call_microseconds_p99": 28.76809999999996,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.241608,
             "q1": 0.194659,
@@ -47,6 +48,7 @@
           "call_microseconds_p99": 35.61230000000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.423071,
             "q1": 0.41668,
@@ -78,6 +80,7 @@
           "call_microseconds_p99": 75.51384000000002,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.662826,
             "q1": 0.658206,
@@ -109,6 +112,7 @@
           "call_microseconds_p99": 376.29378000000014,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 1.817353,
             "q1": 1.806352,
@@ -140,6 +144,7 @@
           "call_microseconds_p99": 2888.08497,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 13.346625,
             "q1": 12.636541,
@@ -178,6 +183,7 @@
           "call_microseconds_p99": 56.43929999999989,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.768606,
             "q1": 0.765541,
@@ -209,6 +215,7 @@
           "call_microseconds_p99": 414.0310100000005,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 1.952178,
             "q1": 1.890511,
@@ -240,6 +247,7 @@
           "call_microseconds_p99": 2675.7739900000006,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 9.533651,
             "q1": 9.173328,
@@ -271,6 +279,7 @@
           "call_microseconds_p99": 20076.6701,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 55.723486,
             "q1": 52.664784,
@@ -302,6 +311,7 @@
           "call_microseconds_p99": 162730.66820000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 467.397577,
             "q1": 424.794636,
@@ -340,6 +350,7 @@
           "call_microseconds_p99": 28.27709999999996,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.754088,
             "q1": 0.677063,
@@ -371,6 +382,7 @@
           "call_microseconds_p99": 41.14040000000002,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.734802,
             "q1": 0.669889,
@@ -402,6 +414,7 @@
           "call_microseconds_p99": 57.18894000000003,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.71283,
             "q1": 0.677143,
@@ -433,6 +446,7 @@
           "call_microseconds_p99": 135.78284000000002,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.735343,
             "q1": 0.660612,
@@ -464,6 +478,7 @@
           "call_microseconds_p99": 837.0454900000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.767043,
             "q1": 0.658468,
@@ -502,6 +517,7 @@
           "call_microseconds_p99": 166.83292000000012,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.80246,
             "q1": 0.756413,
@@ -533,6 +549,7 @@
           "call_microseconds_p99": 423.87358000000006,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.774387,
             "q1": 0.711167,
@@ -564,6 +581,7 @@
           "call_microseconds_p99": 1548.8451399999997,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.782683,
             "q1": 0.771582,
@@ -595,6 +613,7 @@
           "call_microseconds_p99": 9575.53164,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.777423,
             "q1": 0.697742,
@@ -626,6 +645,7 @@
           "call_microseconds_p99": 70470.54265,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.726236,
             "q1": 0.703473,
@@ -664,6 +684,7 @@
           "call_microseconds_p99": 134.23378999999954,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": 101.83086250000001,
+          "explicit_reset_share": 0.0022847752491493927,
           "construct_milliseconds": {
             "median": 0.680299,
             "q1": 0.570521,
@@ -695,6 +716,7 @@
           "call_microseconds_p99": 126.4415000000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": 22.8965,
+          "explicit_reset_share": 0.003962563985450685,
           "construct_milliseconds": {
             "median": 0.770299,
             "q1": 0.757916,
@@ -726,6 +748,7 @@
           "call_microseconds_p99": 142.0159,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.858156,
             "q1": 0.820164,
@@ -757,6 +780,7 @@
           "call_microseconds_p99": 280.96962000000013,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.838208,
             "q1": 0.808121,
@@ -788,6 +812,7 @@
           "call_microseconds_p99": 1489.32265,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.835773,
             "q1": 0.826306,
@@ -826,6 +851,7 @@
           "call_microseconds_p99": 48.131,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.228964,
             "q1": 0.161927,
@@ -857,6 +883,7 @@
           "call_microseconds_p99": 34.70130000000005,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.415006,
             "q1": 0.407001,
@@ -888,6 +915,7 @@
           "call_microseconds_p99": 53.582800000000006,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.588385,
             "q1": 0.486151,
@@ -919,6 +947,7 @@
           "call_microseconds_p99": 244.54119000000006,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 1.746358,
             "q1": 1.703147,
@@ -950,6 +979,7 @@
           "call_microseconds_p99": 1903.2324600000002,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 12.43088,
             "q1": 12.397938,
@@ -988,6 +1018,7 @@
           "call_microseconds_p99": 14.848,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.856963,
             "q1": 0.769608,
@@ -1019,6 +1050,7 @@
           "call_microseconds_p99": 64.53680000000004,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 1.795922,
             "q1": 1.753292,
@@ -1050,6 +1082,7 @@
           "call_microseconds_p99": 451.34776000000016,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 9.338161,
             "q1": 8.349298,
@@ -1081,6 +1114,7 @@
           "call_microseconds_p99": 4386.39061,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 58.744789,
             "q1": 55.997349,
@@ -1112,6 +1146,7 @@
           "call_microseconds_p99": 37678.16145000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 497.362585,
             "q1": 450.889013,
@@ -1150,6 +1185,7 @@
           "call_microseconds_p99": 48.232,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.47006,
             "q1": 0.403344,
@@ -1181,6 +1217,7 @@
           "call_microseconds_p99": 40.14840000000002,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.867454,
             "q1": 0.866993,
@@ -1212,6 +1249,7 @@
           "call_microseconds_p99": 36.31341000000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 1.628294,
             "q1": 1.621522,
@@ -1243,6 +1281,7 @@
           "call_microseconds_p99": 53.65511000000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.746594,
             "q1": 0.706689,
@@ -1274,6 +1313,7 @@
           "call_microseconds_p99": 170.03792,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.858697,
             "q1": 0.838388,
@@ -1312,6 +1352,7 @@
           "call_microseconds_p99": 19.537,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.612,
             "q1": 0.535805,
@@ -1343,6 +1384,7 @@
           "call_microseconds_p99": 27.86170000000011,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.634833,
             "q1": 0.494547,
@@ -1374,6 +1416,7 @@
           "call_microseconds_p99": 44.264010000000006,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.513443,
             "q1": 0.511098,
@@ -1405,6 +1448,7 @@
           "call_microseconds_p99": 67.94582000000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.631276,
             "q1": 0.569128,
@@ -1436,6 +1480,7 @@
           "call_microseconds_p99": 229.34735000000003,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.60199,
             "q1": 0.470291,
@@ -1474,6 +1519,7 @@
           "call_microseconds_p99": 83.66480000000011,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.607761,
             "q1": 0.599115,
@@ -1505,6 +1551,7 @@
           "call_microseconds_p99": 408.49905,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.725645,
             "q1": 0.584587,
@@ -1536,6 +1583,7 @@
           "call_microseconds_p99": 482.32011999999986,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.662235,
             "q1": 0.596179,
@@ -1567,6 +1615,7 @@
           "call_microseconds_p99": 1738.93121,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.65465,
             "q1": 0.590048,
@@ -1598,6 +1647,7 @@
           "call_microseconds_p99": 12177.711449999999,
           "steps_per_call": 64,
           "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
           "construct_milliseconds": {
             "median": 0.621568,
             "q1": 0.581081,
@@ -1636,6 +1686,7 @@
           "call_microseconds_p99": 40.474199999999925,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": 10.010704595185997,
+          "explicit_reset_share": 0.01732863270101942,
           "construct_milliseconds": {
             "median": 0.600848,
             "q1": 0.540394,
@@ -1667,6 +1718,7 @@
           "call_microseconds_p99": 40.61691000000008,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": 9.048677066228791,
+          "explicit_reset_share": 0.11761916891731394,
           "construct_milliseconds": {
             "median": 0.732919,
             "q1": 0.592021,
@@ -1698,6 +1750,7 @@
           "call_microseconds_p99": 44.2028,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": 7.6328334237656,
+          "explicit_reset_share": 0.45819269254398565,
           "construct_milliseconds": {
             "median": 0.748829,
             "q1": 0.721267,
@@ -1729,6 +1782,7 @@
           "call_microseconds_p99": 68.84081000000002,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": 7.042408181323169,
+          "explicit_reset_share": 0.7895378870673119,
           "construct_milliseconds": {
             "median": 0.864257,
             "q1": 0.725735,
@@ -1760,6 +1814,7 @@
           "call_microseconds_p99": 160.29401000000001,
           "steps_per_call": 1,
           "explicit_reset_microseconds_per_slot": 6.554896584166808,
+          "explicit_reset_share": 0.8975713033988728,
           "construct_milliseconds": {
             "median": 0.667895,
             "q1": 0.640644,
@@ -2071,7 +2126,14 @@
         "setup": 2.226328771959489e-06,
         "startup": 0.0004374327878461925,
         "update": 8.934846931689969e-05
-      }
+      },
+      "environment_share": {
+        "median": 0.2666521462023801,
+        "q1": 0.2417850308134419,
+        "q3": 0.28263001814052946,
+        "n": 5
+      },
+      "environment_share_max": 0.28769162899301787
     },
     "Acrobot-v1/cem/longer": {
       "seeds": 5,
@@ -2118,7 +2180,14 @@
         "setup": 3.0939418014436835e-06,
         "startup": 0.0005610589093313487,
         "update": 6.926996486473172e-05
-      }
+      },
+      "environment_share": {
+        "median": 0.23273721372779624,
+        "q1": 0.21928415928718709,
+        "q3": 0.24756658768912948,
+        "n": 5
+      },
+      "environment_share_max": 0.2501737870148112
     },
     "Acrobot-v1/ppo-cpu/default": {
       "seeds": 5,
@@ -2165,7 +2234,14 @@
         "setup/env_reset": 2.7074287645675025e-05,
         "startup": 0.000380291955556218,
         "update": 0.09266222826072318
-      }
+      },
+      "environment_share": {
+        "median": 0.020281026466391454,
+        "q1": 0.019545973694085787,
+        "q3": 0.022636832901034996,
+        "n": 5
+      },
+      "environment_share_max": 0.02490075552711668
     },
     "CartPole-v1/ars/default": {
       "seeds": 5,
@@ -2212,7 +2288,14 @@
         "setup": 3.093565134996848e-05,
         "startup": 0.007096425646903484,
         "update": 0.0004540669847841225
-      }
+      },
+      "environment_share": {
+        "median": 0.22913459862557364,
+        "q1": 0.2277218376280032,
+        "q3": 0.2311997188558141,
+        "n": 5
+      },
+      "environment_share_max": 0.2504840716153543
     },
     "CartPole-v1/cem/default": {
       "seeds": 5,
@@ -2259,7 +2342,14 @@
         "setup": 3.1689224289760485e-05,
         "startup": 0.006977875347986825,
         "update": 0.0003608921754763146
-      }
+      },
+      "environment_share": {
+        "median": 0.22306368026594994,
+        "q1": 0.22167384766240822,
+        "q3": 0.23361749051717062,
+        "n": 5
+      },
+      "environment_share_max": 0.27342339717303565
     },
     "CartPole-v1/ppo-cpu/zoo-shape": {
       "seeds": 5,
@@ -2306,6 +2396,683 @@
         "setup/env_reset": 5.1722075250863934e-05,
         "startup": 0.0026366717209626704,
         "update": 0.4678799146766388
+      },
+      "environment_share": {
+        "median": 0.02895988033247973,
+        "q1": 0.02802598586601806,
+        "q3": 0.03173439310993063,
+        "n": 5
+      },
+      "environment_share_max": 0.03299771731510552
+    }
+  },
+  "native_window": {
+    "Acrobot-v1/native": {
+      "gate_passed": true,
+      "gate_max_observation_difference": 0.0,
+      "gate_compared_transitions": 4096,
+      "sizes": {
+        "1": {
+          "transitions_per_second": {
+            "median": 419676.77511185576,
+            "q1": 419195.0390887093,
+            "q3": 421144.60543937667,
+            "n": 5
+          },
+          "call_microseconds_p50": 2.355,
+          "call_microseconds_p99": 3.276,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 3.5819625,
+          "explicit_reset_share": 0.0029347344420039617,
+          "construct_milliseconds": {
+            "median": 0.647116,
+            "q1": 0.578997,
+            "q3": 0.821516,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.012463,
+            "q1": 0.01089,
+            "q3": 0.012804,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.008326,
+            "q1": 0.005701,
+            "q3": 0.010761,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "8": {
+          "transitions_per_second": {
+            "median": 2234819.1479697437,
+            "q1": 2213280.602211173,
+            "q3": 2256143.9437462236,
+            "n": 5
+          },
+          "call_microseconds_p50": 3.526,
+          "call_microseconds_p99": 4.138,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 1.1766875,
+          "explicit_reset_share": 0.005144664624540589,
+          "construct_milliseconds": {
+            "median": 0.87091,
+            "q1": 0.827047,
+            "q3": 0.929091,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.018886,
+            "q1": 0.016902,
+            "q3": 0.021641,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.008857,
+            "q1": 0.007925,
+            "q3": 0.009057,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "64": {
+          "transitions_per_second": {
+            "median": 4968727.103338849,
+            "q1": 4942415.907435887,
+            "q3": 5000500.538383969,
+            "n": 5
+          },
+          "call_microseconds_p50": 12.754,
+          "call_microseconds_p99": 15.651000000000002,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
+          "construct_milliseconds": {
+            "median": 0.62816,
+            "q1": 0.556284,
+            "q3": 0.702701,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.020909,
+            "q1": 0.017794,
+            "q3": 0.027012,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.015239,
+            "q1": 0.014968,
+            "q3": 0.01572,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "512": {
+          "transitions_per_second": {
+            "median": 5949306.88704714,
+            "q1": 5923209.943068097,
+            "q3": 5976794.504369555,
+            "n": 5
+          },
+          "call_microseconds_p50": 85.732,
+          "call_microseconds_p99": 99.48934000000003,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
+          "construct_milliseconds": {
+            "median": 0.667084,
+            "q1": 0.545102,
+            "q3": 0.883083,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.074741,
+            "q1": 0.07402,
+            "q3": 0.076635,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.081184,
+            "q1": 0.080212,
+            "q3": 0.082516,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "4096": {
+          "transitions_per_second": {
+            "median": 6103654.036179303,
+            "q1": 6098364.130757689,
+            "q3": 6123580.228042768,
+            "n": 5
+          },
+          "call_microseconds_p50": 671.5175,
+          "call_microseconds_p99": 706.48854,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
+          "construct_milliseconds": {
+            "median": 0.727058,
+            "q1": 0.700688,
+            "q3": 0.784977,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.546926,
+            "q1": 0.537779,
+            "q3": 0.54887,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.602061,
+            "q1": 0.599806,
+            "q3": 0.606189,
+            "n": 5
+          },
+          "processes": 5
+        }
+      }
+    },
+    "Acrobot-v1/numpy": {
+      "gate_passed": true,
+      "gate_max_observation_difference": 0.0,
+      "gate_compared_transitions": 4096,
+      "sizes": {
+        "1": {
+          "transitions_per_second": {
+            "median": 11848.120807986938,
+            "q1": 11835.4543880088,
+            "q3": 11885.583385115127,
+            "n": 5
+          },
+          "call_microseconds_p50": 82.937,
+          "call_microseconds_p99": 115.56819999999955,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 135.040075,
+          "explicit_reset_share": 0.0031206251907042455,
+          "construct_milliseconds": {
+            "median": 0.714434,
+            "q1": 0.544882,
+            "q3": 0.847035,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.077547,
+            "q1": 0.065945,
+            "q3": 0.08429,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.12131,
+            "q1": 0.112413,
+            "q3": 0.123043,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "8": {
+          "transitions_per_second": {
+            "median": 92039.78131923206,
+            "q1": 91822.81102802721,
+            "q3": 93101.225341458,
+            "n": 5
+          },
+          "call_microseconds_p50": 85.192,
+          "call_microseconds_p99": 104.36401000000001,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 25.0413,
+          "explicit_reset_share": 0.004502404337100599,
+          "construct_milliseconds": {
+            "median": 0.677082,
+            "q1": 0.571082,
+            "q3": 0.984034,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.133553,
+            "q1": 0.124325,
+            "q3": 0.206511,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.115319,
+            "q1": 0.113495,
+            "q3": 0.127833,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "64": {
+          "transitions_per_second": {
+            "median": 649748.151207943,
+            "q1": 647501.4561273896,
+            "q3": 649994.6838813697,
+            "n": 5
+          },
+          "call_microseconds_p50": 97.9505,
+          "call_microseconds_p99": 108.30591000000001,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
+          "construct_milliseconds": {
+            "median": 0.810887,
+            "q1": 0.735723,
+            "q3": 1.059918,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.629172,
+            "q1": 0.611279,
+            "q3": 0.671011,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.130697,
+            "q1": 0.129225,
+            "q3": 0.143933,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "512": {
+          "transitions_per_second": {
+            "median": 2458068.4156624596,
+            "q1": 2457390.415314954,
+            "q3": 2465740.9828944113,
+            "n": 5
+          },
+          "call_microseconds_p50": 206.521,
+          "call_microseconds_p99": 235.21153000000004,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
+          "construct_milliseconds": {
+            "median": 0.868435,
+            "q1": 0.526217,
+            "q3": 1.069086,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 4.325775,
+            "q1": 4.313563,
+            "q3": 4.335774,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.240716,
+            "q1": 0.240065,
+            "q3": 0.240827,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "4096": {
+          "transitions_per_second": {
+            "median": 4090568.5239393734,
+            "q1": 4088391.3440060182,
+            "q3": 4090875.1242281613,
+            "n": 5
+          },
+          "call_microseconds_p50": 996.017,
+          "call_microseconds_p99": 1089.1390000000001,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": null,
+          "explicit_reset_share": null,
+          "construct_milliseconds": {
+            "median": 0.80185,
+            "q1": 0.739571,
+            "q3": 1.085326,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 34.442994,
+            "q1": 34.348475,
+            "q3": 34.661237,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 1.141172,
+            "q1": 1.060489,
+            "q3": 1.265077,
+            "n": 5
+          },
+          "processes": 5
+        }
+      }
+    },
+    "CartPole-v1/native": {
+      "gate_passed": true,
+      "gate_max_observation_difference": 0.0,
+      "gate_compared_transitions": 1394,
+      "sizes": {
+        "1": {
+          "transitions_per_second": {
+            "median": 430227.15489606065,
+            "q1": 426945.4709538969,
+            "q3": 434397.70138286625,
+            "n": 5
+          },
+          "call_microseconds_p50": 2.194,
+          "call_microseconds_p99": 3.075409999999996,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 2.481605579868709,
+          "explicit_reset_share": 0.04766707602393072,
+          "construct_milliseconds": {
+            "median": 0.603784,
+            "q1": 0.488195,
+            "q3": 0.778725,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.006061,
+            "q1": 0.0051,
+            "q3": 0.009748,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.006272,
+            "q1": 0.00527,
+            "q3": 0.007034,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "8": {
+          "transitions_per_second": {
+            "median": 2540240.1072656075,
+            "q1": 2523943.88414999,
+            "q3": 2616917.129786248,
+            "n": 5
+          },
+          "call_microseconds_p50": 2.325,
+          "call_microseconds_p99": 3.294100000000004,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 2.132650246305419,
+          "explicit_reset_share": 0.24429059929804145,
+          "construct_milliseconds": {
+            "median": 0.612771,
+            "q1": 0.591911,
+            "q3": 0.896098,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.008466,
+            "q1": 0.008296,
+            "q3": 0.020178,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.00548,
+            "q1": 0.00523,
+            "q3": 0.006973,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "64": {
+          "transitions_per_second": {
+            "median": 10850244.898716036,
+            "q1": 10738325.413730953,
+            "q3": 10872767.910469553,
+            "n": 5
+          },
+          "call_microseconds_p50": 3.346,
+          "call_microseconds_p99": 3.537,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 0.8872387411828541,
+          "explicit_reset_share": 0.43160059377444804,
+          "construct_milliseconds": {
+            "median": 0.515166,
+            "q1": 0.508343,
+            "q3": 0.724934,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.012463,
+            "q1": 0.012293,
+            "q3": 0.013876,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.005791,
+            "q1": 0.00569,
+            "q3": 0.007334,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "512": {
+          "transitions_per_second": {
+            "median": 30495874.383204933,
+            "q1": 30205000.029957965,
+            "q3": 30680829.210081942,
+            "n": 5
+          },
+          "call_microseconds_p50": 11.763,
+          "call_microseconds_p99": 13.523490000000004,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 0.2185571739722298,
+          "explicit_reset_share": 0.2980886003164098,
+          "construct_milliseconds": {
+            "median": 0.597401,
+            "q1": 0.516679,
+            "q3": 0.754639,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.054534,
+            "q1": 0.054002,
+            "q3": 0.057389,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.015239,
+            "q1": 0.014908,
+            "q3": 0.016201,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "4096": {
+          "transitions_per_second": {
+            "median": 41256602.741994046,
+            "q1": 41199335.95491685,
+            "q3": 41423008.918357514,
+            "n": 5
+          },
+          "call_microseconds_p50": 76.304,
+          "call_microseconds_p99": 94.57843000000001,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 0.11996040006780812,
+          "explicit_reset_share": 0.2228819527991481,
+          "construct_milliseconds": {
+            "median": 0.811938,
+            "q1": 0.799375,
+            "q3": 0.82348,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.394828,
+            "q1": 0.393556,
+            "q3": 0.396972,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.080763,
+            "q1": 0.080472,
+            "q3": 0.082997,
+            "n": 5
+          },
+          "processes": 5
+        }
+      }
+    },
+    "CartPole-v1/numpy": {
+      "gate_passed": true,
+      "gate_max_observation_difference": 0.0,
+      "gate_compared_transitions": 1394,
+      "sizes": {
+        "1": {
+          "transitions_per_second": {
+            "median": 40275.867073610905,
+            "q1": 40234.03240815949,
+            "q3": 40540.14256758667,
+            "n": 5
+          },
+          "call_microseconds_p50": 23.936,
+          "call_microseconds_p99": 31.419409999999996,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 9.159254923413567,
+          "explicit_reset_share": 0.01654196304796125,
+          "construct_milliseconds": {
+            "median": 0.492383,
+            "q1": 0.452698,
+            "q3": 0.701178,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.027713,
+            "q1": 0.020088,
+            "q3": 0.033553,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.045136,
+            "q1": 0.040507,
+            "q3": 0.045456,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "8": {
+          "transitions_per_second": {
+            "median": 309565.3033524577,
+            "q1": 308882.88274904556,
+            "q3": 309666.8291863103,
+            "n": 5
+          },
+          "call_microseconds_p50": 22.673,
+          "call_microseconds_p99": 28.304310000000022,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 8.35371702244116,
+          "explicit_reset_share": 0.1153928824038908,
+          "construct_milliseconds": {
+            "median": 0.567595,
+            "q1": 0.565742,
+            "q3": 0.679056,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.067788,
+            "q1": 0.066947,
+            "q3": 0.076044,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.034976,
+            "q1": 0.034375,
+            "q3": 0.038824,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "64": {
+          "transitions_per_second": {
+            "median": 1417027.9292191782,
+            "q1": 1398434.5112879374,
+            "q3": 1431680.259939447,
+            "n": 5
+          },
+          "call_microseconds_p50": 24.3815,
+          "call_microseconds_p99": 30.409920000000014,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 7.166412913727617,
+          "explicit_reset_share": 0.4566243009596105,
+          "construct_milliseconds": {
+            "median": 0.716548,
+            "q1": 0.466724,
+            "q3": 0.745813,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 0.428041,
+            "q1": 0.421819,
+            "q3": 0.430605,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.038624,
+            "q1": 0.033634,
+            "q3": 0.040136,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "512": {
+          "transitions_per_second": {
+            "median": 2745391.5743758315,
+            "q1": 2736154.366267512,
+            "q3": 2755085.6798183164,
+            "n": 5
+          },
+          "call_microseconds_p50": 38.674,
+          "call_microseconds_p99": 48.00492000000001,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 6.425146270078955,
+          "explicit_reset_share": 0.7905488550039929,
+          "construct_milliseconds": {
+            "median": 0.650262,
+            "q1": 0.454461,
+            "q3": 0.702491,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 3.215452,
+            "q1": 3.207436,
+            "q3": 3.229568,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.059553,
+            "q1": 0.053351,
+            "q3": 0.065294,
+            "n": 5
+          },
+          "processes": 5
+        },
+        "4096": {
+          "transitions_per_second": {
+            "median": 3155519.957089243,
+            "q1": 3136465.1965207923,
+            "q3": 3157048.722102443,
+            "n": 5
+          },
+          "call_microseconds_p50": 130.061,
+          "call_microseconds_p99": 156.00303000000002,
+          "steps_per_call": 1,
+          "explicit_reset_microseconds_per_slot": 6.347702415663671,
+          "explicit_reset_share": 0.8985655011688647,
+          "construct_milliseconds": {
+            "median": 0.797992,
+            "q1": 0.747597,
+            "q3": 0.816347,
+            "n": 5
+          },
+          "full_reset_milliseconds": {
+            "median": 25.770934,
+            "q1": 25.738973,
+            "q3": 25.886072,
+            "n": 5
+          },
+          "first_step_milliseconds": {
+            "median": 0.225266,
+            "q1": 0.224726,
+            "q3": 0.22697,
+            "n": 5
+          },
+          "processes": 5
+        }
       }
     }
   }

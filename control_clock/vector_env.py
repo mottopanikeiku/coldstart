@@ -271,8 +271,19 @@ class GymnasiumBatch(_Batch):
         super().close()
 
 
-def make_vector(task: str, num_envs: int) -> _Batch:
-    """Construct a task batch. reset_done consumes seeds only for selected slots."""
+def make_vector(task: str, num_envs: int, *, native: bool = False) -> _Batch:
+    """Construct a task batch. reset_done consumes seeds only for selected slots.
+
+    native=True returns the fused C batch from classic.c for CartPole and Acrobot when it
+    has been built (python -m control_clock.native build), and this NumPy batch otherwise.
+    """
+    if native and task in ("CartPole-v1", "Acrobot-v1"):
+        from control_clock.native import Unavailable, make
+
+        try:
+            return make(task, num_envs)
+        except Unavailable:
+            pass
     if task == "CartPole-v1":
         return CartPoleBatch(num_envs)
     if task == "Acrobot-v1":
