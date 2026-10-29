@@ -43,7 +43,7 @@ def check(record: dict) -> dict:
         "method": record["method"],
         "variant": record["variant"],
         "seed": record["seed"],
-        "source": record["source"],
+        "source": record.get("source"),
         "selection_mean": passing["mean_return"],
         "replay_matches": True,
         "fresh_seeds": [FRESH_SEEDS[0], FRESH_SEEDS[-1]],
@@ -81,7 +81,9 @@ def main():
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    records = [json.loads(path.read_text()) for path in sorted(args.input.glob("*__*.json"))]
+    paths = sorted(args.input.glob("*__*.json"))
+    # bench.py's profiled runs skip saving; their plain twins carry the same policy.
+    records = [json.loads(path.read_text()) for path in paths if "__profiled" not in path.name]
     saved = [r for r in records if r.get("policy") and "error" not in r["policy"]]
     if len(saved) != sum(record["solved"] for record in records):
         raise SystemExit("every solved record must carry a saved policy")
