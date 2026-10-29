@@ -43,6 +43,11 @@ jobs:
           assert record["solved"] and record["stop_reason"] == "solved", record["stop_reason"]
           assert record["versions"]["box2d-py"] is None, record["versions"]
           print(record["solve_seconds"], record["evaluations"][-1]["mean_return"])
+          # Informational: another CPU may round NumPy's trigonometry differently.
+          published = json.loads(Path("results/final/CartPole-v1__ars__default__000.json").read_text())
+          returns = [evaluation["returns"] for evaluation in record["evaluations"]]
+          same = returns == [evaluation["returns"] for evaluation in published["evaluations"]]
+          print("returns match the published record:", same)
           EOF
   jax:
     runs-on: ubuntu-latest
