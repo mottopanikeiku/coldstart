@@ -199,8 +199,9 @@ The fixed 100 evaluation seeds, thresholds 475/-100 and 120/300-second limits
 are unchanged. A watchdog retains failures, rather than replacing them with
 successful seeds. GPU records and summaries are separate from the laptop data.
 
-Pinned dependencies are in `gpu-requirements.txt`; Modal adds CUDA 12 wheels
-for the same JAX version. `tests/test_jax.py` checks scalar GAE, a real optimizer
+Pinned dependencies are in `gpu-requirements.txt`, equal to the `jax` extra in
+`pyproject.toml`; Modal adds CUDA 12 wheels for the same JAX version.
+`tests/test_jax.py` checks scalar GAE, a real optimizer
 update, matching host/JAX greedy actions and installed Gymnax dynamics against
 Gymnasium. CI runs those checks on CPU, and the Modal job runs them on L4
 before launching the timed seed processes.

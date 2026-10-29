@@ -14,10 +14,36 @@ jobs:
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0, Node 24
         with:
           version: "0.12.5"
-      - run: uv sync --frozen --python 3.12
+      - run: uv sync --frozen --python 3.12 --extra box2d
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest -q
+  first-run:
+    # The README's CPU-only path: locked wheels, nothing compiled, no Box2D.
+    runs-on: ubuntu-latest
+    env:
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1, Node 24
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0, Node 24
+        with:
+          version: "0.12.5"
+      - run: uv sync --frozen --python 3.12 --no-build
+      - run: uv run --no-sync pytest -q
+      - run: .venv/bin/python run.py --phase final --task CartPole-v1 --method ars --seeds 0:1 --output results/first-run
+      - name: Require a passing record without Box2D
+        run: |
+          .venv/bin/python - <<'EOF'
+          import json
+          from pathlib import Path
+
+          record = json.loads(Path("results/first-run/CartPole-v1__ars__default__000.json").read_text())
+          assert record["solved"] and record["stop_reason"] == "solved", record["stop_reason"]
+          assert record["versions"]["box2d-py"] is None, record["versions"]
+          print(record["solve_seconds"], record["evaluations"][-1]["mean_return"])
+          EOF
   jax:
     runs-on: ubuntu-latest
     env:
@@ -29,6 +55,5 @@ jobs:
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0, Node 24
         with:
           version: "0.12.5"
-      - run: uv venv --python 3.12 .jax-venv
-      - run: uv pip install --python .jax-venv/bin/python -r gpu-requirements.txt pytest==8.4.2
-      - run: .jax-venv/bin/python -m pytest -q tests/test_jax.py
+      - run: uv sync --frozen --python 3.12 --extra jax
+      - run: uv run --no-sync pytest -q tests/test_jax.py

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 import platform
@@ -32,6 +33,8 @@ def main():
     first, last = map(int, args.seeds.split(":"))
     if first < 0 or last <= first or last > 10_000:
         parser.error("seed range must satisfy 0 <= first < last <= 10000")
+    if args.task == "LunarLander-v3" and importlib.util.find_spec("Box2D") is None:
+        parser.error("LunarLander-v3 needs the box2d extra: uv sync --frozen --extra box2d")
     args.output.mkdir(parents=True, exist_ok=True)
     environment = dict(os.environ)
     environment.update(
