@@ -60,5 +60,6 @@ jobs:
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0, Node 24
         with:
           version: "0.12.5"
-      - run: uv sync --frozen --python 3.12 --extra jax
-      - run: uv run --no-sync pytest -q tests/test_jax.py
+      - run: uv sync --frozen --python 3.12 --extra jax --extra bench
+      # The benchmark's Gymnax and EnvPool backends must pass the same gate as the others.
+      - run: uv run --no-sync pytest -q tests/test_jax.py tests/test_systems.py
