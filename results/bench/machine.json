@@ -1,0 +1,129 @@
+{
+  "machine": {
+    "cpu_model": "AMD Ryzen AI 5 PRO 340 w/ Radeon 840M",
+    "logical_cpus": 12,
+    "pinned_cpu": 4,
+    "pinned_cpu_siblings": "4,10",
+    "pinned_cpu_max_mhz": 4900.0,
+    "max_mhz_by_cpu": {
+      "0": 4900.0,
+      "1": 4900.0,
+      "2": 3425.0,
+      "3": 3425.0,
+      "4": 4900.0,
+      "5": 3425.0,
+      "6": 4900.0,
+      "7": 4900.0,
+      "8": 3425.0,
+      "9": 3425.0,
+      "10": 4900.0,
+      "11": 3425.0
+    },
+    "governor": "performance",
+    "energy_performance_preference": "performance",
+    "platform_profile": "performance",
+    "kernel": "7.2.13-200.fc44.x86_64",
+    "python": "3.12.13",
+    "packages": {
+      "numpy": "2.2.6",
+      "gymnasium": "1.2.1",
+      "torch": "2.8.0+cpu",
+      "stable-baselines3": "2.7.0",
+      "jax": "0.6.2",
+      "jaxlib": "0.6.2",
+      "gymnax": "0.0.9",
+      "envpool": "1.2.7"
+    },
+    "numpy_simd": {
+      "baseline": [
+        "SSE",
+        "SSE2",
+        "SSE3"
+      ],
+      "found": [
+        "SSSE3",
+        "SSE41",
+        "POPCNT",
+        "SSE42",
+        "AVX",
+        "F16C",
+        "FMA3",
+        "AVX2",
+        "AVX512F",
+        "AVX512CD",
+        "AVX512_SKX",
+        "AVX512_CLX",
+        "AVX512_CNL",
+        "AVX512_ICL"
+      ],
+      "not found": [
+        "AVX512_KNL",
+        "AVX512_KNM"
+      ]
+    },
+    "threads": "OMP/MKL/OPENBLAS/NUMEXPR = 1; XLA single-threaded Eigen, 1 intra-op thread",
+    "source_commit": "18cd1456aa6b494f07754bf1ea332c413bd691c6"
+  },
+  "snapshots": {
+    "before": {
+      "time": "2026-10-29T04:35:46-07:00",
+      "load_average": [
+        1.43603515625,
+        2.39990234375,
+        2.64990234375
+      ],
+      "pinned_cpu_mhz": 3887.391,
+      "memory_available_mib": 9330
+    },
+    "after env": {
+      "time": "2026-10-29T04:41:30-07:00",
+      "load_average": [
+        2.34912109375,
+        2.39599609375,
+        2.5693359375
+      ],
+      "pinned_cpu_mhz": 3843.755,
+      "memory_available_mib": 8474
+    },
+    "after imports": {
+      "time": "2026-10-29T04:41:30-07:00",
+      "load_average": [
+        2.34912109375,
+        2.39599609375,
+        2.5693359375
+      ],
+      "pinned_cpu_mhz": 3818.828,
+      "memory_available_mib": 8474
+    },
+    "resumed": {
+      "time": "2026-10-29T04:41:30-07:00",
+      "load_average": [
+        2.34912109375,
+        2.39599609375,
+        2.5693359375
+      ],
+      "pinned_cpu_mhz": 3889.465,
+      "memory_available_mib": 8474
+    },
+    "after decompose": {
+      "time": "2026-10-29T04:54:11-07:00",
+      "load_average": [
+        1.30712890625,
+        1.77099609375,
+        2.24365234375
+      ],
+      "pinned_cpu_mhz": 4839.965,
+      "memory_available_mib": 9440
+    },
+    "after evaluation": {
+      "time": "2026-10-29T04:54:34-07:00",
+      "load_average": [
+        1.21875,
+        1.72021484375,
+        2.21630859375
+      ],
+      "pinned_cpu_mhz": 4840.702,
+      "memory_available_mib": 9482
+    }
+  }
+}

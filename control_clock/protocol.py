@@ -31,6 +31,10 @@ class RunContext:
     solve_seconds: float | None = None
     steps: int = 0
     configuration: dict = field(default_factory=dict)
+    eval_seeds: tuple[int, ...] = EVAL_SEEDS
+    # Set once by a method that can save its policy; read only after the clock stops.
+    policy: Policy | None = None
+    policy_parameters: Callable[[], dict] | None = None
     _next_evaluation: int = 0
     _eval_envs: list = field(default_factory=list)
     _train_rng: np.random.Generator = field(init=False)
@@ -51,13 +55,13 @@ class RunContext:
         if not force and steps < self._next_evaluation:
             return
         if not self._eval_envs:
-            self._eval_envs = [gym.make(self.task) for _ in EVAL_SEEDS]
+            self._eval_envs = [gym.make(self.task) for _ in self.eval_seeds]
         begin = time.perf_counter()
         observations = np.stack(
-            [env.reset(seed=seed)[0] for env, seed in zip(self._eval_envs, EVAL_SEEDS)]
+            [env.reset(seed=seed)[0] for env, seed in zip(self._eval_envs, self.eval_seeds)]
         )
-        returns = np.zeros(len(EVAL_SEEDS), dtype=np.float64)
-        active = np.ones(len(EVAL_SEEDS), dtype=bool)
+        returns = np.zeros(len(self.eval_seeds), dtype=np.float64)
+        active = np.ones(len(self.eval_seeds), dtype=bool)
         while active.any():
             self.check_time()
             indices = np.flatnonzero(active)

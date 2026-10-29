@@ -100,6 +100,13 @@ def train(ctx):
     def policy(observations):
         return greedy_actions(weights, observations, scales)
 
+    def parameters():
+        from control_clock.policies import affine
+
+        return affine(weights, scales)
+
+    ctx.policy, ctx.policy_parameters = policy, parameters
+
     try:
         ctx.checkpoint(policy, steps)
         while steps < horizon:

@@ -20,7 +20,7 @@ uv sync --frozen --python 3.12
 .venv/bin/python run.py --phase final --task CartPole-v1 --method ars --seeds 0:1 --output results/first-run
 ```
 
-It prints one line: the record path, `"solved"`, the seconds from process launch to the first passing evaluation, and the stop reason. The record keeps all 100 returns of every evaluation, package versions and the worker command. My published run of this seed passed at 1.69 seconds ([record](results/final/CartPole-v1__ars__default__000.json)); yours depends on your CPU and its load. The policy itself should not: seeds fix training and evaluation, and evaluations happen at fixed step counts. A fresh clone on my laptop and the CI runner both reproduced all 800 returns of that record's eight evaluations.
+It prints one line: the record path, `"solved"`, the seconds from process launch to the first passing evaluation, and the stop reason. The record keeps all 100 returns of every evaluation, package versions and the worker command. My published run of this seed passed at 1.69 seconds ([record](results/final/CartPole-v1__ars__default__000.json)); yours depends on your CPU and its load. The policy should not depend on load: seeds fix training and evaluation, and evaluations happen at fixed step counts. A fresh clone on my laptop and the CI runner both reproduced all 800 returns of that record's eight evaluations. That is an observation, not a guarantee: another CPU or library build can round floating-point math differently, and a small difference can change a trajectory.
 
 ## Reproduce
 
@@ -37,6 +37,7 @@ The published records were made with Box2D installed; CartPole and Acrobot never
 | `box2d` | LunarLander development runs and its equivalence tests | a C++ compiler |
 | `jax` | CPU JAX for `tests/test_jax.py` | nothing more |
 | `modal` | the client for the paid L4 comparison below | a Modal account |
+| `bench` | EnvPool for the systems benchmark (with `jax` for its Gymnax backends) | nothing more |
 
 Install with, for example, `uv sync --frozen --python 3.12 --extra box2d`; repeat `--extra` to combine them. [Run notes](docs/RUNNING.md) cover summaries, settings, attribution, failed development trials and correctness checks.
 
@@ -58,6 +59,15 @@ Seconds from Python process launch through the first passing evaluation, includi
 | Acrobot-v1 | ARS, affine policies | 28.15 [25.48, 29.90] | 20/20 |
 
 Passing means raw mean return **475 or higher on CartPole, -100 or higher on Acrobot**, over **100 complete greedy Gymnasium episodes**. Evaluation seeds are disjoint from training. Limits are 120/300 seconds. Initial random policies count too, so this is qualification time, not necessarily time spent learning ([protocol](docs/PROTOCOL.md)).
+
+## Where the seconds go: systems benchmark
+
+I split the clock for my three methods and measured six environment backends on their own, in an exclusive window on one pinned Zen 5 core ([details](docs/SYSTEMS.md), [raw data](results/bench)). Every backend first passed an equivalence gate against Gymnasium. In this run, the fused Gymnax rows shared the unfused Gymnax gate; I added and ran a fused-path check afterwards. All 30 pinned reruns reproduced their published evaluations exactly, and the measured phases account for each run to within 0.05%.
+
+- **Evaluation is the largest cost.** It took 64–81% of the solve clock for ARS and CEM on both tasks and for PPO on Acrobot. The environment step took 2–26%. For PPO on CartPole, optimizer epochs took 47% and Torch import plus setup took 26%.
+- **My NumPy Acrobot batch is fast at large batches.** At 4,096 environments it ran 3.84 M transitions/s, against 0.028 M/s for Gymnasium and 1.53 M/s for one-thread EnvPool. Gymnax was faster, at 6.06 M/s, after a 0.4–0.8 s compile.
+- **My NumPy CartPole batch is reset-bound.** Gymnasium's own vectorized CartPole ran 28.2 M/s at 4,096; mine ran 3.07 M/s. Seeding each reset exactly like Gymnasium took 90% of my batch's time at that size.
+- **Qualified policies are near the bar.** Replayed in a new process, all 30 saved policies matched their recorded actions. On 1,000 fresh episodes never used for selection, 26 of 30 still passed. On Acrobot, only 31–37 of each method's 50 fresh 100-episode blocks passed, pooled over five policies.
 
 ## Separate implementation and hardware comparison: JAX PPO on an L4
 
@@ -81,7 +91,7 @@ uv sync --frozen --python 3.12 --extra modal
 
 ## Limits
 
-- The fixed evaluation set is reused for stopping and development selection, not held out.
+- The fixed evaluation set is reused for stopping and development selection, not held out. The pinned reruns of seeds 0–4 reproduced their published evaluations exactly, so their saved policies are those runs' winners. On fresh episodes, some fall below the bar ([systems benchmark](docs/SYSTEMS.md#saved-policies-and-a-fresh-evaluation-cohort)). Seeds 5–19 and the library runs have no saved policy yet.
 - Two small tasks, one laptop and three GPU seeds per task do not establish a general ranking.
 - Objectives, normalization, checkpoint grids and training horizons differ between methods.
 - Dynamics are tolerance-checked, not bitwise identical; OS/driver caches and cloud CPU placement are not controlled.

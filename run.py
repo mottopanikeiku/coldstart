@@ -16,6 +16,22 @@ LIMITS = {"CartPole-v1": 120, "Acrobot-v1": 300, "LunarLander-v3": 300}
 METHODS = ("ppo-cpu", "sb3-zoo", "cleanrl", "ars", "cem")
 
 
+def source_revision():
+    """The commit behind a record and any saved policy; dirty means tracked files had edits."""
+
+    def git(*arguments):
+        root = Path(__file__).resolve().parent
+        command = ["git", *arguments]
+        return subprocess.run(command, cwd=root, capture_output=True, text=True, check=True).stdout
+
+    try:
+        commit = git("rev-parse", "HEAD").strip()
+        dirty = bool(git("status", "--porcelain", "--untracked-files=no").strip())
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return {"commit": commit, "dirty": dirty}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--task", choices=LIMITS, required=True)
@@ -40,6 +56,7 @@ def main():
     environment.update(
         OMP_NUM_THREADS="1", MKL_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", NUMEXPR_NUM_THREADS="1"
     )
+    source = source_revision()
     for seed in range(first, last):
         destination = args.output / f"{args.task}__{args.method}__{args.variant}__{seed:03}.json"
         if destination.exists():
@@ -91,6 +108,7 @@ def main():
             seed=seed,
             phase=args.phase,
             limit_seconds=limit,
+            source=source,
             parent_seconds=elapsed,
             returncode=process.returncode,
             watchdog=timed_out,

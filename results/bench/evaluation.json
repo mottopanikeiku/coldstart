@@ -1,0 +1,252 @@
+[
+ {
+  "task": "CartPole-v1",
+  "repeats": 5,
+  "rows": [
+   {
+    "policy": "initial zero weights",
+    "kind": "affine-argmax",
+    "mean_return": 9.45,
+    "transitions": 945,
+    "policy_calls": 11,
+    "protocol_seconds": [
+     0.017830991000664653,
+     0.005289491000439739,
+     0.005468350002047373,
+     0.005166207000002032,
+     0.00518311999985599
+    ],
+    "numpy_seconds": [
+     0.0012753970004268922,
+     0.0010551089981163386,
+     0.0010318249987903982,
+     0.0010194120004598517,
+     0.0010134299991477747
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   },
+   {
+    "policy": "ars seed 0 passing policy",
+    "kind": "affine-argmax",
+    "mean_return": 499.47,
+    "transitions": 49947,
+    "policy_calls": 500,
+    "protocol_seconds": [
+     0.24924711600033334,
+     0.23401917600131128,
+     0.23636085299949627,
+     0.2369664889993146,
+     0.2372418419981841
+    ],
+    "numpy_seconds": [
+     0.01880709099714295,
+     0.01863383200179669,
+     0.018714736001129495,
+     0.01856064399908064,
+     0.018611270003020763
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   },
+   {
+    "policy": "cem seed 0 passing policy",
+    "kind": "affine-argmax",
+    "mean_return": 500.0,
+    "transitions": 50000,
+    "policy_calls": 500,
+    "protocol_seconds": [
+     0.2510795779999171,
+     0.23567776799973217,
+     0.24020750999989104,
+     0.23745049699937226,
+     0.2379416770017997
+    ],
+    "numpy_seconds": [
+     0.019331224000779912,
+     0.018523454000387574,
+     0.01855373999933363,
+     0.01840130200071144,
+     0.018463378997694235
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   },
+   {
+    "policy": "ppo-cpu seed 0 passing policy",
+    "kind": "mlp-argmax",
+    "mean_return": 500.0,
+    "transitions": 50000,
+    "policy_calls": 500,
+    "protocol_seconds": [
+     0.2709190839996154,
+     0.26027349599826266,
+     0.2565176200005226,
+     0.25719020500037004,
+     0.2570853260003787
+    ],
+    "numpy_seconds": [
+     0.04068966799968621,
+     0.04103169500012882,
+     0.040328683997358894,
+     0.040347177997318795,
+     0.040322903001651866
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   }
+  ],
+  "context": {
+   "time": "2026-10-29T04:54:11-07:00",
+   "load_average": [
+    1.30712890625,
+    1.77099609375,
+    2.24365234375
+   ],
+   "pinned_cpu_mhz": 4827.198,
+   "memory_available_mib": 9440,
+   "parent_seconds": 5.758531067000149,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "evaluation",
+    "--task",
+    "CartPole-v1",
+    "--policies",
+    "results/bench/decompose/CartPole-v1__ars__default__000__plain.json,results/bench/decompose/CartPole-v1__cem__default__000__plain.json,results/bench/decompose/CartPole-v1__ppo-cpu__zoo-shape__000__plain.json",
+    "--repeats",
+    "5"
+   ]
+  },
+  "policy_files": [
+   "results/bench/decompose/CartPole-v1__ars__default__000__plain.json",
+   "results/bench/decompose/CartPole-v1__cem__default__000__plain.json",
+   "results/bench/decompose/CartPole-v1__ppo-cpu__zoo-shape__000__plain.json"
+  ]
+ },
+ {
+  "task": "Acrobot-v1",
+  "repeats": 5,
+  "rows": [
+   {
+    "policy": "initial zero weights",
+    "kind": "affine-argmax",
+    "mean_return": -500.0,
+    "transitions": 50000,
+    "policy_calls": 500,
+    "protocol_seconds": [
+     1.586560585998086,
+     1.5681758350001473,
+     1.567540170999564,
+     1.5768604180011607,
+     1.564629557000444
+    ],
+    "numpy_seconds": [
+     0.05780692700136569,
+     0.057554257997253444,
+     0.05757540799822891,
+     0.058234706997609464,
+     0.05782017200181144
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   },
+   {
+    "policy": "ars seed 0 passing policy",
+    "kind": "affine-argmax",
+    "mean_return": -95.31,
+    "transitions": 9631,
+    "policy_calls": 320,
+    "protocol_seconds": [
+     0.3201622970009339,
+     0.3085933500005922,
+     0.3103315320004185,
+     0.31133678699916345,
+     0.30863599000076647
+    ],
+    "numpy_seconds": [
+     0.0360924079977849,
+     0.036198669997247634,
+     0.035606858000392094,
+     0.03570443300122861,
+     0.035825642000418156
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   },
+   {
+    "policy": "cem seed 0 passing policy",
+    "kind": "affine-argmax",
+    "mean_return": -98.9,
+    "transitions": 9990,
+    "policy_calls": 245,
+    "protocol_seconds": [
+     0.3315252739994321,
+     0.3185840869991807,
+     0.32023677799952566,
+     0.320876549998502,
+     0.3175795940005628
+    ],
+    "numpy_seconds": [
+     0.028663494002103107,
+     0.02843522099647089,
+     0.02832835899971542,
+     0.02829615800146712,
+     0.028489263000665233
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   },
+   {
+    "policy": "ppo-cpu seed 0 passing policy",
+    "kind": "mlp-argmax",
+    "mean_return": -98.39,
+    "transitions": 9939,
+    "policy_calls": 213,
+    "protocol_seconds": [
+     0.34067458800200257,
+     0.32720679300109623,
+     0.32129631499992684,
+     0.32699416000104975,
+     0.3315087230002973
+    ],
+    "numpy_seconds": [
+     0.031333261998952366,
+     0.03096536399971228,
+     0.03080709500136436,
+     0.030908296997949947,
+     0.030754445997445146
+    ],
+    "returns_identical": true,
+    "episodes_differing": 0
+   }
+  ],
+  "context": {
+   "time": "2026-10-29T04:54:17-07:00",
+   "load_average": [
+    1.2822265625,
+    1.7578125,
+    2.23681640625
+   ],
+   "pinned_cpu_mhz": 4834.645,
+   "memory_available_mib": 9466,
+   "parent_seconds": 16.886266329001955,
+   "command": [
+    "-m",
+    "control_clock.systems",
+    "evaluation",
+    "--task",
+    "Acrobot-v1",
+    "--policies",
+    "results/bench/decompose/Acrobot-v1__ars__longer__000__plain.json,results/bench/decompose/Acrobot-v1__cem__longer__000__plain.json,results/bench/decompose/Acrobot-v1__ppo-cpu__default__000__plain.json",
+    "--repeats",
+    "5"
+   ]
+  },
+  "policy_files": [
+   "results/bench/decompose/Acrobot-v1__ars__longer__000__plain.json",
+   "results/bench/decompose/Acrobot-v1__cem__longer__000__plain.json",
+   "results/bench/decompose/Acrobot-v1__ppo-cpu__default__000__plain.json"
+  ]
+ }
+]

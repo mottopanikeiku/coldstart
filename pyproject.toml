@@ -17,6 +17,8 @@ box2d = ["gymnasium[box2d]==1.2.1", "swig==4.3.1"]
 jax = ["jax==0.6.2", "flax==0.10.6", "optax==0.2.5", "gymnax==0.0.9"]
 # Client for the paid GPU comparison only.
 modal = ["modal==1.5.3"]
+# Native EnvPool baseline for bench.py; its Gymnax backends also need the jax extra.
+bench = ["envpool==1.2.7"]
 
 [dependency-groups]
 dev = ["pytest==8.4.2", "ruff==0.13.2"]

@@ -139,6 +139,13 @@ def train(ctx):
         with torch.no_grad():
             return agent.actor(tensor(obs)).argmax(dim=-1).numpy()
 
+    def parameters():
+        from control_clock.policies import mlp
+
+        return mlp(agent.actor, scales)
+
+    ctx.policy, ctx.policy_parameters = policy, parameters
+
     n, length = config["envs"], config["steps"]
     shape = (length, n)
     observations = torch.empty((*shape, env.observation_size))

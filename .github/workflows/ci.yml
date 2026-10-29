@@ -33,15 +33,18 @@ jobs:
       - run: uv sync --frozen --python 3.12 --no-build
       - run: uv run --no-sync pytest -q
       - run: .venv/bin/python run.py --phase final --task CartPole-v1 --method ars --seeds 0:1 --output results/first-run
-      - name: Require a passing record without Box2D
+      - name: Require a passing record without the optional extras
         run: |
           .venv/bin/python - <<'EOF'
+          import importlib.util
           import json
           from pathlib import Path
 
           record = json.loads(Path("results/first-run/CartPole-v1__ars__default__000.json").read_text())
           assert record["solved"] and record["stop_reason"] == "solved", record["stop_reason"]
           assert record["versions"]["box2d-py"] is None, record["versions"]
+          for module in ("Box2D", "modal", "jax", "pygame", "swig", "envpool"):
+              assert importlib.util.find_spec(module) is None, f"{module} is installed"
           print(record["solve_seconds"], record["evaluations"][-1]["mean_return"])
           # Informational: another CPU may round NumPy's trigonometry differently.
           published = json.loads(Path("results/final/CartPole-v1__ars__default__000.json").read_text())
@@ -60,5 +63,8 @@ jobs:
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0, Node 24
         with:
           version: "0.12.5"
-      - run: uv sync --frozen --python 3.12 --extra jax
-      - run: uv run --no-sync pytest -q tests/test_jax.py
+      # EnvPool 1.2.7 loads libEGL, libOpenGL and libGLdispatch on import; the runner lacks them.
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libopengl0 libglvnd0
+      - run: uv sync --frozen --python 3.12 --extra jax --extra bench
+      # The benchmark's Gymnax and EnvPool backends must pass the same gate as the others.
+      - run: uv run --no-sync pytest -q tests/test_jax.py tests/test_systems.py

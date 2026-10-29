@@ -1,0 +1,11 @@
+{
+  "rule": "One flock on the shared compute lock for the whole window; start only when the 1-minute load average is below 1.5. The load average counts the benchmark's own pinned process.",
+  "lock_held_since": "2026-10-29T04:25:04-07:00",
+  "start": "2026-10-29T04:35:46-07:00",
+  "start_load_average": [1.44, 2.40, 2.65],
+  "pause": "04:41:11 to 04:41:30: decompose stopped on a configuration-key bug (fixed in bench.py); environments and imports were kept and the run resumed under the same lock",
+  "extra_environment_repetitions": "processes 3 and 4 for every backend, 04:54:38 to 04:57:06, start load [1.12, 1.69, 2.20]",
+  "end": "2026-10-29T04:57:06-07:00",
+  "end_load_average": [1.12, 1.46, 2.04],
+  "fresh_cohort_replay": "04:57:06 to 04:58:45, same lock; not a timing result"
+}
