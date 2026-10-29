@@ -1,8 +1,8 @@
 """Systems benchmark: environment speed, imports, evaluation and a phase decomposition.
 
     uv sync --frozen --python 3.12 --extra jax --extra bench
-    .venv/bin/python bench.py all --output results/bench --cpu 4
-    .venv/bin/python bench.py summarize --input results/bench
+    .venv/bin/python bench.py all --output results/bench --cpu 4 --reps 5
+    .venv/bin/python bench_summary.py --input results/bench --output results/bench/summary.json
 
 Every measurement runs in a fresh process pinned to one CPU with one numeric thread. Each
 step writes raw per-call or per-run values; ``summarize`` derives every table from them.
@@ -26,6 +26,7 @@ from pathlib import Path
 import numpy as np
 
 from control_clock.backends import BACKENDS, supports
+from run import source_revision
 
 TASKS = ("CartPole-v1", "Acrobot-v1")
 SIZES = (1, 8, 64, 512, 4096)
@@ -205,6 +206,8 @@ def decompose(args) -> None:
     output = args.output / "decompose"
     output.mkdir(parents=True, exist_ok=True)
     first, last = map(int, args.seeds.split(":"))
+    # Recorded before any clock starts, as run.py does; saved policies cite it.
+    source = source_revision()
     for task, method, variant in cohorts():
         for seed in range(first, last):
             # Alternate which variant goes first so slow drift cannot favour one of them.
@@ -218,7 +221,7 @@ def decompose(args) -> None:
                 command += ["--limit", str(LIMITS[task]), "--variant", variant]
                 record, context = launch(command, args, clocked=True, timeout=LIMITS[task] + 30)
                 record.update(task=task, method=method, variant=variant, seed=seed, kind=kind)
-                record.update(context=context)
+                record.update(context=context, source=source)
                 destination.write_text(json.dumps(record) + "\n")
                 print(destination, round(record["solve_seconds"] or -1, 3), flush=True)
 
@@ -263,7 +266,7 @@ def main():
     parser.add_argument("command", choices=("all", "env", "imports", "evaluation", "decompose"))
     parser.add_argument("--output", type=Path, default=Path("results/bench"))
     parser.add_argument("--cpu", type=int, default=4, help="CPU to pin every child process to")
-    parser.add_argument("--reps", type=int, default=3, help="Fresh processes per backend")
+    parser.add_argument("--reps", type=int, default=5, help="Fresh processes per backend")
     parser.add_argument("--import-reps", type=int, default=10)
     parser.add_argument("--sizes", type=lambda s: tuple(map(int, s.split(","))), default=SIZES)
     parser.add_argument("--seeds", default="0:5", help="Decomposition seeds, half-open")
