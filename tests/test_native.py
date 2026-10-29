@@ -32,6 +32,8 @@ def test_float32_trigonometry_matches_numpy_bit_for_bit(cosine):
     rng = np.random.default_rng(5)
     bits = rng.integers(0, 2**32, size=1_000_000, dtype=np.uint64).astype(np.uint32)
     special = [0.0, -0.0, np.inf, -np.inf, np.nan, 1e-45, 71476.0625, 117435.992, np.pi / 4]
+    # The written source gives cos(56662.555f) = 0.70413834; the wheel's fused FMA, 0.7041384.
+    special += [56662.555, -56662.555]
     x = np.concatenate(
         [
             bits.view(np.float32),

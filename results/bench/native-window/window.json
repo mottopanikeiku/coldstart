@@ -18,5 +18,5 @@
   "governor": "performance",
   "energy_performance_preference": "performance",
   "granted_by": "the lead, as an exclusive window for this re-timing",
-  "measured_source": "Uncommitted working tree on 3dbf8fa, which is why machine.json records that commit. classic.c had sha256 8d646f8137f987e9055a0dfd347df88cfda444733c00223fa9e28df14c991a50 (machine.json, native). The measured code was committed unchanged as c2770ed."
+  "measured_source": "Uncommitted working tree on 3dbf8fa, which is why machine.json records that commit. classic.c had sha256 8d646f8137f987e9055a0dfd347df88cfda444733c00223fa9e28df14c991a50 (machine.json, native). The measured code was committed unchanged as c2770ed. A later commit changed only the license comment at the top of classic.c, so its digest differs; objdump -d of the .text section is identical for the two builds."
 }

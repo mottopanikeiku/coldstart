@@ -14,9 +14,10 @@
  * as in NumPy's loops.
  *
  * Dynamics are adapted from Gymnasium 1.2.1 (MIT) and, for Acrobot, RLPy (BSD-3-Clause).
- * The seeding and float32 trigonometry follow NumPy (BSD-3-Clause, third_party/NumPy-LICENSE),
- * whose PCG64 comes from Melissa O'Neill's PCG library (MIT, third_party/PCG64-LICENSE).
- * Other notices: docs/ENVIRONMENTS.md.
+ * The seeding and float32 trigonometry follow NumPy (BSD-3-Clause, third_party/NumPy-LICENSE).
+ * NumPy's SeedSequence derives from Melissa E. O'Neill's seed_seq and carries its own MIT
+ * notice (third_party/SeedSequence-LICENSE); its PCG64 comes from Melissa O'Neill's PCG
+ * library (MIT, third_party/PCG64-LICENSE). Other notices: docs/ENVIRONMENTS.md.
  */
 #include <math.h>
 #include <stddef.h>

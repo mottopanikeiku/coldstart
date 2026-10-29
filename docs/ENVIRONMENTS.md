@@ -211,8 +211,12 @@ The C batch's seeding follows
 `bit_generator.pyx` (SeedSequence), `src/pcg64/` (PCG64), `_common.pxd`, `_generator.pyx`
 and `src/distributions/distributions.c` (uniform). Its float32 sine and cosine follow
 [`loops_trigonometric.dispatch.cpp`](https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/src/umath/loops_trigonometric.dispatch.cpp).
-NumPy is BSD-3-Clause ([`third_party/NumPy-LICENSE`](../third_party/NumPy-LICENSE)). Its
-PCG64 comes from Melissa O'Neill's PCG library under the MIT license
+NumPy is BSD-3-Clause ([`third_party/NumPy-LICENSE`](../third_party/NumPy-LICENSE)).
+NumPy's SeedSequence derives from Melissa E. O'Neill's C++11 `seed_seq` alternative, and
+`bit_generator.pyx` carries its own MIT notice (Copyright (c) 2015 Melissa E. O'Neill,
+Copyright (c) 2019 NumPy Developers), retained in
+[`third_party/SeedSequence-LICENSE`](../third_party/SeedSequence-LICENSE). Its PCG64 comes
+from Melissa O'Neill's PCG library under the MIT license
 ([`third_party/PCG64-LICENSE`](../third_party/PCG64-LICENSE)).
 
 ### Gymnasium MIT notice

@@ -30,8 +30,8 @@
  },
  "native": {
   "library": "libclassic.so",
-  "library_sha256": "79d1ca55b7f8a49d8c0902acf5da61a542a021de9b4ca64a6f1f22e7c8b0c4d2",
-  "source_sha256": "8d646f8137f987e9055a0dfd347df88cfda444733c00223fa9e28df14c991a50",
+  "library_sha256": "de9524ffb9e4a78228e2ab6d02431363a727bb60ba38987cc887498340aac8eb",
+  "source_sha256": "d6635d4dcc36a25aba3620791147c748fd21607fec6948e3df76962238df32eb",
   "compiler": "cc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)",
   "flags": [
    "-O2",
