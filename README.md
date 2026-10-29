@@ -20,7 +20,7 @@ uv sync --frozen --python 3.12
 .venv/bin/python run.py --phase final --task CartPole-v1 --method ars --seeds 0:1 --output results/first-run
 ```
 
-It prints one line: the record path, `"solved"`, the seconds from process launch to the first passing evaluation, and the stop reason. The record keeps all 100 returns of every evaluation, package versions and the worker command. My published run of this seed passed at 1.69 seconds ([record](results/final/CartPole-v1__ars__default__000.json)); yours depends on your CPU and its load. The policy itself should not: seeds fix training and evaluation, and evaluations happen at fixed step counts. A fresh clone on my laptop and the CI runner both reproduced all 800 returns of that record's eight evaluations.
+It prints one line: the record path, `"solved"`, the seconds from process launch to the first passing evaluation, and the stop reason. The record keeps all 100 returns of every evaluation, package versions and the worker command. My published run of this seed passed at 1.69 seconds ([record](results/final/CartPole-v1__ars__default__000.json)); yours depends on your CPU and its load. The policy should not depend on load: seeds fix training and evaluation, and evaluations happen at fixed step counts. A fresh clone on my laptop and the CI runner both reproduced all 800 returns of that record's eight evaluations. That is an observation, not a guarantee: another CPU or library build can round floating-point math differently, and a small difference can change a trajectory.
 
 ## Reproduce
 
@@ -37,6 +37,7 @@ The published records were made with Box2D installed; CartPole and Acrobot never
 | `box2d` | LunarLander development runs and its equivalence tests | a C++ compiler |
 | `jax` | CPU JAX for `tests/test_jax.py` | nothing more |
 | `modal` | the client for the paid L4 comparison below | a Modal account |
+| `bench` | EnvPool for the systems benchmark (with `jax` for its Gymnax backends) | nothing more |
 
 Install with, for example, `uv sync --frozen --python 3.12 --extra box2d`; repeat `--extra` to combine them. [Run notes](docs/RUNNING.md) cover summaries, settings, attribution, failed development trials and correctness checks.
 
