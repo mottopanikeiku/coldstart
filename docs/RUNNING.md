@@ -18,6 +18,13 @@ JAX_PLATFORMS=cpu uv run pytest -q tests/test_jax.py
 
 The `jax` extra holds the pins in `gpu-requirements.txt`, which the Modal image installs before adding CUDA 12 wheels; `tests/test_gpu_results.py` keeps the two lists equal. The lock fixes transitive versions for the CPU checks only; the Modal image resolves its own when it is built.
 
+```sh
+uv run python -m control_clock.native build
+uv run python -m control_clock.native verify --seeds 1000000
+```
+
+The fused C batch for the systems benchmark is optional and is not an extra: the first command compiles `control_clock/classic.c` with the system C compiler, and the second checks its one-call reset against Gymnasium's per-seed resets, bit for bit, on 1,010,006 seeds. Without the library, its tests are skipped, the equivalence tests run on the NumPy batch only, and `make_vector(task, n, native=True)` returns the NumPy batch. CI builds it in the `test` and `jax` jobs and runs the 1M-seed check; the first-run job leaves it out and checks the fallback. [Environment notes](ENVIRONMENTS.md#fused-c-batch) describe it.
+
 ## Development
 
 Each entry in [configs/development.json](../configs/development.json) states task, method, seed range, variant and time limit. Chunks are bounded so they can share the machine:

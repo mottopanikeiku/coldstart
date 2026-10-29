@@ -4,7 +4,8 @@ Every backend steps a batch with host NumPy actions and returns host NumPy obser
 rewards and done flags, which is what a training loop with a host policy needs. Backends
 differ in how finished slots restart:
 
-- explicit: the caller resets done slots with ``reset_done`` (this repository's batches);
+- explicit: the caller resets done slots with ``reset_done`` (this repository's NumPy and
+  fused C batches);
 - same-step: ``step`` already returned the reset observation (Gymnasium sync, Gymnax);
 - next-step: the next ``step`` spends the slot on a reset and ignores its action
   (Gymnasium's vector CartPole, EnvPool). Those slots are not counted as transitions.
@@ -17,7 +18,15 @@ from __future__ import annotations
 
 import numpy as np
 
-BACKENDS = ("numpy", "gymnasium", "gymnasium-vector", "envpool", "gymnax", "gymnax-scan")
+BACKENDS = (
+    "numpy",
+    "native",
+    "gymnasium",
+    "gymnasium-vector",
+    "envpool",
+    "gymnax",
+    "gymnax-scan",
+)
 SCAN_LENGTH = 64
 
 
@@ -33,11 +42,15 @@ class NumpyBackend:
     restart = "explicit"
 
     def __init__(self, task, num_envs, seed):
-        from control_clock.vector_env import make_vector
-
-        self.env = make_vector(task, num_envs)
+        self.env = self._make(task, num_envs)
         self._seeds = np.random.default_rng(seed).integers(0, 1_000_000, size=1 << 16).tolist()
         self._next = 0
+
+    @staticmethod
+    def _make(task, num_envs):
+        from control_clock.vector_env import make_vector
+
+        return make_vector(task, num_envs)
 
     def _take(self, count):
         if self._next + count > len(self._seeds):
@@ -65,6 +78,16 @@ class NumpyBackend:
 
     def close(self):
         self.env.close()
+
+
+class NativeBackend(NumpyBackend):
+    """The fused C batches from classic.c; raises instead of falling back when not built."""
+
+    @staticmethod
+    def _make(task, num_envs):
+        from control_clock import native
+
+        return native.make(task, num_envs)
 
 
 class GymnasiumBackend:
@@ -231,6 +254,7 @@ class GymnaxScanBackend(GymnaxBackend):
 
 CLASSES = {
     "numpy": NumpyBackend,
+    "native": NativeBackend,
     "gymnasium": GymnasiumBackend,
     "gymnasium-vector": GymnasiumVectorBackend,
     "envpool": EnvPoolBackend,
@@ -255,7 +279,8 @@ def gate(name, task, *, slots=64, steps=64, seed=7, atol=1e-4):
     that step only reward and termination are compared.
     Returns the largest observation difference and the number of compared transitions.
     The fused scan returns no observations, so for gymnax-scan the unfused Gymnax step is
-    compared with Gymnasium and the fused path must then reproduce it (scan_trace).
+    compared with Gymnasium and the fused path must then reproduce it (scan_trace). The
+    native batch must also reproduce the NumPy batch bit for bit (native_trace).
     """
     import gymnasium as gym
 
@@ -303,7 +328,49 @@ def gate(name, task, *, slots=64, steps=64, seed=7, atol=1e-4):
     if name == "gymnax-scan":
         result.update(scan_trace(task, slots=slots, seed=seed))
         result["passed"] = result["passed"] and result["scan_passed"]
+    if name == "native":
+        result.update(native_trace(task, slots=slots, steps=steps, seed=seed))
+        result["passed"] = result["passed"] and result["native_passed"]
     return result
+
+
+def native_trace(task, *, slots=64, steps=64, seed=7):
+    """The fused C batch must reproduce the NumPy batch bit for bit from the same seeds.
+
+    Compares resets, observations, rewards, flags, elapsed counters and float64 states as
+    raw bytes. Every fourth step leaves about a quarter of the slots inactive, and finished
+    slots restart through reset_done with fresh seeds.
+    """
+    from control_clock import native
+    from control_clock.vector_env import make_vector
+
+    fused, batch = native.make(task, slots), make_vector(task, slots)
+    rng = np.random.default_rng(seed)
+    seeds = rng.integers(0, 1_000_000, size=slots).tolist()
+
+    def same(*pairs):
+        return all(a.dtype == b.dtype and a.tobytes() == b.tobytes() for a, b in pairs)
+
+    step, ends = 0, 0
+    try:
+        matched = same((fused.reset(seeds), batch.reset(seeds)), (fused.state, batch.state))
+        while matched and step < steps:
+            actions = rng.integers(0, batch.action_size, size=slots)
+            active = rng.random(slots) < 0.75 if step % 4 == 3 else None
+            ours, theirs = fused.step(actions, active), batch.step(actions, active)
+            pairs = (*zip(ours, theirs), (fused.state, batch.state), (fused.steps, batch.steps))
+            matched = same(*pairs)
+            done = theirs[2] | theirs[3]
+            if matched and done.any():
+                seeds = rng.integers(0, 1_000_000, size=int(done.sum())).tolist()
+                restarted = (fused.reset_done(done, seeds), batch.reset_done(done, seeds))
+                matched = same(restarted, (fused.state, batch.state))
+                ends += int(done.sum())
+            step += 1
+    finally:
+        fused.close()
+        batch.close()
+    return {"native_passed": matched, "native_steps": step, "native_episode_ends": ends}
 
 
 def scan_trace(task, *, slots=64, seed=7, atol=1e-5):
