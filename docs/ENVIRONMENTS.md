@@ -1,190 +1,91 @@
 # Batch environments
 
-`control_clock/vector_env.py` implements NumPy batches of the **default**
-CartPole-v1 and Acrobot-v1 environments from Gymnasium **1.2.1**. LunarLander-v3
-uses a simple loop over independent `gymnasium.make` environments; Box2D physics
-is not reimplemented. `GymnasiumBatch` also supplies the slow classic-control
-reference in tests. Evaluation always uses Gymnasium, not the NumPy dynamics.
-An optional C version of the two classic batches is described
-[below](#fused-c-batch); only the systems benchmark uses it.
+[`vector_env.py`](../control_clock/vector_env.py) implements NumPy batches of Gymnasium 1.2.1's default CartPole-v1 and Acrobot-v1. LunarLander uses a loop over `gymnasium.make` environments and Box2D physics. Evaluation always uses Gymnasium.
+
+The optional [C batch](#fused-c-batch) implements the same two classic-control environments. Only the systems benchmark uses it.
 
 ## Interface and episode handling
 
-`make_vector(task, num_envs, native=False)` exposes `num_envs`, `observation_size`, and
-`action_size`, plus:
+`make_vector(task, num_envs, native=False)` exposes `num_envs`, `observation_size` and `action_size`, plus:
 
-- `reset(seeds)` takes a list containing one nonnegative Python integer per slot.
-- `step(actions, active=None)` takes integer actions of shape `(num_envs,)` and
-  returns `(observations, rewards, terminated, truncated)`. Observations have
-  shape `(num_envs, observation_size)` and dtype `float32`; flags are boolean.
-- `reset_done(mask, seeds)` takes a boolean mask of shape `(num_envs,)` and
-  **one seed per selected slot**, in ascending slot-index order. It returns the
-  full updated observation batch. Unselected state and elapsed counters are
-  unchanged. An empty selection accepts `[]` and changes nothing. Selected
-  slots need not already be done, allowing explicit episode restarts.
-- `close()` releases Gymnasium environments and prevents subsequent use.
+| Method | Behavior |
+|---|---|
+| `reset(seeds)` | One nonnegative Python integer seed per slot |
+| `step(actions, active=None)` | Integer actions of shape `(num_envs,)`; returns observations, rewards, terminated and truncated |
+| `reset_done(mask, seeds)` | Boolean mask and one seed per selected slot, in ascending slot order; returns the full observation batch |
+| `close()` | Releases Gymnasium environments and prevents further use |
 
-There is **no automatic reset**. The observation returned for a terminal or
-truncated transition is the final observation, not the next episode's start.
-Returned observation arrays are snapshots, so a subsequent partial reset does
-not overwrite observations retained by a rollout buffer. Training must reset
-finished slots separately. Stepping a finished active slot raises an error
-rather than using Gymnasium's undefined post-termination behavior.
+Observations have shape `(num_envs, observation_size)` and dtype `float32`; flags are boolean. Observation arrays are snapshots, so later resets cannot overwrite a rollout buffer's observations.
 
-Policy search can supply a boolean `active` mask of shape `(num_envs,)`.
-Inactive slots retain both their observations and elapsed counters, receive
-reward zero and return false termination/truncation flags for that call. Their
-previous done status is retained internally. This permits completed candidates
-to wait while other candidates finish without advancing a terminated Box2D
-world. Omitting the mask, or supplying all true, steps every slot.
+Resets are explicit. A terminal transition returns its final observation. Stepping a finished active slot raises an error. `reset_done` clears only the selected counters and done status; selected slots can be restarted before they finish. An empty selection accepts `[]`.
 
-Episode truncation is `elapsed_steps >= 500` for both classic tasks and
-`elapsed_steps >= 1000` for LunarLander. Termination and truncation are
-independent: both may be true on the same transition. Partial resets clear only
-the selected counters and done status. Runtime validation rejects wrong action
-shapes, noninteger/out-of-range actions, invalid mask shapes/dtypes and seed
-lists with incorrect lengths or invalid elements.
+Policy search uses the boolean `active` mask to leave finished candidates waiting while others run. Inactive slots keep their observations, counters and internal done status. Their returned reward is zero and both flags are false. Omitting the mask steps every slot.
 
-## Numerical contract
+Truncation occurs at 500 steps for the classic tasks and 1,000 for LunarLander. Termination and truncation can both be true. The API validates action shapes, integer values and bounds, mask shapes/dtypes, and seed counts and values.
 
-Each classic-control reset draws four uniforms from a newly seeded
-`np.random.default_rng(seed)`, matching Gymnasium's PCG64 generator. CartPole
-uses reset bounds `[-0.05, 0.05]`, its default explicit Euler integrator and
-float64 internal dynamics. Its default reward is one, including the transition
-that terminates the episode.
+## Numerical behavior
 
-Acrobot uses reset bounds `[-0.1, 0.1]`. An important upstream detail: Gymnasium
-rounds **the initial internal state to float32**. This implementation retains
-that rounding, then promotes the state to float64. Its reset observation also
-uses float32 trigonometry, exactly as upstream; later observations are rounded
-from float64 dynamics. Each action applies torque `-1`, `0` or `1`; the default
-"book" equations use a single RK4 step of duration `0.2`. After integration,
-angles are wrapped into inclusive `[-pi, pi]` (both endpoints are retained),
-and velocities are clipped to `[-4*pi, 4*pi]` and `[-9*pi, 9*pi]`. Reward is
-zero only when `-cos(theta1)-cos(theta1+theta2) > 1`, otherwise minus one.
-The nondefault NIPS equations, torque noise and custom reset bounds are not
-supported by this API. LunarLander preserves Box2D's native internal precision;
-the float64 internal-dynamics guarantee applies only to NumPy classic control.
+Each classic reset draws four uniforms from a newly seeded `np.random.default_rng(seed)`, matching Gymnasium's PCG64. CartPole resets in `[-0.05, 0.05]`, uses explicit Euler integration with float64 state and rewards every step with one, including the terminal transition.
 
-The fixed observation and internal-state comparison is `numpy.testing.assert_allclose` with
-**`atol=2e-6`, `rtol=2e-7`**. This permits float32 output rounding and small
-scalar-versus-array ufunc differences without feeding rounded observations
-back into the integrator. The maximum permitted discrepancy is
-`2e-6 + 2e-7 * abs(reference_value)`; at Acrobot's largest velocity it is
-under `8e-6`. Rewards, termination and truncation flags are compared **exactly**;
-there is no tolerance for decisions or episode lengths.
+Acrobot resets in `[-0.1, 0.1]`. Gymnasium rounds its initial state to float32; the NumPy batch does the same, then promotes it to float64. Reset observations use float32 trigonometry; later observations are rounded from float64 dynamics.
 
-`tests/test_equivalence.py` compares every observation and the four internal
-state coordinates across seeded random classic sequences, as well as
-independently reset slots, masked execution and the Gymnasium batch
-fallback. It also exercises CartPole failure thresholds, Acrobot wrapping and
-velocity clipping, terminal rewards, full 500-step classic time limits, the
-1,000-step Lunar limit boundary and coincident termination/truncation. Boundary
-fixtures directly set matching internal reference states; the full time-limit
-test holds state near the task's starting equilibrium without resetting its
-elapsed counter, to isolate truncation from failure dynamics. Every dynamics
-implementation is checked against upstream rather than a duplicated local
-set of equations. Run the equivalence tests with:
-`uv run pytest tests/test_equivalence.py`.
+Actions apply torque `−1`, `0` or `1`. The default book equations use one RK4 step of duration `0.2`, wrap angles into inclusive `[-pi, pi]` and clip velocities to `[-4*pi, 4*pi]` and `[-9*pi, 9*pi]`. Reward is zero when `-cos(theta1)-cos(theta1+theta2) > 1`, otherwise minus one. The API supports the default equations and reset ranges, without torque noise. LunarLander keeps Box2D's native precision.
+
+[`tests/test_equivalence.py`](../tests/test_equivalence.py) compares observations and internal states with `atol=2e-6, rtol=2e-7`. The allowed discrepancy is `2e-6 + 2e-7 * abs(reference)`, under `8e-6` at Acrobot's largest velocity. Rewards, termination and truncation must match exactly.
+
+The tests cover random action sequences, partial resets, active masks, failure thresholds, wrapping, velocity clipping, terminal rewards, full episode limits and simultaneous termination/truncation. Boundary fixtures set matching internal states in both implementations. Time-limit tests hold the state near equilibrium without resetting its elapsed counter.
+
+```sh
+uv run pytest tests/test_equivalence.py
+```
 
 ## Fused C batch
 
-[`control_clock/classic.c`](../control_clock/classic.c) implements the same CartPole and
-Acrobot batches in plain C, and [`control_clock/native.py`](../control_clock/native.py)
-loads it through ctypes. It keeps the interface above, and the arrays stay NumPy arrays that
-the C functions read and write in place. One C call checks the actions and steps the whole
-batch. Another resets any set of slots from their seeds and clears their counters.
+[`classic.c`](../control_clock/classic.c) implements CartPole and Acrobot in plain C, loaded through ctypes by [`native.py`](../control_clock/native.py). NumPy arrays hold the state; C reads and writes them in place. One call checks actions and steps the batch. Another resets any set of slots and clears their counters.
 
-It is optional and is not a package extra. `python -m control_clock.native build` compiles
-it with the system C compiler (`cc`, or `$CC`) and libm, and nothing else. The library
-stores the SHA-256 of the source it was built from, and `native.py` refuses a library built
-from a different `classic.c`. `make_vector(task, num_envs, native=True)` returns the C batch
-when it is built and the NumPy batch otherwise. Training, evaluation and every published
-run still use the NumPy batch or Gymnasium.
+`python -m control_clock.native build` compiles it with `cc` (or `$CC`) and libm. The library stores its source SHA-256; the loader rejects a build from a different `classic.c`. `make_vector(task, num_envs, native=True)` returns the C batch when built and NumPy otherwise. The benchmark requires the C library explicitly.
 
-**Resets.** I repeated NumPy 2.2.6's seeding step by step from its source, so that one call
-reproduces `gymnasium.make(task).reset(seed=s)` for every slot. `SeedSequence` hashes the
-seed into a pool of four 32-bit words; `generate_state` draws four 64-bit words from it;
-PCG64 takes its 128-bit state and stream from those; each double is `(u64 >> 11) * 2**-53`;
-and `uniform` returns `low + (high - low) * d`. Acrobot then rounds the four values to
-float32 and takes their cosine and sine in float32, as Gymnasium does. NumPy computes
-float32 sine and cosine itself, not through libm: on x86-64 CPUs with AVX2 and FMA3 it uses a
-Cody-Waite reduction and two short polynomials. `classic.c` copies that path. One detail is
-not in NumPy's source. In the manylinux x86-64 wheel, GCC fused the multiply by 2/pi and the
-add that follows it into one FMA. I found this because the form written in the source
-disagreed with the installed wheel on some inputs of large magnitude. `classic.c` uses the
-fused form, and the two forms agree for Acrobot's reset inputs, which lie in [-0.1, 0.1].
-Seeds must be below 2**64.
+### Reset implementation
 
-**Steps.** The C code repeats the NumPy batch's float64 expressions in the same order, with
-Gymnasium's constants. The build turns off multiply-add contraction. It also keeps sine and
-cosine as separate libm calls, because GCC would otherwise merge a sine and a cosine of the
-same angle into one `sincos` call, and NumPy's float64 loops call libm's `sin` and `cos`.
+I followed NumPy 2.2.6's seeding code so one batched call reproduces Gymnasium's per-seed resets:
 
-**Checks.** [`tests/test_native.py`](../tests/test_native.py) requires:
+1. `SeedSequence` hashes the seed into four 32-bit words.
+2. `generate_state` draws four 64-bit words.
+3. PCG64 takes its 128-bit state and stream from those words.
+4. Each uniform double uses `(u64 >> 11) * 2**-53`, then `low + (high - low) * d`.
+5. Acrobot rounds to float32 and computes float32 cosine and sine.
 
-- one batched reset to equal Gymnasium's per-seed resets bit for bit, observations and
-  internal states, on 3,306 seeds per task. The same check on 1,010,006 seeds is
-  `python -m control_clock.native verify`, which CI runs, with its committed output in
-  [`results/bench/native-reset-gate.json`](../results/bench/native-reset-gate.json);
-- the float32 cosine and sine to equal `np.cos` and `np.sin` bit for bit on 1.4 million
-  inputs, including NaN, infinities and the large inputs where NumPy falls back to libm;
-- 1,500 steps of 32 slots, with inactive slots and restarts, to equal the NumPy batch bit
-  for bit: observations, rewards, flags, counters and float64 states;
-- the benchmark gate and the reset gate to reject mutated copies of `classic.c`.
+Seeds must be below `2**64`. NumPy's AVX2/FMA3 float32 trigonometry uses Cody–Waite reduction and polynomial approximations. The C code copies that path, including a multiply-add fused by GCC in the manylinux wheel. The fused form matters at large magnitudes; both forms agree over Acrobot's reset range.
 
-`tests/test_equivalence.py` runs every test twice when the library is built, once on each
-batch. Against Gymnasium the C dynamics are therefore tolerance-checked like the NumPy
-batch's, and against the NumPy batch they matched bit for bit on every tested trace.
+### Step implementation and tests
 
-Its float32 trigonometry is NumPy's AVX2/FMA3 path. On a CPU where NumPy falls back to libm
-`sinf` and `cosf`, Acrobot's reset observations could differ in the last bit, and the tests
-would fail. I ran it only on x86-64 Linux with glibc: this laptop and the CI runners.
+C evaluates the NumPy batch's float64 expressions in the same order, using Gymnasium's constants. The build disables multiply-add contraction and keeps `sin` and `cos` separate, matching NumPy's float64 libm calls.
+
+[`tests/test_native.py`](../tests/test_native.py) checks:
+
+- Reset observations and internal states against Gymnasium on 3,306 seeds per task. The larger CLI check matched all 1,010,006 seeds per task ([result](../results/bench/native-reset-gate.json)).
+- Float32 sine and cosine against NumPy on 1.4 million inputs, including NaN, infinities and large inputs.
+- 1,500 steps of 32 slots against the NumPy batch, including inactive slots and restarts. Observations, rewards, flags, counters and internal states must match bit for bit.
+- Six modified copies of the C source, changing reset constants, float conversion or dynamics. The reset and step checks must reject them.
+
+When C is built, the full Gymnasium equivalence suite runs on both batches. The C-to-Gymnasium step comparison uses the same tolerances as NumPy; C-to-NumPy traces match bit for bit.
+
+The C checks have run on x86-64 Linux with glibc. Its float32 trigonometry assumes NumPy's AVX2/FMA3 path. A CPU using libm `sinf` and `cosf` instead may produce last-bit reset differences.
 
 ## Gymnax training in the separate L4 comparison
 
-The GPU PPO uses installed **Gymnax 0.0.9** for training only.
-[`test_jax.py`](../tests/test_jax.py) checks fixed internal states against
-Gymnasium 1.2.1: 100 states per task, every discrete action, exact rewards and
-done decisions away from time limits. I check the equations in float64 at
-`atol=2e-6, rtol=2e-7` and training-precision float32 at
-`atol=1e-4, rtol=1e-5`. A tighter float32 tolerance failed on CPU at
-near-limit Acrobot velocities (a 4.72e-5 velocity discrepancy); I therefore
-added the independent float64 check rather than calling the paths identical.
-The suite also checks reset ranges, the 500-step limit, CartPole's strict
-position threshold, terminal rewards and Acrobot's wrapping endpoint. These
-are local transition comparisons, not bitwise trajectory equivalence or a
-guarantee about arbitrarily close boundaries.
+JAX PPO trains with Gymnax 0.0.9. [`test_jax.py`](../tests/test_jax.py) compares 100 fixed states per task and every action with Gymnasium 1.2.1. Rewards and done flags match exactly away from time limits. Float64 equations use `atol=2e-6, rtol=2e-7`; training-precision float32 uses `atol=1e-4, rtol=1e-5`. Near-limit Acrobot velocities had a float32 difference of `4.72e-5`.
 
-The default physics match: CartPole's Euler update, masses, gravity, timestep,
-force, angle/position limits and one-point terminal reward; Acrobot's book
-equations, torque choices, one RK4 step at 0.2, velocity clipping,
-height threshold and zero reward on a successful terminal transition.
-The training maximum episode length remains 500 for both tasks. Every
-qualification evaluation still uses actual Gymnasium, so its threshold,
-episode semantics and reset distribution—not Gymnax's training return—decide
-whether a policy passes.
+The suite also checks reset ranges, the 500-step limit, CartPole's strict position threshold, terminal rewards and Acrobot's wrapping endpoint. Both tasks use the default physics and 500-step training episodes.
 
-There are real differences:
+The main differences are:
 
-- Gymnax computes internal dynamics in float32 here; Gymnasium mostly uses
-  float64 internally. Repeated trajectories can diverge.
-- Gymnax draws resets with JAX's PRNG, not NumPy's PCG64. Uniform ranges match,
-  but identical seed integers do not produce the same initial states.
-- Gymnax's `step` automatically resets completed slots on the same step and
-  returns one `done` flag for termination or time limit. The GPU GAE treats
-  both as terminal, with no timeout bootstrap.
-- Gymnax wraps Acrobot angles into `[-pi, pi)` while Gymnasium retains either
-  endpoint of `[-pi, pi]`. At exactly `+pi`, their internal angles differ
-  by a full rotation; their sine/cosine observations represent the same
-  physical position up to floating-point rounding.
-- Both libraries define useful rewards only through episode completion;
-  I do not compare stepping a previously completed state without resetting it.
+- Gymnax uses float32 internal dynamics here; Gymnasium mostly uses float64.
+- JAX's PRNG gives different initial states from NumPy's PCG64 for the same integer seed.
+- Gymnax resets on the terminal step and combines termination and time limits into one `done`. The JAX PPO masks both in GAE.
+- Gymnax wraps Acrobot angles into `[-pi, pi)`; Gymnasium includes both endpoints. At `+pi` the internal angles differ by a rotation, with equivalent physical positions up to rounding.
 
-Sources: [Gymnax](https://github.com/RobertTLange/gymnax),
-[the pinned release](https://pypi.org/project/gymnax/0.0.9/), and the pinned
-Gymnasium sources below. The Modal run metadata records the installed versions
-and maximum errors printed by the checks.
+All qualification evaluations still use Gymnasium. Sources: [Gymnax](https://github.com/RobertTLange/gymnax), its [0.0.9 release](https://pypi.org/project/gymnax/0.0.9/), and the Gymnasium sources below.
 
 ## Sources and licenses
 
@@ -192,7 +93,7 @@ Dynamics, integration order, reset behavior and episode semantics are adapted
 from the following pinned primary sources:
 
 - [Gymnasium 1.2.1 CartPole](https://github.com/Farama-Foundation/Gymnasium/blob/v1.2.1/gymnasium/envs/classic_control/cartpole.py),
-  originally based on Rich Sutton's [pole.c](https://perma.cc/C9ZM-652R).
+  originally based on Rich Sutton's `pole.c`.
 - [Gymnasium 1.2.1 Acrobot](https://github.com/Farama-Foundation/Gymnasium/blob/v1.2.1/gymnasium/envs/classic_control/acrobot.py),
   including its RK4, inclusive wrap, velocity bounds and default book equations.
 - [Gymnasium 1.2.1 seeding](https://github.com/Farama-Foundation/Gymnasium/blob/v1.2.1/gymnasium/utils/seeding.py)

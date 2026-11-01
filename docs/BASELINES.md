@@ -1,207 +1,94 @@
-# Library PPO comparators
+# PPO implementations
 
-These are attributed comparators, not proposed PPO algorithms. Both expose
-`train(ctx)` and use ordinary Gymnasium environments, CPU only, with one Torch
-thread set by the worker. No optimized dynamics, pretrained weights, TensorBoard,
-video, external tracking, progress bars or per-episode printing are used.
-Both record their effective settings and source revisions in `ctx.configuration`.
-The shared [protocol](PROTOCOL.md) owns evaluation environments and their cleanup;
-each baseline closes its training environments in `finally`, including a partial
-construction or an interrupted rollout/update. `Finished` propagates to the harness.
+The CPU library adapters expose `train(ctx)` and use Gymnasium training environments with one Torch thread. The common [protocol](PROTOCOL.md) handles evaluation and time limits. Each adapter saves its effective configuration in the result and closes its training environments when it finishes or is interrupted.
 
 ## Stable-Baselines3 and RL Baselines3 Zoo
 
-[`control_clock/library_baselines.py`](../control_clock/library_baselines.py) uses
-Stable-Baselines3 **2.7.0**, source commit
-[`bf51a6233a8f934a68430f8f78e44360410d23ca`](https://github.com/DLR-RM/stable-baselines3/tree/bf51a6233a8f934a68430f8f78e44360410d23ca).
-[`configs/zoo_ppo.json`](../configs/zoo_ppo.json) transcribes the task entries from
-RL Baselines3 Zoo's [`hyperparams/ppo.yml`](https://github.com/DLR-RM/rl-baselines3-zoo/blob/eec15dc22e1ec7167064aae0c1218eefccaf0ff4/hyperparams/ppo.yml)
-at commit **`eec15dc22e1ec7167064aae0c1218eefccaf0ff4`**. The Zoo authors supply the
-tuned settings; this adapter does not tune them. SB3 and Zoo are
-[MIT-licensed](https://github.com/DLR-RM/rl-baselines3-zoo/blob/eec15dc22e1ec7167064aae0c1218eefccaf0ff4/LICENSE).
-The installed SB3 library supplies the PPO implementation.
+[`library_baselines.py`](../control_clock/library_baselines.py) uses installed Stable-Baselines3 2.7.0 ([source](https://github.com/DLR-RM/stable-baselines3/tree/bf51a6233a8f934a68430f8f78e44360410d23ca)). [configs/zoo_ppo.json](../configs/zoo_ppo.json) copies the task settings from RL Baselines3 Zoo's [PPO configuration](https://github.com/DLR-RM/rl-baselines3-zoo/blob/eec15dc22e1ec7167064aae0c1218eefccaf0ff4/hyperparams/ppo.yml). Both projects use the MIT license.
 
 | Setting | CartPole-v1 | Acrobot-v1 | LunarLander-v3 |
 |---|---:|---:|---:|
 | Environments | 8 | 16 | 16 |
-| Steps per environment per rollout | 32 | 256 | 1,024 |
+| Steps per environment | 32 | 256 | 1,024 |
 | Minibatch size | 256 | 64 | 64 |
-| PPO epochs per rollout | 20 | 4 | 4 |
+| PPO epochs | 20 | 4 | 4 |
 | Gamma | 0.98 | 0.99 | 0.999 |
 | GAE lambda | 0.8 | 0.94 | 0.98 |
 | Learning rate | linear 0.001 | 0.0003 | 0.0003 |
 | Policy clip range | linear 0.2 | 0.2 | 0.2 |
 | Entropy coefficient | 0 | 0 | 0.01 |
 | Requested transition horizon | 100,000 | 1,000,000 | 1,000,000 |
-| Observation/reward VecNormalize | no | yes/yes | no |
+| Observation/reward normalization | no | yes/yes | no |
 
-Unspecified settings retain SB3 2.7.0 defaults. The JSON records them explicitly:
-`MlpPolicy`, separate 64x64 Tanh policy/value networks, orthogonal initialization,
-Adam with epsilon `1e-5`, advantage normalization within minibatches, no value-loss
-clipping, value coefficient `0.5`, gradient norm cap `0.5`, no target-KL early stop,
-no gSDE. Default Adam betas are `(0.9, 0.999)` and weight decay is zero. The remaining
-constructor defaults are disclosed in the JSON; `policy_kwargs=None` deliberately
-leaves policy construction to the pinned library rather than rebuilding it.
+Other settings are SB3 2.7.0 defaults: `MlpPolicy`, separate 64-by-64 tanh actor and critic, orthogonal initialization, Adam with epsilon `1e-5` and betas `(0.9, 0.999)`, minibatch advantage normalization, value coefficient `0.5` and gradient-norm cap `0.5`. Value-loss clipping, target-KL early stopping, weight decay and gSDE are disabled. The JSON lists all constructor settings.
 
-A Zoo `lin_` value is `initial * progress_remaining`, using SB3's progress over the
-original requested horizon. There is no restart of `learn` at evaluation points
-and no shortened schedule for the wall budget. SB3 finishes complete rollouts,
-so horizon exhaustion occurs at 100,096, 1,003,520 and 1,015,808 transitions,
-respectively, if not interrupted earlier. The adapter does not cap or otherwise
-change the upstream schedule at the final rounded-up rollout.
+A Zoo `lin_` schedule is `initial * progress_remaining` over the original requested horizon. Evaluation does not restart `learn` or the schedule. SB3 completes full rollouts, giving horizons of 100,096, 1,003,520 and 1,015,808 transitions if no earlier stop occurs.
 
-Training uses `Monitor` plus `DummyVecEnv`, SB3's ordinary sequential vector
-wrapper with same-step reset. Acrobot additionally uses `VecNormalize` with
-training enabled, observation and reward normalization enabled, both clipping
-limits `10`, gamma `0.99`, epsilon `1e-8`, and the library's running-statistics
-initialization. SB3 retains its time-limit bootstrapping behavior.
+Training uses `Monitor` and the sequential `DummyVecEnv`, with same-step resets. Acrobot adds `VecNormalize`: observation and reward normalization, clipping at 10, gamma `0.99`, epsilon `1e-8` and the library's initial running statistics. SB3 bootstraps time-limit truncations.
 
-The model RNG seed is `ctx.seed % (1_000_000 - n_envs + 1)`. The reset base is one
-`ctx.training_seeds(1)` draw modulo that same bound. SB3 resets lane `i` with
-`base + i`; the adapter replaces SB3's queued model-seed reset before `learn`.
-All actually supplied model/action-space/reset seeds are below 1,000,000 and the
-full lane reset list is recorded. Later autoresets use each lane's advancing RNG,
-not the evaluation seed set.
+The model seed is `ctx.seed % (1_000_000 - n_envs + 1)`. A training-seed draw sets the reset base modulo the same bound; lane `i` gets `base + i`. The adapter replaces SB3's queued model-seed reset before `learn`. Later resets advance each lane's RNG.
 
-### Exact checkpoint placement
+### Checkpoints and deadlines
 
-There is one forced checkpoint after model construction and before `learn`.
-A small PPO subclass calls `super().train()` unchanged and then immediately calls
-`ctx.checkpoint(policy, num_timesteps)`. Thus a checkpoint never evaluates the
-pre-update policy at SB3's `on_rollout_end`, never misses the final completed
-update, and never evaluates a partially completed update. The context enforces
-the 10,000-transition interval, rounded to completed PPO updates.
+The first checkpoint follows model construction. A small PPO subclass calls `super().train()` and then `ctx.checkpoint(policy, num_timesteps)`, so evaluations follow all optimizer epochs. The context applies the 10,000-transition interval.
 
-A callback checks time after each vector step and records transitions. A
-`RolloutBuffer` subclass only checks time as the original minibatch iterator
-produces each batch; it changes neither batching nor PPO mathematics. Time is
-also checked before an update and by the checkpoint after it. A time interruption
-between minibatches discards the incomplete update as an evaluation opportunity.
+A callback checks time after each vector step. A `RolloutBuffer` subclass checks time as its original minibatch iterator yields batches. Time is also checked before and after updates; interrupted updates are never evaluated.
 
-Evaluation calls `model.predict(..., deterministic=True)`. For Acrobot it first
-calls the training wrapper's `normalize_obs`: SB3 documents that this method does
-**not** update statistics. It does not reset/step the training wrapper during
-evaluation. The shared context steps raw Gymnasium evaluation environments and
-sums raw rewards, so neither rewards nor evaluation statistics are normalized.
+Evaluation uses `model.predict(..., deterministic=True)`. Acrobot observations pass through the training wrapper's `normalize_obs`, which leaves its running statistics unchanged. The evaluator collects raw Gymnasium rewards and never steps the training wrapper.
 
 ## CleanRL discrete PPO
 
-[`control_clock/cleanrl_baseline.py`](../control_clock/cleanrl_baseline.py) is an
-adaptation of CleanRL's [`cleanrl/ppo.py`](https://github.com/vwxyzjn/cleanrl/blob/e421c2e50b81febf639fced51a69e2602593d50d/cleanrl/ppo.py)
-at commit **`e421c2e50b81febf639fced51a69e2602593d50d`**. Copyright belongs to the
-CleanRL developers. Its applicable MIT notice is retained verbatim in
-[`third_party/CleanRL-LICENSE`](../third_party/CleanRL-LICENSE); unrelated notices
-for other upstream algorithms are not copied. The network initialization,
-rollout storage, GAE, minibatch shuffling and PPO losses are adapted from this
-source, not presented as original work.
+[`cleanrl_baseline.py`](../control_clock/cleanrl_baseline.py) adapts [CleanRL's discrete-action PPO](https://github.com/vwxyzjn/cleanrl/blob/e421c2e50b81febf639fced51a69e2602593d50d/cleanrl/ppo.py). Its network initialization, rollout storage, GAE, minibatch shuffling and losses follow that source. Copyright belongs to the CleanRL developers; the MIT notice is in [third_party/CleanRL-LICENSE](../third_party/CleanRL-LICENSE).
 
-The same pinned defaults are used for every task:
+All tasks use the same settings:
 
-- Four environments, 128 steps each, 512-transition rollouts; four epochs and
-  four minibatches of 128 transitions per epoch.
-- Separate 64x64 Tanh actor and critic. The critic is initialized first, as
-  upstream. Orthogonal hidden weights have gain `sqrt(2)`, actor output gain
-  `0.01`, critic output gain `1`, and every bias starts at zero.
-- Adam learning rate `2.5e-4`, epsilon `1e-5`, betas `(0.9, 0.999)`, zero weight
-  decay. Learning rate is annealed by
-  `1 - (iteration - 1) / num_iterations`, without evaluation-driven restarts.
-- Gamma `0.99`, GAE lambda `0.95`, minibatch advantage normalization with sample
-  standard deviation plus `1e-8`, policy clipping `0.2`, entropy coefficient
-  `0.01`, value coefficient `0.5`, and gradient norm cap `0.5`.
-- Clipped value loss is half the mean of the elementwise maximum of unclipped
-  squared error and squared error after clipping the change from the old value
-  to `[-0.2, 0.2]`. Target KL is `None`; no early stopping is introduced.
-- Requested horizon 500,000 transitions. Upstream floors the number of complete
-  iterations: `500000 // 512 = 976`, or **499,712** actual transitions. This floor
-  and the resulting annealing denominator are preserved.
-- No observation or reward normalization. As in this particular upstream file,
-  both termination and time-limit truncation mask GAE bootstrapping. This differs
-  from SB3's time-limit handling and is intentional, not silently repaired.
-
-The changes are instrumentation and runtime compatibility: a callable entry
-point, lazy Torch import, CPU instead of automatic CUDA selection, bounded
-protocol seeds, common deterministic evaluation, time checks, cleanup, and
-removal of CLI/logging/video/reporting code. Episode-statistics wrappers remain.
-The Python/NumPy/Torch model RNG seed is `ctx.seed % 1_000_000`; initial lane resets
-use the explicitly recorded list from `ctx.training_seeds(4)`, rather than
-upstream's consecutive `seed + lane` expansion. Autoresets continue the seeded
-lane RNGs. The worker sets the Torch thread count to one.
-
-`SyncVectorEnv` explicitly uses Gymnasium **`AutoresetMode.SAME_STEP`**. A terminal
-step supplies the final reward and done flags, plus the next episode's reset
-observation, matching older Gymnasium behavior assumed by the pinned script.
-The new default `NEXT_STEP` would instead insert a reset-only transition with an
-ignored action and zero reward, which this adapter does not train on.
-
-There is a forced deterministic argmax evaluation before the training reset,
-then `ctx.checkpoint` after all epochs/minibatches of every complete iteration.
-The context rounds its evaluation interval to these updates. Time is checked
-before each rollout step and optimizer minibatch, at each iteration start and in
-the shared checkpoint. The evaluation actor uses `torch.no_grad()` and no
-stochastic action sampling, so it neither trains the network nor advances the
-training action RNG. Returns are always raw Gymnasium episode returns.
-
-## Test coverage
-
-The current baseline tests cover the following properties:
-
-| Property | Test and scope |
+| Setting | Value |
 |---|---|
-| Pinned settings and schedules | [`test_baselines.py::test_zoo_task_settings_and_schedules`](../tests/test_baselines.py#L12) checks selected task-specific Zoo fields and the linear schedule. [`test_baselines.py::test_cleanrl_defaults_and_same_step_reset`](../tests/test_baselines.py#L45) checks selected CleanRL defaults and horizon rounding. |
-| Greedy action batches | [`test_baselines.py::test_sb3_checkpoint_follows_all_optimizer_epochs`](../tests/test_baselines.py#L70) asserts the SB3 evaluation action shape. [`test_baselines.py::test_cleanrl_defaults_and_same_step_reset`](../tests/test_baselines.py#L45) exercises CleanRL's argmax action path through the vector environment. |
-| Frozen SB3 evaluation normalization | [`test_baselines.py::test_sb3_evaluation_normalization_is_frozen`](../tests/test_baselines.py#L28) checks that `normalize_obs` preserves the observation-statistics count, mean and variance. |
-| SAME_STEP truncation reset | [`test_baselines.py::test_cleanrl_defaults_and_same_step_reset`](../tests/test_baselines.py#L45) checks final-observation delivery and that the next action is executed rather than skipped after a truncation. |
-| SB3 checkpoint-after-update ordering | [`test_baselines.py::test_sb3_checkpoint_follows_all_optimizer_epochs`](../tests/test_baselines.py#L70) checks that the first updated checkpoint follows every optimizer epoch, with the initialization checkpoint preceding training. |
-| CleanRL checkpoint-after-update ordering | [`test_baselines.py::test_cleanrl_checkpoint_follows_all_optimizer_epochs`](../tests/test_baselines.py#L112) checks that the first updated checkpoint follows all 16 optimizer steps of the first iteration and that the vector environment closes when `Finished` is raised there. |
+| Rollout | 4 environments × 128 steps = 512 transitions |
+| Optimization | 4 epochs × 4 minibatches of 128 |
+| Actor and critic | Separate 64-by-64 tanh networks |
+| Adam | Learning rate `2.5e-4`, epsilon `1e-5`, betas `(0.9, 0.999)` |
+| Gamma / GAE lambda | `0.99` / `0.95` |
+| Policy / value clip | `0.2` / `0.2` |
+| Entropy / value coefficients | `0.01` / `0.5` |
+| Gradient-norm cap | `0.5` |
+| Requested horizon | 500,000 transitions |
 
-Not covered by dedicated tests:
+The critic is initialized first. Orthogonal hidden weights use gain `sqrt(2)`; actor and critic outputs use `0.01` and `1`. Biases start at zero. Adam has zero weight decay. Learning rate is multiplied by `1 - (iteration - 1) / num_iterations`.
 
-- Every individual pinned configuration field beyond the selected assertions above.
-- Exact-tie action choices in SB3 and CleanRL policies.
-- Termination-triggered SAME_STEP reset, rather than truncation-triggered reset.
-- Environment cleanup when `Finished` interrupts initialization, rollout or optimization. The CleanRL ordering test asserts closure only at a completed-update checkpoint; the SB3 ordering test does not assert closure.
+Advantages are normalized within each minibatch using sample standard deviation plus `1e-8`. The clipped value loss is half the mean of the larger of the unclipped squared error and the error after clipping the value change to `[-0.2, 0.2]`. There is no target-KL early stop.
 
-Training measurements use the shared process-start clock and evaluation protocol, not direct timing of a PPO update.
+The horizon rounds down to `500000 // 512 = 976` iterations, or 499,712 transitions. Observations and rewards are unnormalized. Both termination and time-limit truncation mask GAE bootstrapping, matching the source and differing from SB3.
+
+The adapter adds a callable entry point, lazy Torch import, CPU selection, protocol seeds, deterministic evaluation, time checks and cleanup. Logging, video and tracking code are removed; episode-statistics wrappers remain. Model RNGs use `ctx.seed % 1_000_000`. The four initial lane resets come from `ctx.training_seeds(4)`; later resets advance those RNGs.
+
+`SyncVectorEnv` uses `AutoresetMode.SAME_STEP`: a terminal step returns the final reward and flags together with the next episode's starting observation. This matches the Gymnasium behavior expected by the original script.
+
+Evaluation runs before the training reset and after every complete iteration's epochs and minibatches. It uses argmax under `torch.no_grad()`, leaving the training action RNG unchanged. Time checks occur before rollout steps, optimizer minibatches and checkpoints.
+
+## Tests
+
+[`tests/test_baselines.py`](../tests/test_baselines.py) checks selected Zoo settings and schedules, CleanRL defaults, frozen SB3 evaluation normalization, same-step truncation resets and checkpoints after complete optimizer updates. The CleanRL ordering test also checks environment closure at that checkpoint. [`tests/test_algorithms.py`](../tests/test_algorithms.py) checks the same update ordering for batched PPO, ARS and CEM.
 
 ## Separate L4 comparison: JAX PPO
 
-I added [`jax_ppo.py`](../control_clock/jax_ppo.py) in the style of
-[Chris Lu's PureJaxRL](https://github.com/luchris429/purejaxrl): `vmap` batches
-the environments and nested `lax.scan` loops collect rollouts, calculate GAE
-and update PPO minibatches. I changed the structure so the host can evaluate
-after each complete update. This is an adaptation of the design, not the
-unchanged upstream implementation or a claim to reproduce its published speed.
-The upstream Apache-2.0 license is in `third_party/PureJaxRL-LICENSE`.
+[`jax_ppo.py`](../control_clock/jax_ppo.py) follows [Chris Lu's PureJaxRL](https://github.com/luchris429/purejaxrl). `vmap` batches environments; nested `lax.scan` loops collect rollouts, calculate GAE and update minibatches. I split the host loop at full updates so it can run the common evaluator. The Apache-2.0 license is in [third_party/PureJaxRL-LICENSE](../third_party/PureJaxRL-LICENSE).
 
-The actor and critic each have two 64-unit tanh layers with orthogonal
-initialization. I use 128 environments, 128 steps, four epochs and four
-minibatches, Adam at a constant 0.0003, gradient norm clipping at 0.5,
-gamma 0.99, GAE lambda 0.95, ratio/value clipping at 0.2, entropy coefficient
-0.01 and value coefficient 0.5. There is no reward or observation
-normalization and no learning-rate annealing. Gymnax merges time limits and
-termination into `done`; I mask both in GAE, as in PureJaxRL, rather than
-bootstrapping across timeouts. These settings differ from the CPU methods.
+| Setting | Value |
+|---|---|
+| Actor and critic | Separate 64-by-64 tanh networks, orthogonal initialization |
+| Rollout | 128 environments × 128 steps = 16,384 transitions |
+| Optimization | 4 epochs, 4 minibatches |
+| Adam learning rate | Constant `0.0003` |
+| Gamma / GAE lambda | `0.99` / `0.95` |
+| Policy / value clip | `0.2` / `0.2` |
+| Entropy / value coefficients | `0.01` / `0.5` |
+| Gradient-norm cap | `0.5` |
 
-Each seed gets a fresh Python subprocess on one Modal L4. A timestamp is
-recorded immediately before `Popen` and passed to the unchanged
-`RunContext`. Imports, CUDA initialization, both initialization and update JIT
-compilation, training and every evaluation count. I synchronize each JAX
-update before checking elapsed time. The installed-image build and Modal
-container provisioning are outside the process clock, as CPU installation is;
-they still contribute to the separately stated spend.
+There is no observation/reward normalization or learning-rate annealing. Gymnax combines termination and time limits into `done`; both mask GAE bootstrapping, as in PureJaxRL.
 
-I evaluate the initialized policy and then every 16,384 transitions (one full
-update), not during optimizer epochs. Each checkpoint copies actor weights to
-the host and uses the same greedy tanh network in NumPy inside the common
-Gymnasium evaluation. This avoids recompiling JAX inference for changing
-numbers of active episodes and counts the transfer and CPU evaluation time.
-The fixed 100 evaluation seeds, thresholds 475/-100 and 120/300-second limits
-are unchanged. A watchdog retains failures, rather than replacing them with
-successful seeds. GPU records and summaries are separate from the laptop data.
+Each seed starts a new Python process on the L4. Imports, CUDA initialization, JIT compilation, training and evaluation stay on the clock. Each update is synchronized before checking time. The initialized policy and every complete update are evaluated.
 
-Pinned dependencies are in `gpu-requirements.txt`, equal to the `jax` extra in
-`pyproject.toml`; Modal adds CUDA 12 wheels for the same JAX version.
-`tests/test_jax.py` checks scalar GAE, a real optimizer
-update, matching host/JAX greedy actions and installed Gymnax dynamics against
-Gymnasium. CI runs those checks on CPU, and the Modal job runs them on L4
-before launching the timed seed processes.
+At a checkpoint, actor weights move to the host for a NumPy implementation of the same greedy tanh policy. Weight transfer and the 100 Gymnasium episodes count toward elapsed time. The thresholds and 120/300-second limits are the same as the CPU comparison.
+
+[gpu-requirements.txt](../gpu-requirements.txt) pins the packages, matching the `jax` extra; Modal adds CUDA 12 wheels. [`tests/test_jax.py`](../tests/test_jax.py) checks scalar GAE, an optimizer update, matching host/JAX greedy actions and Gymnax dynamics against Gymnasium. CI runs it on CPU; the Modal job runs it on L4 before timing seeds.

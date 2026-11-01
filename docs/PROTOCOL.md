@@ -1,65 +1,69 @@
-# Process-start control benchmark
+# Timing protocol
 
-Recorded before implementation and tuning on 2026-10-06. The initial Git commit timestamps this document; no minute-level creation time was measured.
+The benchmark measures wall time from Python launch to a policy's first passing evaluation. PPO, ARS and CEM share the clock and evaluator in [`control_clock/protocol.py`](../control_clock/protocol.py).
 
-## Question and endpoints
+## Passing thresholds
 
-How much CPU wall time does a fresh process need to learn a policy that passes a standard control threshold? Compare PPO implementations with black-box policy search; these policy-search methods use episode rewards but no value function or temporal-difference update. Calling them entirely non-RL is a convention, not a claim that reward-based search is unrelated to RL.
+Each evaluation runs 100 complete Gymnasium episodes and takes the arithmetic mean of their raw returns.
 
-Tasks and passing arithmetic means over 100 complete episodes:
+| Task | Passing mean | Episode cap | Per-seed time limit |
+|---|---:|---:|---:|
+| CartPole-v1 | ≥ 475 | 500 steps | 120 seconds |
+| Acrobot-v1 | ≥ −100 | 500 steps | 300 seconds |
+| LunarLander-v3 | ≥ 200 | 1,000 steps | 300 seconds |
 
-| Gymnasium task | Passing return | Episode cap |
-|---|---:|---:|
-| CartPole-v1 | >= 475 | 500 steps |
-| Acrobot-v1 | >= -100 | 500 steps |
-| LunarLander-v3 (stretch) | >= 200 | 1,000 steps |
+LunarLander only has development trials, with a shorter 120-second limit.
 
-Evaluation always uses deterministic greedy action selection (argmax logits, lowest-index tie break). There are 100 fixed evaluation seeds, 1,000,000 through 1,000,099, never used in training. Training RNGs and reset seeds are confined below 1,000,000. The same evaluation set is reused across checkpoints and all methods: this is a time-to-first-pass benchmark, not an unbiased final generalization estimate. Test-set adaptation through repeated evaluation is a limitation.
+Actions are greedy: argmax of policy logits, with the lowest index winning a tie. Evaluation seeds are 1,000,000 through 1,000,099. CPU training RNG and reset seeds stay below 1,000,000.
 
-The parent starts a monotonic timer immediately before spawning the single-seed Python process and supplies that absolute start time to it. Time to solve ends after the first passing evaluation finishes. Python startup, imports, environment construction, compilation (if any), learning and all earlier evaluations are included. Dependency installation is excluded. A worker emits the evaluation-finish timestamp; process teardown and writing the final JSON are not part of time to solve. Parent process elapsed time is also recorded. No method receives a pretrained policy.
+The same evaluation seeds are reused at every checkpoint and across methods. Configuration selection also used them. The separate [policy replay](SYSTEMS.md#saved-policies-and-a-fresh-evaluation-cohort) measures performance on new seeds.
 
-A full evaluation runs once before training and thereafter at the first completed algorithm update after each additional 10,000 environment transitions. A policy-search generation is an update. Evaluation costs remain on the clock; evaluations do not update parameters or training statistics. Gymnasium is the evaluation reference for every method, including optimized environments.
+## Clock and checkpoints
 
-## Comparators and budgets
+The parent starts a monotonic timer immediately before spawning a single-seed Python process. It passes that start timestamp to the worker. The clock includes:
 
-- Stable-Baselines3 PPO: pinned RL Baselines3 Zoo task hyperparameters, including observation/reward normalization for Acrobot and linear schedules where specified. Zoo training-step horizons are preserved.
-- CleanRL PPO: the pinned discrete-action `ppo.py` defaults, CPU, four environments and 500,000 training transitions. Instrumentation omits TensorBoard and video, not algorithm updates.
-- CPU-oriented PPO: a separately labeled candidate; changes are logged, not retrospectively presented as defaults.
-- Augmented random search (ARS) and cross-entropy method (CEM): deterministic affine linear policies (bias included), or a separately labeled nonlinear candidate if linear search fails. Every algorithm and hyperparameter is explicit in the result record.
+- Python startup and imports;
+- environment and model construction, compilation and first-use work;
+- training and every evaluation through the first pass.
 
-Final mandatory tasks: 20 independent seeds (0 through 19) for CPU-oriented PPO, ARS and CEM. Slow library comparators may use five seeds (0 through 4), stated beside each result. CartPole per-seed wall budget: 120 seconds. Acrobot: 300 seconds. LunarLander stretch: 300 seconds and five seeds per method initially, explicitly a small sample. All checkpoints use the same 100-episode evaluation. If an evaluation finishes after the wall budget it cannot count as success. A hard parent watchdog ensures a worker cannot hang indefinitely; interrupted runs remain failures, not missing records. Step-horizon exhaustion is also a failure within the stated wall budget.
+The worker timestamps the end of the passing evaluation. Dependency installation, policy saving, result-file writing and process teardown are outside that interval. The result also includes the parent's total elapsed time.
 
-Report success fraction and median plus 25th–75th percentile of solve times among successes. This conditional median is not the median for the entire seed cohort. Also report an all-seed Kaplan–Meier median when identifiable; unsolved runs are right-censored at their actual stop time, and a median not reached is shown as such. Five-seed comparisons and censoring do not support broad rankings.
+Evaluation runs before training, then at the first complete update after each additional 10,000 training transitions. A search generation counts as an update. Checkpoints never use a partially updated policy. Evaluation does not update model parameters or training statistics, and always steps Gymnasium environments.
 
-## Measurement and development
+An initial random policy can pass. This happened for batched PPO on CartPole seed 4 and Acrobot seed 19. No method starts from pretrained weights.
 
-Reported wall measurements use exclusive CPU windows, with no other CPU-heavy jobs, one seed or a batch under 30 minutes. Development trials share CPU resources and are labeled development, never mixed with final measurements. All processes run at nice 19. One Torch thread; OMP, OpenBLAS and MKL thread counts are one. CPU only, no paid compute. Results include dependency versions, task configuration, hardware information, repository-relative worker commands, evaluation trajectory and the seed. Host-specific orchestration prefixes are omitted from published commands; numerical observations are unchanged. Raw JSON is committed; a script generates the summary JSON and README table.
+An evaluation that finishes after the deadline cannot count as a pass. The parent kills a worker that exceeds the limit plus five seconds. Timeouts, worker errors and exhausted training horizons all produce unsuccessful records.
 
-## Correctness
+## Methods and seeds
 
-Any reimplemented dynamics must be tested against Gymnasium, including reset, every state observation, reward, termination and time-limit truncation over many seeded random action sequences and boundary cases. Stated float tolerances apply only to observations, never flags or rewards. Fast CI includes these tests and clock/aggregation tests. Optimized environments never replace the Gymnasium evaluation reference.
+[configs/final.json](../configs/final.json) contains the laptop run list:
 
-## Changes
+| Method | Seeds per task | Configuration |
+|---|---:|---|
+| Batched CPU PPO | 0–19 | Zoo-shaped CartPole; original Acrobot batch/network |
+| ARS | 0–19 | Affine policies; one-million/four-million transition horizons |
+| CEM | 0–19 | Affine policies; one-million/four-million transition horizons |
+| SB3 PPO | 0–4 | RL Baselines3 Zoo task settings and training horizons |
+| CleanRL PPO | 0–4 | Four environments and 500,000 requested transitions |
 
-The endpoints, seed split, clock and budget above are fixed. Implementation defects may be repaired and documented; hyperparameter exploration belongs in `docs/LOG.md`, with measured development effects including failures. Final methods and configurations are selected before their final cohort starts. No cherry-picking the best seed or removing failures.
+The search horizons are for CartPole and Acrobot respectively. [Development experiments](DEVELOPMENT.md) explain the choices; [baseline settings](BASELINES.md) give the PPO details.
 
-## Separate implementation and hardware comparison
+Laptop measurements used otherwise idle CPU windows, one seed at a time, at nice 19. Torch, OMP, OpenBLAS and MKL each used one thread. Development trials ran separately on the shared machine. Result files include settings, versions, worker commands, seeds and every evaluation return.
 
-I keep the Modal L4 comparison separate from the original laptop cohort.
-It uses the same `RunContext`, thresholds, 100 Gymnasium evaluation episodes,
-greedy action rule and fixed per-task time budgets. Three new final seeds
-(0–2) per task use JAX-split training keys; these are not NumPy/Gymnasium
-reset seed integers, and do not reuse the fixed Gymnasium evaluation seeds.
-The initialization checkpoint and every complete PPO update are evaluated;
-128 environments × 128 steps rounds the checkpoint grid to 16,384 transitions.
-I synchronize GPU work before checking the clock. JIT compilation and
-host-side evaluation remain inside fresh-process time; cloud provisioning
-and image construction do not. A shorter pilot uses seed 100 and is kept
-apart from the final cohort. All planned seeds and failures are retained.
+## Summary statistics
 
-I changed hardware, training environment and PPO settings
-together. It cannot isolate a GPU speedup or replace the laptop ranking.
-[`BASELINES.md`](BASELINES.md#separate-l4-comparison-jax-ppo) gives the settings;
-[`ENVIRONMENTS.md`](ENVIRONMENTS.md#gymnax-training-in-the-separate-l4-comparison)
-states the checked dynamics and known differences. GPU timing results come
-only from Modal, not new local measurements.
+[`summarize.py`](../summarize.py) reports the success fraction and the median, 25th percentile and 75th percentile of solve times among successes. A method with no passes has no solve-time median.
+
+The JSON also includes a Kaplan–Meier median, with unsuccessful runs censored at their actual stop time, capped at the task's deadline. Early training-horizon stops may be related to how long a policy would need to pass, so that estimate is descriptive. The plotted per-seed records keep actual stop times, including deadline overshoots. All 140 final laptop runs passed.
+
+## Environment checks
+
+[`tests/test_equivalence.py`](../tests/test_equivalence.py) compares resets, observations, internal states, rewards, termination and time-limit truncation against Gymnasium. Observations and states use floating-point tolerances; rewards and flags must match exactly. Boundary tests cover termination thresholds, clipping, wrapping and simultaneous termination/truncation. [Environment notes](ENVIRONMENTS.md) specify the tolerances and optional C implementation.
+
+## Separate L4 comparison
+
+JAX PPO ran seeds 0–2 for each task on one Modal L4. It uses the same thresholds, 100 Gymnasium episodes and 120/300-second limits. Training uses JAX-split PRNG keys. A separate pilot used seed 100.
+
+The initialized policy and each full update are evaluated. With 128 environments and 128 steps, updates are 16,384 transitions apart. GPU work is synchronized before reading the clock. Imports, CUDA initialization, JIT compilation, weight transfer and CPU evaluation all count; cloud provisioning and image construction do not.
+
+The hardware, training backend and PPO settings all differ from the laptop run. [JAX settings](BASELINES.md#separate-l4-comparison-jax-ppo) and [Gymnax differences](ENVIRONMENTS.md#gymnax-training-in-the-separate-l4-comparison) describe that comparison.
