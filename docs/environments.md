@@ -1,27 +1,27 @@
 # Batch environments
 
-[`vector_env.py`](../control_clock/vector_env.py) has NumPy batches of Gymnasium 1.2.1's default CartPole-v1 and Acrobot-v1. LunarLander loops over `gymnasium.make` environments. The optional [C batch](#fused-c-batch) covers the same two classic tasks and is used only by the systems benchmark. Evaluation always uses real Gymnasium.
+[`vector_env.py`](../control_clock/vector_env.py) has NumPy batches of Gymnasium 1.2.1's default CartPole-v1 and Acrobot-v1, while LunarLander simply loops over `gymnasium.make` environments. The optional [C batch](#fused-c-batch) covers the same two classic tasks but is used only by the systems benchmark, and evaluation always uses real Gymnasium.
 
 ## Interface
 
 `make_vector(task, num_envs, native=False)` returns an object with `reset(seeds)`, `step(actions, active=None)`, `reset_done(mask, seeds)` and `close()`. Observations are `float32` arrays of shape `(num_envs, observation_size)`, copied so later resets can't overwrite a rollout buffer.
 
-- Resets are explicit. A terminal step returns its final observation, and stepping a finished slot raises.
+- Resets are explicit: a terminal step returns its final observation, and stepping a finished slot raises.
 - `active` is a boolean mask that leaves finished candidates waiting during policy search: inactive slots keep their state and return zero reward with both flags false.
-- Episodes truncate at 500 steps (classic tasks) or 1,000 (LunarLander). Termination and truncation can both be true.
+- Episodes truncate at 500 steps (classic tasks) or 1,000 (LunarLander), and termination and truncation can both be true.
 - Action shapes, integer values, masks and seed counts are validated.
 
 ## Numerical behavior
 
-A classic reset draws four uniforms from a freshly seeded `np.random.default_rng(seed)`, matching Gymnasium's PCG64. CartPole resets in [−0.05, 0.05], integrates with explicit Euler in float64, and pays 1 per step including the terminal one. Acrobot resets in [−0.1, 0.1] rounded to float32, then promoted; it uses one RK4 step of 0.2, wraps angles into the inclusive range [−π, π], clips velocities to ±4π and ±9π, and rewards 0 once `-cos(θ1) - cos(θ1 + θ2) > 1`, else −1. Default equations only, no torque noise.
+A classic reset draws four uniforms from a freshly seeded `np.random.default_rng(seed)`, matching Gymnasium's PCG64. CartPole resets in [−0.05, 0.05], integrates with explicit Euler in float64, and pays 1 per step including the terminal one. Acrobot, which uses the default equations with no torque noise, resets in [−0.1, 0.1] rounded to float32 and then promoted. It takes one RK4 step of 0.2, wraps angles into the inclusive range [−π, π], clips velocities to ±4π and ±9π, and rewards 0 once `-cos(θ1) - cos(θ1 + θ2) > 1`, else −1.
 
 [`tests/test_equivalence.py`](../tests/test_equivalence.py) compares observations and states against Gymnasium with `atol=2e-6, rtol=2e-7`; rewards, termination and truncation must match exactly. It covers random action sequences, partial resets, active masks, failure thresholds, wrapping, velocity clipping, terminal rewards, episode limits and simultaneous termination and truncation.
 
 ## Fused C batch
 
-[`classic.c`](../control_clock/classic.c) implements both tasks in plain C, loaded through ctypes by [`native.py`](../control_clock/native.py). NumPy arrays hold the state and C reads and writes them in place. `python -m control_clock.native build` compiles it with `cc` (or `$CC`) and libm; the library stores its source hash and the loader rejects a mismatch. Without a build, `native=True` falls back to NumPy.
+[`classic.c`](../control_clock/classic.c) implements both tasks in plain C and is loaded through ctypes by [`native.py`](../control_clock/native.py), with the state held in NumPy arrays that C reads and writes in place. `python -m control_clock.native build` compiles it with `cc` (or `$CC`) and libm. The library stores its source hash so the loader can reject a mismatch, and without a build `native=True` falls back to NumPy.
 
-To make one batched call reproduce Gymnasium's per-seed resets, the C code follows NumPy 2.2.6's seeding: `SeedSequence` hashes the seed into four 32-bit words, `generate_state` draws four 64-bit words, PCG64 takes its state and stream from them, and each uniform is `(u64 >> 11) * 2**-53`. Acrobot then rounds to float32 and computes float32 sine and cosine by copying NumPy's AVX2/FMA3 path (Cody–Waite reduction plus polynomials). Seeds must be below 2^64. Steps evaluate the NumPy batch's float64 expressions in the same order with FMA contraction off.
+To make one batched call reproduce Gymnasium's per-seed resets for any seed below 2^64, the C code follows NumPy 2.2.6's seeding: `SeedSequence` hashes the seed into four 32-bit words, `generate_state` draws four 64-bit words, PCG64 takes its state and stream from them, and each uniform is `(u64 >> 11) * 2**-53`. Acrobot then rounds to float32 and computes float32 sine and cosine by copying NumPy's AVX2/FMA3 path (Cody–Waite reduction plus polynomials). Steps evaluate the NumPy batch's float64 expressions in the same order with FMA contraction off.
 
 [`tests/test_native.py`](../tests/test_native.py) checks resets against Gymnasium on 3,306 seeds per task, float32 sin/cos against NumPy on 1.4 million inputs, 1,500 steps of 32 slots bit for bit against the NumPy batch, and that six mutated copies of the C source (reset constants, float conversion, dynamics) are rejected. The command-line gate compared all 1,010,006 seeds per task ([result](../results/bench/native-reset-gate.json)):
 
@@ -30,11 +30,11 @@ uv run python -m control_clock.native build
 uv run python -m control_clock.native verify --seeds 1000000
 ```
 
-The C checks have only run on x86-64 Linux with glibc. A CPU whose NumPy uses libm `sinf`/`cosf` could differ in the last bit of a reset.
+The C checks have only run on x86-64 Linux with glibc, and on a CPU where NumPy uses libm `sinf`/`cosf` instead, a reset could differ in the last bit.
 
 ## Gymnax in the GPU comparison
 
-JAX PPO trains on Gymnax 0.0.9. [`tests/test_jax.py`](../tests/test_jax.py) compares 100 fixed states per task and every action against Gymnasium: rewards and done flags match exactly away from time limits, and float32 state differences stay under `1e-4`. It differs from Gymnasium in float32 internals, PRNG (different initial states for the same integer seed), a single `done` flag for termination and time limit, and Acrobot angle wrapping into [−π, π). All qualification evaluations still use Gymnasium.
+JAX PPO trains on Gymnax 0.0.9, which [`tests/test_jax.py`](../tests/test_jax.py) compares against Gymnasium on 100 fixed states per task and every action. Rewards and done flags match exactly away from time limits, and float32 state differences stay under `1e-4`. Gymnax still differs from Gymnasium in float32 internals, PRNG (different initial states for the same integer seed), a single `done` flag for termination and time limit, and Acrobot angle wrapping into [−π, π), but every qualification evaluation runs on Gymnasium.
 
 ## Sources and licenses
 
@@ -50,23 +50,24 @@ from the following pinned primary sources:
 - [Gymnasium 1.2.1 LunarLander](https://github.com/Farama-Foundation/Gymnasium/blob/v1.2.1/gymnasium/envs/box2d/lunar_lander.py)
   is used directly through Gymnasium, not copied.
 
-Gymnasium is MIT-licensed. Its Acrobot source additionally credits the RLPy
-implementation under BSD-3-Clause: Alborz Geramifard, Robert H. Klein,
-Christoph Dann, William Dabney and Jonathan P. How; author Christoph Dann.
-Both notices are retained below. The NumPy batch layout, explicit-reset API,
-active masks, equivalence tests and the C batch are additions in this repository.
+Gymnasium is MIT-licensed, and its Acrobot source also credits the RLPy
+implementation, which is BSD-3-Clause and by Alborz Geramifard, Robert H. Klein,
+Christoph Dann, William Dabney and Jonathan P. How, with Christoph Dann as author.
+The NumPy batch layout, explicit-reset API, active masks, equivalence tests and
+the C batch are additions in this repository, and both upstream notices are
+retained below.
 
 The C batch's seeding follows
 [NumPy 2.2.6's random sources](https://github.com/numpy/numpy/tree/v2.2.6/numpy/random):
 `bit_generator.pyx` (SeedSequence), `src/pcg64/` (PCG64), `_common.pxd`, `_generator.pyx`
-and `src/distributions/distributions.c` (uniform). Its float32 sine and cosine follow
+and `src/distributions/distributions.c` (uniform), while its float32 sine and cosine follow
 [`loops_trigonometric.dispatch.cpp`](https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/src/umath/loops_trigonometric.dispatch.cpp).
-NumPy is BSD-3-Clause ([`third_party/NumPy-LICENSE`](../third_party/NumPy-LICENSE)).
-NumPy's SeedSequence derives from Melissa E. O'Neill's C++11 `seed_seq` alternative, and
-`bit_generator.pyx` carries its own MIT notice (Copyright (c) 2015 Melissa E. O'Neill,
-Copyright (c) 2019 NumPy Developers), retained in
-[`third_party/SeedSequence-LICENSE`](../third_party/SeedSequence-LICENSE). Its PCG64 comes
-from Melissa O'Neill's PCG library under the MIT license
+NumPy is BSD-3-Clause ([`third_party/NumPy-LICENSE`](../third_party/NumPy-LICENSE)), but two
+of the pieces used here carry their own MIT notices. SeedSequence derives from Melissa E.
+O'Neill's C++11 `seed_seq` alternative, and `bit_generator.pyx` carries its notice
+(Copyright (c) 2015 Melissa E. O'Neill, Copyright (c) 2019 NumPy Developers), retained in
+[`third_party/SeedSequence-LICENSE`](../third_party/SeedSequence-LICENSE). PCG64 comes from
+Melissa O'Neill's PCG library under the MIT license
 ([`third_party/PCG64-LICENSE`](../third_party/PCG64-LICENSE)).
 
 ### Gymnasium MIT notice

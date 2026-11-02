@@ -1,12 +1,12 @@
 # Where the seconds go
 
-Evaluation is the biggest cost in five of the six configurations I profiled. Faster training environments help, but they account for only 22 to 27% of an ARS or CEM run.
+Evaluation is the biggest cost in five of the six configurations I profiled, and while faster training environments help, they account for only 22 to 27% of an ARS or CEM run.
 
-All numbers are from one Zen 5 core of the laptop (AMD Ryzen AI 5 PRO 340, 4.9 GHz max, `performance` governor), one thread each for NumPy, BLAS, XLA and EnvPool. Raw data: [`results/bench/`](../results/bench/), tabulated by [`bench_summary.py`](../bench_summary.py); machine details in [`machine.json`](../results/bench/machine.json).
+All numbers are from one Zen 5 core of the laptop (AMD Ryzen AI 5 PRO 340, 4.9 GHz max, `performance` governor), with one thread each for NumPy, BLAS, XLA and EnvPool. The raw data is in [`results/bench/`](../results/bench/), tabulated by [`bench_summary.py`](../bench_summary.py), and the machine details are in [`machine.json`](../results/bench/machine.json).
 
 ## Training phases
 
-Seeds 0 to 4 of ARS, CEM and batched PPO ran twice, once normally and once with [`phases.py`](../control_clock/phases.py) timing each phase. All 60 runs produced identical evaluations (step counts and all 100 returns). The phases add up to the solve time within 0.05%. Medians over five seeds:
+Seeds 0 to 4 of ARS, CEM and batched PPO ran twice, once normally and once with [`phases.py`](../control_clock/phases.py) timing each phase, and all 60 runs produced identical evaluations (step counts and all 100 returns). The phases add up to the solve time within 0.05%, and the table shows medians over the five seeds:
 
 | Configuration | Solve s | Evaluation | Rollout (env step) | Update | Imports | Setup | Startup |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -17,13 +17,13 @@ Seeds 0 to 4 of ARS, CEM and batched PPO ran twice, once normally and once with 
 | Acrobot CEM | 18.13 | 74% | 25% (23%) | 0% | 0% | 0% | 0% |
 | Acrobot PPO | 27.77 | 81% | 5% (2%) | 9% | 2% | 2% | 0% |
 
-Shares are per-phase medians, so rows needn't sum to 100%. Even free environment simulation would cut a search run by about a quarter (Amdahl). Evaluating a saved policy for 100 episodes costs 0.24 to 0.33 s in Gymnasium and 0.02 to 0.04 s in the NumPy batch, with identical returns. On Acrobot, Gymnasium costs about 32 µs per transition.
+Shares are per-phase medians, so rows needn't sum to 100%. By Amdahl's law, even free environment simulation would cut a search run by about a quarter. Evaluating a saved policy for 100 episodes costs 0.24 to 0.33 s in Gymnasium and 0.02 to 0.04 s in the NumPy batch, with identical returns, and on Acrobot Gymnasium costs about 32 µs per transition.
 
-Import times (median of ten fresh processes, interpreter startup is another 10 to 11 ms): `numpy` 0.031 s, `gymnasium` 0.063, `torch` 0.683, `stable_baselines3` 1.063, `jax` 0.245, `gymnax` 1.183, `envpool` 0.637.
+Import times, as the median of ten fresh processes, are `numpy` 0.031 s, `gymnasium` 0.063, `torch` 0.683, `stable_baselines3` 1.063, `jax` 0.245, `gymnax` 1.183 and `envpool` 0.637, and interpreter startup adds another 10 to 11 ms.
 
 ## Environment throughput
 
-Million transitions per second, median of five processes, on the host NumPy interface except the scan rows. Each process timed `max(128, 8192/B)` calls after 32 warm-up calls at batch size B.
+The tables give million transitions per second as the median of five processes, measured through the host NumPy interface except in the scan rows. Each process timed `max(128, 8192/B)` calls after 32 warm-up calls at batch size B.
 
 | CartPole-v1 | B=1 | B=8 | B=64 | B=512 | B=4096 |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -42,9 +42,9 @@ Million transitions per second, median of five processes, on the host NumPy inte
 | Gymnax, `jit(vmap(step))` | 0.046 | 0.321 | 1.43 | 4.49 | 6.06 |
 | Gymnax, 64 steps in `lax.scan` | 0.547 | 1.43 | 3.47 | 4.70 | 4.97 |
 
-Gymnasium has no vectorized Acrobot. At B=4096 my NumPy Acrobot is 140× faster than its sequential wrapper. CartPole is dominated by resets: my NumPy batch builds a generator per restarted slot to match `reset(seed=s)`, which takes 90% of its time at B=4096. Gymnax's first call at each batch size takes 0.2 to 0.8 s of compilation, which is expensive when a whole ARS CartPole run uses about 0.14 million training transitions.
+Because Gymnasium has no vectorized Acrobot, the comparison there is with its sequential wrapper, which my NumPy Acrobot beats by 140× at B=4096. CartPole is dominated by resets: my NumPy batch builds a generator per restarted slot to match `reset(seed=s)`, which takes 90% of its time at B=4096. Gymnax's first call at each batch size takes 0.2 to 0.8 s of compilation, which is expensive when a whole ARS CartPole run uses about 0.14 million training transitions.
 
-The first three processes ran at a load average of 2.2 to 2.6 and the last two at about 1.1; Gymnasium's large sequential batches were 10 to 25% faster in the quiet ones. The tables use all five.
+The first three processes ran at a load average of 2.2 to 2.6 and the last two at about 1.1. Gymnasium's large sequential batches were 10 to 25% faster in the quiet ones, but the tables use all five.
 
 ### C batch against NumPy
 
@@ -60,7 +60,7 @@ I rewrote both batches in C ([`classic.c`](../control_clock/classic.c), [details
 | NumPy | 0.012 | 0.092 | 0.650 | 2.46 | 4.09 |
 | C | 0.420 | 2.23 | 4.97 | 5.95 | 6.10 |
 
-C is 7.7 to 13× faster on CartPole and 1.5 to 35× on Acrobot. At B=4096 a CartPole reset costs 0.12 µs per slot instead of 6.35 µs. Every timed process first checked a 64-step trace against NumPy bit for bit. All qualification results still use the NumPy batch.
+C is 7.7 to 13× faster on CartPole and 1.5 to 35× on Acrobot, and at B=4096 a CartPole reset costs 0.12 µs per slot instead of 6.35 µs. Every timed process first checked a 64-step trace against NumPy bit for bit, but the qualification results all still use the NumPy batch, so none of this speedup is in the README's times.
 
 ## Saved policies on new seeds
 
@@ -75,7 +75,7 @@ ARS, CEM and batched PPO save their passing policy after the clock stops ([`poli
 | Acrobot CEM | −97.7 | −97.4 | 4/5 | 36/50 |
 | Acrobot PPO | −93.9 | −96.1 | 4/5 | 37/50 |
 
-Four of the 30 policies fell below the threshold on the 1,000 new episodes. Only seed-0 to 4 runs of my three methods were replayed; SB3 and CleanRL don't save policies.
+Four of the 30 policies fell below the threshold on the 1,000 new episodes. Only the seed 0 to 4 runs of my three methods were replayed, since SB3 and CleanRL don't save policies.
 
 ## Reproduce
 
@@ -88,4 +88,4 @@ uv sync --frozen --python 3.12 --extra jax --extra bench
 .venv/bin/python replay.py --input results/bench-replication/decompose --output results/bench-replication/replay.json
 ```
 
-Pick a full-speed core and keep the machine idle. EnvPool 1.2.7 needs `libEGL.so.1`, `libOpenGL.so.0` and `libGLdispatch.so.0` (Ubuntu: `libegl1`, `libopengl0`, `libglvnd0`).
+Pick a full-speed core and keep the machine idle while these run. EnvPool 1.2.7 needs `libEGL.so.1`, `libOpenGL.so.0` and `libGLdispatch.so.0` (Ubuntu: `libegl1`, `libopengl0`, `libglvnd0`).
