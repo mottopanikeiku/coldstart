@@ -61,8 +61,7 @@
         "AVX512_KNM"
       ]
     },
-    "threads": "OMP/MKL/OPENBLAS/NUMEXPR = 1; XLA single-threaded Eigen, 1 intra-op thread",
-    "source_commit": "18cd1456aa6b494f07754bf1ea332c413bd691c6"
+    "threads": "OMP/MKL/OPENBLAS/NUMEXPR = 1; XLA single-threaded Eigen, 1 intra-op thread"
   },
   "snapshots": {
     "before": {

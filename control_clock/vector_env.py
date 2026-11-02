@@ -3,7 +3,7 @@
 Gymnasium: Copyright (c) 2016 OpenAI, (c) 2022 Farama Foundation (MIT).
 Acrobot also derives from RLPy, Copyright (c) 2013 Alborz Geramifard,
 Robert H. Klein, Christoph Dann, William Dabney and Jonathan P. How (BSD-3-Clause).
-Source links, numerical contract and complete notices: docs/ENVIRONMENTS.md.
+Source links, numerical contract and complete notices: docs/environments.md.
 """
 
 from __future__ import annotations

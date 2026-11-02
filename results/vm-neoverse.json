@@ -1,0 +1,92 @@
+{
+  "hardware": "Neoverse-V2, 16 cores, shared cloud VM (Ubuntu 26.04, Linux 7.0 aws, aarch64)",
+  "task": "CartPole-v1",
+  "conditions": "Other jobs were running: load average about 50 to 60 on 16 cores. Process niced to 19, one thread each for Torch/BLAS/OpenMP. Python 3.12, locked package versions.",
+  "methods": {
+    "ars/default": {
+      "seeds": 10,
+      "passed": 10,
+      "median_seconds": 1.709,
+      "q1": 1.259,
+      "q3": 2.278,
+      "seconds_by_seed": [
+        2.408,
+        2.975,
+        2.913,
+        1.611,
+        1.888,
+        1.251,
+        1.249,
+        1.808,
+        1.075,
+        1.282
+      ]
+    },
+    "cem/default": {
+      "seeds": 10,
+      "passed": 10,
+      "median_seconds": 2.067,
+      "q1": 1.617,
+      "q3": 2.372,
+      "seconds_by_seed": [
+        2.407,
+        1.951,
+        2.046,
+        1.467,
+        2.267,
+        0.901,
+        1.505,
+        3.031,
+        2.088,
+        2.468
+      ]
+    },
+    "cleanrl/default": {
+      "seeds": 5,
+      "passed": 5,
+      "median_seconds": 17.01,
+      "q1": 14.023,
+      "q3": 25.262,
+      "seconds_by_seed": [
+        14.023,
+        25.262,
+        33.42,
+        17.01,
+        12.626
+      ]
+    },
+    "ppo-cpu/zoo-shape": {
+      "seeds": 10,
+      "passed": 10,
+      "median_seconds": 8.609,
+      "q1": 5.998,
+      "q3": 11.773,
+      "seconds_by_seed": [
+        8.293,
+        5.241,
+        8.268,
+        8.925,
+        2.06,
+        5.19,
+        12.777,
+        11.968,
+        11.189,
+        12.862
+      ]
+    },
+    "sb3-zoo/default": {
+      "seeds": 5,
+      "passed": 5,
+      "median_seconds": 10.639,
+      "q1": 9.708,
+      "q3": 10.69,
+      "seconds_by_seed": [
+        10.69,
+        10.639,
+        20.234,
+        6.673,
+        9.708
+      ]
+    }
+  }
+}

@@ -78,8 +78,7 @@
         "-fno-builtin-sinf",
         "-fno-builtin-cosf"
       ]
-    },
-    "source_commit": "3dbf8fa483a4febe75c43327cee1b42c4073eee2"
+    }
   },
   "snapshots": {
     "before": {
