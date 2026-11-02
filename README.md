@@ -1,19 +1,19 @@
 # coldstart
 
-A stopwatch for small RL runs. It starts before the Python interpreter does and stops at the first policy that solves the task, so imports, setup, training and every evaluation count.
+A stopwatch for small RL runs. It starts before the Python interpreter does and stops at the first policy that passes a fixed-seed evaluation on CartPole or Acrobot, so imports, setup, training and every evaluation count.
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/figure-dark.svg"><img alt="Seconds from Python launch to a passing policy, one dot per seed. Random search wins CartPole at about 1.1 seconds; SB3 PPO wins Acrobot at 10 seconds." src="docs/figure-light.svg" width="560"></picture>
 
-On my Ryzen AI 5 laptop, random search over linear policies solves CartPole in about a second. The three PPO implementations take four to six. On Acrobot random search comes last and Stable-Baselines3's tuned PPO wins.
+On my Ryzen AI 5 laptop, random search over linear policies passes the CartPole evaluation about a second after launch. The three PPO implementations take four to six. On Acrobot random search comes last and Stable-Baselines3's tuned PPO is fastest.
 
 Median seconds to the first evaluation that averages at least 475 over 100 CartPole episodes (−100 on Acrobot). Those 100 episodes use fixed seeds, which I also used while choosing the settings. The last column repeats CartPole, with fewer seeds, on a shared 16-core Arm VM under heavy load.
 
 | Method | CartPole | Acrobot | CartPole, Arm VM |
 | --- | ---: | ---: | ---: |
-| ARS (random search over linear policies) | **1.08** | 28.2 | 1.7 |
+| ARS (random search over linear policies) | **1.08** | 28.1 | 1.7 |
 | CEM (cross-entropy method) | 1.15 | 15.3 | 2.1 |
 | Batched CPU PPO (mine) | 4.15 | 25.0 | 8.6 |
-| Stable-Baselines3 PPO, Zoo settings | 4.72 | **10.1** | 10.6 |
+| Stable-Baselines3 PPO, Zoo settings | 4.72 | **10.0** | 10.6 |
 | CleanRL PPO | 5.55 | 15.2 | 17.0 |
 
 All 140 laptop runs passed: 20 seeds each for ARS, CEM and my PPO, 5 for the library PPOs. On 1,000 fresh episodes, 26 of 30 saved policies (my three methods, five seeds each, both tasks) still passed.
